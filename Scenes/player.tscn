@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://c0jiyntmn3bkx"]
+
+[ext_resource type="Script" uid="uid://dosxtdg8yid7v" path="res://Scripts/player.gd" id="1_cvnsp"]
+[ext_resource type="Texture2D" uid="uid://ciro7bxh00eu1" path="res://icon.svg" id="1_v0iea"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cvnsp"]
+size = Vector2(56, 56)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6t5aa"]
+size = Vector2(56, 40)
+
+[node name="Player" type="CharacterBody2D" unique_id=302819608]
+script = ExtResource("1_cvnsp")
+
+[node name="Standing" type="Sprite2D" parent="." unique_id=1609274281]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_v0iea")
+
+[node name="Crouching" type="Sprite2D" parent="." unique_id=590909516]
+visible = false
+position = Vector2(-1.9073486e-06, 7.9999943)
+scale = Vector2(0.5, 0.37109372)
+texture = ExtResource("1_v0iea")
+
+[node name="HitboxStanding" type="CollisionShape2D" parent="." unique_id=606276087]
+shape = SubResource("RectangleShape2D_cvnsp")
+
+[node name="HitboxCrouching" type="CollisionShape2D" parent="." unique_id=183926897]
+position = Vector2(0, 8)
+shape = SubResource("RectangleShape2D_6t5aa")
+disabled = true
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=478620449]
