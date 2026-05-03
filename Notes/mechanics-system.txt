@@ -1,0 +1,104 @@
+The game will have 2 main types of mechanics:
+	
+	Physical abilities, which split off into attacks, ranged attacks, and utility
+	These will generally be easier to use and weaker, but better if used together
+	
+	Magical abilities, which split off into attacks, ranged attacks, and utility as well
+	These will be harder to use in general, and even harder together, with the bonus
+	that they deal more damage when used together
+	
+	Lastly, physical and magical abilities can be used together, just that it will be
+	more difficult due to how magical attacks work
+	
+
+
+Now going into the input mechanics, there will be a kind of structure that I'll be using
+behind  the scenes for the inputs. 
+First off, the main inputs are as follows:
+	WASD for movement/direction keys
+	IOKL for action keys
+	And Right Shift as the special magic key
+	The input window will likely be 0.15~ seconds, which may change with playtesting
+	Also, IOKL will be refered to as 1234, and Right Shift will be RS for simplicity
+	Lastly, when writing a + in between any input, the order of inputs won't matter
+
+
+There is a vocabulary that will be used when creating new abilities. The vocabulary will
+be based on these rules (rules are not strict, only directional):
+	WASD should be used to indicate the direction the ability feels like its facing
+	
+	I and O should be used more so for attacking abilities
+	K and L should be used more so for non attacking abilities
+	For example, when writing a complicated attack, it should use movement that is
+	indicative of the direction of the attack, and then afterwards use I and O
+	more than K and L
+	
+	Next, for Right Shift, any input used while holding Right Shift MUST indicate that
+	this is magic related, to the extent that the button is held
+	For example, if you wish to make a magic attack thats have physical half magic,
+	then the magic button should not be used for every input, but roughly half
+	If instead you wish to make a pure magical ability, then the magic button should
+	be helf for the entire spell
+	
+	Lastly, as a general direction for all abilities, the complexity of an ability
+	should be based on three things:
+		its damage
+		its utility
+		its realism
+	Note that the complexity of magic spells shouldn't be raised too much because
+	they already have the weakness of requiring input handling with Right Shift
+	while being used
+
+
+Now there are also many unique cases about when and how abilities are used outside
+of just the abilities, for example ability usage while midair and such. This is
+the solution:
+	There will be a way to fly and or air jump indefinitely using the right mechanics,
+	which will make attacking enemies harder in general if you wish to stay mid air.
+	
+	All physical abilities will be useable midair and on ground without issue
+	
+	But magical abilities will be different. A magical ability requires constant focus,
+	and to represent that focus into the game, if the player is using flying magic,
+	there will be an extra input they have to make at the end of every spell while
+	flying to allow it to work. If that input isn't done, then the spell will have a
+	50% chance to fail, and the flying will be interrupted and stop. Magical spells
+	cannot be done in midair unless the flying spell is active, or if it's part magical
+	and mostly melee
+	
+	Note that this also means that input buffering for when midair will not exist,
+	and only jump buffering will
+
+
+Next up, to give you a better idea of how a combination of abilities works,
+I'll write down an example here:
+	Let's say we have a grappling hook ability, a pull abillity that's combined with it,
+	and a rush ability that's combined with it. And let's also say that we have a magical
+	variant for the pull and rush abilities too
+	
+	Here are what the inputs for each will be in this example (assuming facing right):
+		Physical variants:
+			Shoot grappling hook: D D L (forward forward 4)
+			Pull grappled enemy: A+S+K (down-back-3)
+			Rush to grappled enemy: D+W+L (up-forward-4)
+		Magical variants:
+			Shoot grappling hook: D D L+Right Shift (forward forward 4+RS)
+			Pull grappled enemy: A+S+K+RS (down-back-3-RS)
+			Rush to grappled enemy: W+D+L+RS (up-forward-4-RS)
+		All of these abilities will be useable together as they all involve using a
+		grappling hook
+	
+	Now, let's say that the player and the enemy is in midair, and the player wishes to
+	close the distance and attack. And let's say they wish to do it with a magical attack
+	rush attack in the end. This is what it would look like:
+		D D L (shoots a grappling hook at the enemy)
+		W+D+L+RS (rushes to the enemy with an upward strike enhanced with magic)
+	
+	This is how abilities can be used together.
+	To explain the situation, D D L means they tapped forward twice, let go, and then
+	tapped 4. And W+D+L+RS means they tapped held up, forward, 4 and RS at the same time
+	
+	To allow abilities like these to be used without making the player accidentally use
+	other abilities, make it so that every ability can only be used in certain states,
+	and make it so that when the grappling hook is used, the player is in a grappled state,
+	which only allows those abilities to be used
