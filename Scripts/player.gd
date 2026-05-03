@@ -78,18 +78,20 @@ func handle_actions():
 	var action: Array
 	if not action_in_progress:
 		handle_action_inputs()
-		return
 	else:
 		action = InputActions.get_most_suitable_valid_action(inputs_for_current_action)
-	print(action)
+	
+	# placeholder
+	if action_in_progress:
+		await get_tree().process_frame
+		action_in_progress=false
 	
 
 ## Handles everything related to action inputs and returns the action that was decided on
 func handle_action_inputs():
-	current_frame_data = get_current_frame_data()
-	update_frames(current_frame_data)
+	update_current_frame_data()
 	var previous_frame: Array = get_frame_data(write_index-1)
-	
+	update_frames(current_frame_data)
 	
 	# Start the action and reset input state
 	if input_frames_held>input_frame_limit:
@@ -99,7 +101,7 @@ func handle_action_inputs():
 		action_in_progress=true
 		had_input=false
 	# End the last input
-	elif (not current_frame_data and had_input):
+	elif not current_frame_data and had_input:
 		if not update_inputs_for_current_action(): # Checks for valid input somewhere
 			input_frames_held+=input_frame_limit # Force start the action
 			return
@@ -108,7 +110,7 @@ func handle_action_inputs():
 		had_input=false
 		action_starting=true
 	# Start new input and update current frame and input data
-	elif current_frame_data and previous_frame.size()==0:
+	elif not current_frame_data.is_empty() and previous_frame.size()==0:
 		had_input = true
 		update_current_frame_and_input_data()
 	# Update current frame and input data
@@ -173,8 +175,8 @@ func update_current_frame_and_input_data():
 
 
 ## Updates [member current_frame_data] to the current frame's input data
-func get_current_frame_data():
-	current_frame_data.clear()
+func update_current_frame_data():
+	current_frame_data = []
 	if Input.is_action_pressed("up"):
 		current_frame_data.append("up")
 	if Input.is_action_pressed("down"):
@@ -193,7 +195,6 @@ func get_current_frame_data():
 		current_frame_data.append("four")
 	if Input.is_action_pressed("magic_button"):
 		current_frame_data.append("magic_button")
-	return current_frame_data
 	
 
 ## Grabs the frame data of the given frame index. The frame index should be based
@@ -201,13 +202,13 @@ func get_current_frame_data():
 ## WARNING: if the frame index given is above or below double the size of
 ## [member write_index], this function will fail
 func get_frame_data(frame_index):
+	if last_frames.size()==0:
+		return []
 	# Frame index is based off of write_index, which can only be between 0 and 19
 	while frame_index<0:
 		frame_index+=last_frames.size()
 	while frame_index>last_frames.size()-1:
 		frame_index-=last_frames.size()
-	if last_frames.size()==0:
-		return []
 	return last_frames[frame_index]
 	
 
