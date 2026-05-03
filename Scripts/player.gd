@@ -78,13 +78,19 @@ func handle_actions():
 	var action: Array
 	if not action_in_progress:
 		handle_action_inputs()
-	else:
-		action = InputActions.get_most_suitable_valid_action(inputs_for_current_action)
+		return
 	
 	# placeholder
-	if action_in_progress:
-		await get_tree().process_frame
+	action = inputs_for_current_action.duplicate(true)
+	if action.size()==0:
+		print("input_failed")
 		action_in_progress=false
+		return
+	action.append(InputActions.get_most_suitable_valid_action(action))
+	print(action)
+	await get_tree().process_frame
+	action_in_progress=false
+	inputs_for_current_action.clear()
 	
 
 ## Handles everything related to action inputs and returns the action that was decided on
@@ -106,15 +112,16 @@ func handle_action_inputs():
 			input_frames_held+=input_frame_limit # Force start the action
 			return
 		current_input_size=0
-		input_frames_held=0
 		had_input=false
 		action_starting=true
 	# Start new input and update current frame and input data
 	elif not current_frame_data.is_empty() and previous_frame.size()==0:
+		input_frames_held=0
 		had_input = true
+		action_starting = true
 		update_current_frame_and_input_data()
 	# Update current frame and input data
-	elif current_frame_data and had_input:
+	elif action_starting:
 		update_current_frame_and_input_data()
 	
 
