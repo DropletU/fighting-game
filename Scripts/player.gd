@@ -191,14 +191,6 @@ func update_current_input_data():
 ## Updates [member current_action_frame_data] to the current frame's input data
 func update_current_action_frame_data():
 	current_action_frame_data = []
-	if Input.is_action_pressed("up"):
-		current_action_frame_data.append("up")
-	if Input.is_action_pressed("down"):
-		current_action_frame_data.append("down")
-	if Input.is_action_pressed("left"):
-		current_action_frame_data.append("left")
-	if Input.is_action_pressed("right"):
-		current_action_frame_data.append("right")
 	if Input.is_action_pressed("one"):
 		current_action_frame_data.append("one")
 	if Input.is_action_pressed("two"):
