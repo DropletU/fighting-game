@@ -118,6 +118,8 @@ func get_current_input():
 		inputs.append("left")
 	if Input.is_action_pressed("right"):
 		inputs.append("right")
+	if inputs.is_empty():
+		inputs.append("neutral")
 	return inputs
 	
 
