@@ -188,10 +188,10 @@ func update_current_frame_data():
 		current_frame_data.append("up")
 	if Input.is_action_pressed("down"):
 		current_frame_data.append("down")
-	if Input.is_action_pressed("right"):
-		current_frame_data.append("right")
 	if Input.is_action_pressed("left"):
 		current_frame_data.append("left")
+	if Input.is_action_pressed("right"):
+		current_frame_data.append("right")
 	if Input.is_action_pressed("one"):
 		current_frame_data.append("one")
 	if Input.is_action_pressed("two"):
