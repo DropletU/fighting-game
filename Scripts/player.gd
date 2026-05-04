@@ -21,7 +21,7 @@ var crouching := false
 
 # Frame Data
 var last_frames: Array # Holds the input data of the past 20 frames
-var current_frame_data: Array # Holds the current frames input data
+var current_action_frame_data: Array # Holds the current frames input data
 var write_index:=0 # The current index in [member last_frames]
 
 # Important note: An action is a series of inputs, while an input is buttons that were
@@ -56,8 +56,6 @@ func _physics_process(delta: float) -> void:
 	elif crouching:
 		stand()
 	
-	
-	
 	if is_on_floor():
 		coyote_timer=coyote_time
 	if Input.is_action_just_pressed("jump"):
@@ -77,6 +75,7 @@ func _physics_process(delta: float) -> void:
 func handle_actions():
 	var action: Array
 	if not action_in_progress:
+		handle_movement_inputs()
 		handle_action_inputs()
 		return
 	
@@ -93,11 +92,15 @@ func handle_actions():
 	inputs_for_current_action.clear()
 	
 
+func handle_movement_inputs():
+	pass
+	
+
 ## Handles everything related to action inputs and returns the action that was decided on
 func handle_action_inputs():
-	update_current_frame_data()
+	update_current_action_frame_data()
 	var previous_frame: Array = get_frame_data(write_index-1)
-	update_frames(current_frame_data)
+	update_frames(current_action_frame_data)
 	
 	# Start the action and reset input state
 	if input_frames_held>input_frame_limit:
@@ -107,58 +110,63 @@ func handle_action_inputs():
 		action_in_progress=true
 		had_input=false
 	# End the last input
-	elif not current_frame_data and had_input:
-		if not update_inputs_for_current_action(): # Checks for valid input somewhere
+	elif not current_action_frame_data and had_input:
+		update_inputs_for_current_action() # Checks for valid input somewhere
+		if inputs_for_current_action.back().is_empty():
 			input_frames_held+=input_frame_limit # Force start the action
 			return
 		current_input_size=0
 		had_input=false
 		action_starting=true
 	# Start new input and update current frame and input data
-	elif not current_frame_data.is_empty() and previous_frame.size()==0:
+	elif not current_action_frame_data.is_empty() and previous_frame.size()==0:
 		input_frames_held=0
 		had_input = true
 		action_starting = true
-		update_current_frame_and_input_data()
+		update_current_input_data()
 	# Update current frame and input data
 	elif action_starting:
-		update_current_frame_and_input_data()
+		update_current_input_data()
 	
 
 ## Updates [member inputs_for_current_action] with the latest input.
 func update_inputs_for_current_action():
-	var _input_action = find_action_frame()
-	if _input_action:
-		inputs_for_current_action.append(_input_action)
+	var frame_index = find_largest_input_frame()
+	var input_action = find_suitable_input(frame_index)
+	if input_action:
+		inputs_for_current_action.append(input_action)
 		return true
 	return false
 	
 
 
 
-## Finds the biggest recent frame, and checks it and all the frames before it
-## to see if any can be considered a proper input. It will return the first one
-## it finds.
-func find_action_frame():
-	var frame_being_checked: Array 
+## Finds and returns the biggest recent frame
+func find_largest_input_frame():
+	var frame_being_searched: Array 
 	var frame_index:=0
 	for i in input_frame_limit: # Find the largest input
-		frame_being_checked = get_frame_data(write_index-i-1)
-		if frame_being_checked.size()==current_input_size:
+		frame_being_searched = get_frame_data(write_index-i-1)
+		if frame_being_searched.size()==current_input_size:
 			frame_index=i+1
-			break
+			return frame_index
 	
+
+## Finds the first suitable input starting from the frame given to it
+func find_suitable_input(frame_index):
+	var frame_being_searched: Array
 	for i in input_frame_limit: # Find suitable input
-		frame_being_checked=get_frame_data(write_index-frame_index-i)
-		if frame_being_checked == []:
-			return frame_being_checked
-		var valid = InputActions.check_action_validity(frame_being_checked)
-		if valid: return frame_being_checked
+		frame_being_searched=get_frame_data(write_index-frame_index-i)
+		if frame_being_searched == []:
+			return frame_being_searched
+		var valid = InputActions.check_action_validity(inputs_for_current_action,
+														frame_being_searched)
+		if valid: return frame_being_searched
 		else: continue
 	return []
 	
 
-## Updates [member last_frames] based off of [member current_frame_data]
+## Updates [member last_frames] based off of [member current_action_frame_data]
 func update_frames(frame_data):
 	if last_frames.size()<20:
 		last_frames.append(frame_data)
@@ -173,35 +181,34 @@ func update_frames(frame_data):
 		write_index=0
 	
 
-func update_current_frame_and_input_data():
-	if current_input_size<current_frame_data.size():
-		current_input_size=current_frame_data.size()
+## Updates the current input size and frames held
+func update_current_input_data():
+	if current_input_size<current_action_frame_data.size():
+		current_input_size=current_action_frame_data.size()
 	input_frames_held+=1
 	
 
-
-
-## Updates [member current_frame_data] to the current frame's input data
-func update_current_frame_data():
-	current_frame_data = []
+## Updates [member current_action_frame_data] to the current frame's input data
+func update_current_action_frame_data():
+	current_action_frame_data = []
 	if Input.is_action_pressed("up"):
-		current_frame_data.append("up")
+		current_action_frame_data.append("up")
 	if Input.is_action_pressed("down"):
-		current_frame_data.append("down")
+		current_action_frame_data.append("down")
 	if Input.is_action_pressed("left"):
-		current_frame_data.append("left")
+		current_action_frame_data.append("left")
 	if Input.is_action_pressed("right"):
-		current_frame_data.append("right")
+		current_action_frame_data.append("right")
 	if Input.is_action_pressed("one"):
-		current_frame_data.append("one")
+		current_action_frame_data.append("one")
 	if Input.is_action_pressed("two"):
-		current_frame_data.append("two")
+		current_action_frame_data.append("two")
 	if Input.is_action_pressed("three"):
-		current_frame_data.append("three")
+		current_action_frame_data.append("three")
 	if Input.is_action_pressed("four"):
-		current_frame_data.append("four")
+		current_action_frame_data.append("four")
 	if Input.is_action_pressed("magic_button"):
-		current_frame_data.append("magic_button")
+		current_action_frame_data.append("magic_button")
 	
 
 ## Grabs the frame data of the given frame index. The frame index should be based
