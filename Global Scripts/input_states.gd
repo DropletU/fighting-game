@@ -13,3 +13,25 @@ func check_state_validity(current_state, current_input):
 func get_state(current_state, current_input):
 	return {"state": "standing", "frames": 0} # placeholder
 	
+
+var states: Dictionary = {
+	"standing": {
+		"name": "standing",
+		"max_frames": -1,
+		"is_stance": true,
+		"transitions": [{
+				"target": "while_crouching",
+				"frames_required": 0,
+				"input_required": ["down"
+	]}]},
+	"while_crouching": {
+		"name": "while_crouching",
+		"max_frames": 10,
+		"is_stance": false,
+		"transitions": [{
+			"target": "crouching",
+			"frames_required": 10,
+			"input_required": ["down"
+	]}]}
+	
+}
