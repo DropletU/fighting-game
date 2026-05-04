@@ -12,13 +12,17 @@ var coyote_timer = 0.0
 var jump_buffer_timer:= 0.0
 var coyote_started:=false
 
-const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
-
 var standing := true
 var crouching := false
 
 
+
+const SPEED = 300.0
+const JUMP_VELOCITY = -400.0
+
+
+
+#### Action Input Section
 # Frame Data
 var last_frames: Array # Holds the input data of the past 20 frames
 var current_action_frame_data: Array # Holds the current frames input data
@@ -38,8 +42,16 @@ var action_starting:=false # Whether an action is being started or not
 var action_in_progress:=false # Whether an action is in progress or not
 var action_playing: Array = [] # The action that will be played once inputs are finished
 
+
+#### Movement Input Section
+# State Data
+var current_state:={"state": "standing", # The current state the player is in
+	"frames": 0 # The number of frames the player has been in the current state
+}
+
+
 func _physics_process(delta: float) -> void:
-	handle_actions()
+	handle_inputs()
 	
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -72,29 +84,47 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 
-func handle_actions():
+func handle_inputs():
 	var action: Array
-	if not action_in_progress:
-		handle_movement_inputs()
+	if not current_state.is_empty():
+		handle_movement_inputs_and_state()
 		handle_action_inputs()
-		return
 	
-	# placeholder
-	action = inputs_for_current_action.duplicate(true)
-	if action.size()==0:
-		print("input_failed")
-		action_in_progress=false
-		return
-	action.append(InputActions.get_most_suitable_valid_action(action))
-	print(action)
-	await get_tree().process_frame
-	action_in_progress=false
-	inputs_for_current_action.clear()
+	if action_in_progress:
+		action = inputs_for_current_action.duplicate(true)
+		start_action(action)
 	
 
-func handle_movement_inputs():
-	pass
+func handle_movement_inputs_and_state():
+	var current_input: Array = get_current_input()
+	var next_state: Dictionary
+	if InputStates.check_state_validity(current_state, current_input):
+		next_state = InputStates.get_state(current_state, current_input)
+	else:
+		next_state=current_state.duplicate(true)
+		next_state["frames"]+=1
+	current_state=next_state
 	
+
+
+
+func get_current_input():
+	var inputs:=[]
+	if Input.is_action_pressed("up"):
+		inputs.append("up")
+	if Input.is_action_pressed("down"):
+		inputs.append("down")
+	if Input.is_action_pressed("left"):
+		inputs.append("left")
+	if Input.is_action_pressed("right"):
+		inputs.append("right")
+	return inputs
+	
+
+
+
+
+
 
 ## Handles everything related to action inputs and returns the action that was decided on
 func handle_action_inputs():
@@ -138,8 +168,6 @@ func update_inputs_for_current_action():
 		return true
 	return false
 	
-
-
 
 ## Finds and returns the biggest recent frame
 func find_largest_input_frame():
@@ -217,6 +245,24 @@ func get_frame_data(frame_index):
 		frame_index-=last_frames.size()
 	return last_frames[frame_index]
 	
+
+
+# Important notes: This function must decide what the next state is, and also must
+# be the one to start the next state. Inputs cannot be made until the action
+# enters a state. This function must also set [member current_state] to null.
+func start_action(action): # placeholder
+	action = inputs_for_current_action.duplicate(true)
+	if action.size()==0:
+		print("input_failed")
+		action_in_progress=false
+		return
+	action.append(InputActions.get_most_suitable_valid_action(action))
+	print(action)
+	await get_tree().process_frame
+	action_in_progress=false
+	inputs_for_current_action.clear()
+	
+
 
 
 func crouch():
