@@ -45,7 +45,8 @@ var action_playing: Array = [] # The action that will be played once inputs are 
 
 #### Movement Input Section
 # State Data
-var current_state:={"state": "standing", # The current state the player is in
+var current_state:={
+	"state": "standing", # The current state the player is in
 	"frames": 0 # The number of frames the player has been in the current state
 }
 
@@ -99,7 +100,7 @@ func handle_movement_inputs_and_state():
 	var current_input: Array = get_current_input()
 	var next_state: Dictionary
 	if InputStates.check_state_validity(current_state, current_input):
-		next_state = InputStates.get_state(current_state, current_input)
+		next_state = InputStates.get_next_state(current_state, current_input)
 	else:
 		next_state=current_state.duplicate(true)
 		next_state["frames"]+=1
