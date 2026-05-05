@@ -140,6 +140,14 @@ var states: Dictionary = {
 				"target": "while_crouching",
 				"frames_required": 0,
 				"input_required": ["down"]
+			}, {
+				"target": "start_running_right",
+				"frames_required": 0,
+				"input_required": ["right"]
+			}, {
+				"target": "start_running_left",
+				"frames_required": 0,
+				"input_required": ["left"]
 			}
 		]
 	},
