@@ -22,25 +22,28 @@ func check_state_validity(current_state: Dictionary, current_input: Array):
 ## Returns the state that should be happening next based on [member current_state]
 ## and [member current_input]. It should also increment [member "frames"]
 ## if the state doesn't change.
-func get_next_state(current_state, current_input):
+func get_next_state(current_state: Dictionary, current_input: Array):
 	var state=states[current_state["state"]]
 	var frames = current_state["frames"]
 	var next_state_change = inputs_and_frames_match_any_and_return_it(state,
 																	  current_input,
 																	  frames)
+	var next_state:=current_state.duplicate(true)
 	
 	# Checks if the current state can stay as it is in the next frame
 	if inputs_and_frames_match_current(state, current_input, frames):
-		current_state["frames"]+=1
-		return current_state
+		next_state = current_state.duplicate()
+		next_state["frames"]+=1
+		return next_state
 	# Checks if the current state can change to anything else in the next frame
 	if next_state_change:
-		current_state["frames"]=0
-		current_state["state"]=next_state_change
-		return current_state
+		next_state["frames"]=0
+		next_state["state"]=next_state_change
+		return next_state
 	push_error("Reached theoretical impossibility in state handling/movement inputs")
 	return false # This theoretically should not happen
 	
+
 
 
 
