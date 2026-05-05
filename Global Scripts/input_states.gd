@@ -4,6 +4,12 @@ extends Node
 
 
 
+func get_base_state(state:="standing"):
+	return {
+	"state": state,
+	"frames": 1
+}
+
 ## Returns the state that should be happening next based on [member current_state]
 ## and [member current_input]. It should also increment [member "frames"]
 ## if the state doesn't change.
@@ -63,7 +69,7 @@ func get_transition_requirement_met(transitions: Array, current_input: Array,
 		var frames_required: int = transition["frames_required"]
 		
 		# Check if the frames reached the required amount
-		if frames<frames_required-1: continue
+		if frames<frames_required: continue
 		
 		# Checks if inputs dont match any transition
 		if not check_if_input_requirements_met(input_requirements, current_input):

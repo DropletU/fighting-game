@@ -41,7 +41,7 @@ var current_input_size:=0 # The number of inputs the current action has been giv
 var action_starting:=false # Whether an action is being started or not
 var action_in_progress:=false # Whether an action is in progress or not
 var action_playing: Array = [] # The action that will be played once inputs are finished
-
+var forced_state_by_action:=""
 
 #### Movement Input Section
 # State Data
@@ -87,9 +87,20 @@ func _physics_process(delta: float) -> void:
 
 func handle_inputs():
 	var action: Array
+	
+	
+	if not current_state["state"] and not action_in_progress:
+		if forced_state_by_action=="":
+			current_state = InputStates.get_base_state()
+		else:
+			current_state = InputStates.get_base_state(forced_state_by_action)
+			forced_state_by_action=""
+	
 	if current_state["state"]:
 		handle_movement_inputs_and_state()
 		handle_action_inputs()
+	
+	
 	
 	if action_in_progress:
 		action = inputs_for_current_action.duplicate(true)
