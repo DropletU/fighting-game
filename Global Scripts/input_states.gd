@@ -8,26 +8,50 @@ extends Node
 func check_state_validity(current_state: Dictionary, current_input: Array):
 	var state=states[current_state["state"]]
 	var frames = current_state["frames"]
-	var requirements = { # Requirements to maintain current input
-		"input_requirement":  state["input_requirement"], # array
-		"max_frames": state["max_frames"] # integer
-	}
-	var transitions = []
-	for transition in state["transitions"]:
-		transitions.append(transition)
 	
 	# Checks if the current state can stay as it is in the next frame
-	if inputs_and_frames_match_current(requirements, current_input, frames):
+	if inputs_and_frames_match_current(state, current_input, frames):
 		return true
 	# Checks if the current state can change to anything else in the next frame
-	if inputs_and_frames_match_any(transitions, current_input, frames):
+	if inputs_and_frames_match_any_and_return_it(state, current_input, frames):
 		return true
 	push_error("Reached theoretical impossibility in state handling/movement inputs")
 	return false # This theoretically should not happen
 	
 
-func inputs_and_frames_match_current(requirements: Dictionary, current_input: Array,
+## Returns the state that should be happening next based on [member current_state]
+## and [member current_input]. It should also increment [member "frames"]
+## if the state doesn't change.
+func get_next_state(current_state, current_input):
+	var state=states[current_state["state"]]
+	var frames = current_state["frames"]
+	var next_state_change = inputs_and_frames_match_any_and_return_it(state,
+																	  current_input,
+																	  frames)
+	
+	# Checks if the current state can stay as it is in the next frame
+	if inputs_and_frames_match_current(state, current_input, frames):
+		current_state["frames"]+=1
+		return current_state
+	# Checks if the current state can change to anything else in the next frame
+	if next_state_change:
+		current_state["frames"]=0
+		current_state["state"]=next_state_change
+		return current_state
+	push_error("Reached theoretical impossibility in state handling/movement inputs")
+	return false # This theoretically should not happen
+	
+
+
+
+
+# Checks if current state should be maintained
+func inputs_and_frames_match_current(state: Dictionary, current_input: Array,
 							 frames: int):
+	var requirements = { # Requirements to maintain current input
+		"input_requirement":  state["input_requirement"], # array
+		"max_frames": state["max_frames"] # integer
+	}
 	var input_requirements = requirements["input_requirement"] # array[string]
 	var max_frames = requirements["max_frames"] # integer
 	
@@ -40,8 +64,12 @@ func inputs_and_frames_match_current(requirements: Dictionary, current_input: Ar
 	return true
 	
 
-func inputs_and_frames_match_any(transitions: Array, current_input: Array, 
+# Checks if the next frame should have a different state and returns it
+# Returns false if not
+func inputs_and_frames_match_any_and_return_it(state: Dictionary, current_input: Array, 
 								 frames: int):
+	var transitions = state["transitions"]
+	
 	for transition in transitions:
 		var input_requirements: Array = transition["input_required"]
 		var frames_required: int = transition["frames_required"]
@@ -52,7 +80,8 @@ func inputs_and_frames_match_any(transitions: Array, current_input: Array,
 		# Checks if inputs dont match any transition
 		if not check_if_input_requirements_met(input_requirements, current_input):
 			return false
-	return true
+		else:
+			return transition["target"]
 	
 
 func check_if_input_requirements_met(input_requirements: Array, current_input: Array):
@@ -78,14 +107,10 @@ func check_for_false_input(input_being_checked: String, current_input: Array):
 
 
 
-## Returns the state that should be happening next based on [member current_state]
-## and [member current_input]. It should also increment [member "frames"]
-## if the state doesn't change.
-func get_next_state(current_state, current_input):
-	return {"state": "standing", "frames": 0} # placeholder
-	
 
-func force_start_state():
+
+
+func force_start_state(state: Dictionary):
 	pass
 	
 
