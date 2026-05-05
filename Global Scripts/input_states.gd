@@ -3,21 +3,6 @@ extends Node
 # The input priority is up down left right
 
 
-## Checks if there's any state that matches the current input based on the
-## current state
-func check_state_validity(current_state: Dictionary, current_input: Array):
-	var state=states[current_state["state"]]
-	var frames = current_state["frames"]
-	
-	# Checks if the current state can stay as it is in the next frame
-	if inputs_and_frames_match_current(state, current_input, frames):
-		return true
-	# Checks if the current state can change to anything else in the next frame
-	if inputs_and_frames_match_any(state, current_input, frames):
-		return true
-	push_error("Reached theoretical impossibility in state handling/movement inputs")
-	return false # This theoretically should not happen
-	
 
 ## Returns the state that should be happening next based on [member current_state]
 ## and [member current_input]. It should also increment [member "frames"]
@@ -26,28 +11,26 @@ func get_next_state(current_state: Dictionary, current_input: Array):
 	var state=states[current_state["state"]]
 	var frames = current_state["frames"]
 	var transitions = state["transitions"]
-	var next_state_change=get_transition_requirement_met(transitions, current_input,
-														 frames )
 	var next_state = current_state.duplicate(true)
+	
 	
 	# Checks if the current state can stay as it is in the next frame
 	if inputs_and_frames_match_current(state, current_input, frames):
 		next_state["frames"]+=1
 		return next_state
-	# Checks if the current state can change to anything else in the next frame
-	if not next_state_change=="none":
-		next_state["frames"]=0
-		next_state["state"]=next_state_change
-		return next_state
-	push_error("Reached theoretical impossibility in state handling/movement inputs")
-	next_state["frames"]+=1
-	return next_state # This theoretically should not happen
+	
+	print(frames)
+	
+	next_state["frames"]=1
+	next_state["state"]=get_transition_requirement_met(transitions, current_input,
+	frames)
+	return next_state
 	
 
 func force_start_state(state: Dictionary):
 	var forced_state: Dictionary
 	forced_state["state"]=state["name"]
-	forced_state["frames"] = 0
+	forced_state["frames"] = 1
 	
 
 
@@ -64,22 +47,10 @@ func inputs_and_frames_match_current(state: Dictionary, current_input: Array,
 	var max_frames = requirements["max_frames"] # integer
 	
 	# Check if frames dont match
-	if frames>=max_frames and max_frames>=0: return false
+	if frames>=max_frames and max_frames>0: return false
 	
-	# Checks if inputs dont match
-	if not check_if_input_requirements_met(input_requirements, current_input):
-		return false
-	return true
-	
-
-func inputs_and_frames_match_any(state: Dictionary, current_input: Array, frames: int):
-	var transitions = state["transitions"]
-	var requirement_met=get_transition_requirement_met(transitions, current_input,
-													   frames)
-	
-	if requirement_met=="none":
-		return false
-	return true
+	# Returns whether inputs match or not
+	return check_if_input_requirements_met(input_requirements, current_input)
 	
 
 # Checks if the next frame should have a different state and returns it
@@ -92,19 +63,21 @@ func get_transition_requirement_met(transitions: Array, current_input: Array,
 		var frames_required: int = transition["frames_required"]
 		
 		# Check if the frames reached the required amount
-		if frames<frames_required: continue
+		if frames<frames_required-1: continue
 		
 		# Checks if inputs dont match any transition
 		if not check_if_input_requirements_met(input_requirements, current_input):
-			return "none"
-		else:
-			return transition["target"]
+			continue
+		return transition["target"]
+	
 	
 
 func check_if_input_requirements_met(input_requirements: Array, current_input: Array):
 	for input_required in input_requirements:
+		if input_required=="neutral":
+			return current_input[0]==input_required # Neutral state should be alone
 		# Check if the current input required is a false input
-		if input_required.begins_with("!"):
+		elif input_required.begins_with("!"):
 			# Check if the false input was made in the current input
 			if check_for_false_input(input_required, current_input):
 				return false
@@ -117,6 +90,8 @@ func check_if_input_requirements_met(input_requirements: Array, current_input: A
 ## Checks if any false input that is given to it is in the current input,
 ## returns true if it is.
 func check_for_false_input(input_being_checked: String, current_input: Array):
+	if current_input[0]=="neutral":
+		return false
 	for input in current_input:
 		if "!"+input == input_being_checked:
 			return true
