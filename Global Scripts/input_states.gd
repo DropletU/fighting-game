@@ -111,6 +111,7 @@ func check_if_input_requirements_met(input_requirements: Array, current_input: A
 		# Check if the current input required was not made
 		elif not current_input.has(input_required):
 			return false
+	return true
 	
 
 ## Checks if any false input that is given to it is in the current input,
