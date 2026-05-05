@@ -95,16 +95,15 @@ func handle_inputs():
 		action = inputs_for_current_action.duplicate(true)
 		start_action(action)
 	
+	
 
 func handle_movement_inputs_and_state():
 	var current_input: Array = get_current_input()
-	var next_state: Dictionary
-	if InputStates.check_state_validity(current_state, current_input):
-		next_state = InputStates.get_next_state(current_state, current_input)
-	else:
-		next_state=current_state.duplicate(true)
-		next_state["frames"]+=1
+	var next_state: Dictionary = InputStates.get_next_state(current_state, current_input)
+	
 	current_state=next_state
+	
+	# Make this function force a next state if current_state is none
 	
 
 
@@ -256,11 +255,10 @@ func get_frame_data(frame_index):
 func start_action(action): # placeholder
 	action = inputs_for_current_action.duplicate(true)
 	if action.size()==0:
-		print("input_failed")
+		push_error("action_failed")
 		action_in_progress=false
 		return
 	action.append(InputActions.get_most_suitable_valid_action(action))
-	print(action)
 	await get_tree().process_frame
 	action_in_progress=false
 	inputs_for_current_action.clear()
