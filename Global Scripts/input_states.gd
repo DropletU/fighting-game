@@ -13,7 +13,7 @@ func check_state_validity(current_state: Dictionary, current_input: Array):
 	if inputs_and_frames_match_current(state, current_input, frames):
 		return true
 	# Checks if the current state can change to anything else in the next frame
-	if inputs_and_frames_match_any_and_return_it(state, current_input, frames):
+	if inputs_and_frames_match_any(state, current_input, frames):
 		return true
 	push_error("Reached theoretical impossibility in state handling/movement inputs")
 	return false # This theoretically should not happen
@@ -25,23 +25,23 @@ func check_state_validity(current_state: Dictionary, current_input: Array):
 func get_next_state(current_state: Dictionary, current_input: Array):
 	var state=states[current_state["state"]]
 	var frames = current_state["frames"]
-	var next_state_change = inputs_and_frames_match_any_and_return_it(state,
-																	  current_input,
-																	  frames)
-	var next_state:=current_state.duplicate(true)
+	var transitions = state["transitions"]
+	var next_state_change=get_transition_requirement_met(transitions, current_input,
+														 frames )
+	var next_state = current_state.duplicate(true)
 	
 	# Checks if the current state can stay as it is in the next frame
 	if inputs_and_frames_match_current(state, current_input, frames):
-		next_state = current_state.duplicate()
 		next_state["frames"]+=1
 		return next_state
 	# Checks if the current state can change to anything else in the next frame
-	if next_state_change:
+	if not next_state_change=="none":
 		next_state["frames"]=0
 		next_state["state"]=next_state_change
 		return next_state
 	push_error("Reached theoretical impossibility in state handling/movement inputs")
-	return false # This theoretically should not happen
+	next_state["frames"]+=1
+	return next_state # This theoretically should not happen
 	
 
 func force_start_state(state: Dictionary):
@@ -72,11 +72,20 @@ func inputs_and_frames_match_current(state: Dictionary, current_input: Array,
 	return true
 	
 
+func inputs_and_frames_match_any(state: Dictionary, current_input: Array, frames: int):
+	var transitions = state["transitions"]
+	var requirement_met=get_transition_requirement_met(transitions, current_input,
+													   frames)
+	
+	if requirement_met=="none":
+		return false
+	return true
+	
+
 # Checks if the next frame should have a different state and returns it
 # Returns false if not
-func inputs_and_frames_match_any_and_return_it(state: Dictionary, current_input: Array, 
-								 frames: int):
-	var transitions = state["transitions"]
+func get_transition_requirement_met(transitions: Array, current_input: Array, 
+									frames: int):
 	
 	for transition in transitions:
 		var input_requirements: Array = transition["input_required"]
@@ -87,7 +96,7 @@ func inputs_and_frames_match_any_and_return_it(state: Dictionary, current_input:
 		
 		# Checks if inputs dont match any transition
 		if not check_if_input_requirements_met(input_requirements, current_input):
-			return false
+			return "none"
 		else:
 			return transition["target"]
 	
