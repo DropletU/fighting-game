@@ -44,6 +44,11 @@ func get_next_state(current_state: Dictionary, current_input: Array):
 	return false # This theoretically should not happen
 	
 
+func force_start_state(state: Dictionary):
+	var forced_state: Dictionary
+	forced_state["state"]=state["name"]
+	forced_state["frames"] = 0
+	
 
 
 
@@ -113,9 +118,7 @@ func check_for_false_input(input_being_checked: String, current_input: Array):
 
 
 
-func force_start_state(state: Dictionary):
-	pass
-	
+
 
 var states: Dictionary = {
 	"standing": {
