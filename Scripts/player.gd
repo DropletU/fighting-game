@@ -47,7 +47,7 @@ var action_playing: Array = [] # The action that will be played once inputs are 
 # State Data
 var current_state:={
 	"state": "standing", # The current state the player is in
-	"frames": 0 # The number of frames the player has been in the current state
+	"frames": 1 # The number of frames the player has been in the current state
 }
 
 
@@ -87,7 +87,7 @@ func _physics_process(delta: float) -> void:
 
 func handle_inputs():
 	var action: Array
-	if not current_state.is_empty():
+	if current_state["state"]:
 		handle_movement_inputs_and_state()
 		handle_action_inputs()
 	
