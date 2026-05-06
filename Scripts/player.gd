@@ -144,6 +144,8 @@ func handle_action_inputs():
 	# End the last input
 	elif not current_action_frame_data and had_input:
 		update_inputs_for_current_action()
+		if inputs_for_current_action.is_empty(): # No input entered the array
+			return
 		if inputs_for_current_action.back().is_empty(): # Input didn't match an action
 			input_frames_held+=input_frame_limit # Force start the action
 			return
@@ -176,6 +178,7 @@ func find_largest_input_frame():
 	for i in input_frame_limit: # Find the largest input
 		frame_being_searched = get_frame_data(write_index-i-1)
 		if frame_being_searched.size()==current_input_size:
+			current_input_size=0
 			frame_index=i+1
 			return frame_index
 	
@@ -188,7 +191,7 @@ func find_suitable_input(frame_index):
 		if frame_being_searched == []:
 			return frame_being_searched
 		var valid = InputActions.check_input_validity(inputs_for_current_action,
-														frame_being_searched)
+		frame_being_searched, current_state)
 		if valid: return frame_being_searched
 		else: continue
 	return []
@@ -254,7 +257,7 @@ func start_action(action): # placeholder
 	if action.size()==0:
 		push_error("action_failed")
 		return
-	current_action=InputActions.get_most_suitable_valid_action(action)
+	current_action=InputActions.get_most_suitable_valid_action(action, current_state)
 	await get_tree().create_timer(1).timeout
 	inputs_for_current_action.clear()
 	current_action="none"
