@@ -39,12 +39,11 @@ var current_input_size:=0 # The number of inputs the current action has been giv
 
 # Action Data
 var action_starting:=false # Whether an action is being started or not
-var action_in_progress:=false # Whether an action is in progress or not
-var action_playing: Array = [] # The action that will be played once inputs are finished
-var forced_state_by_action:=""
+var current_action:="none" # The action that should be happening in the current frame
 
 #### Movement Input Section
 # State Data
+var forced_state_by_action:=""
 var current_state:={
 	"state": "standing", # The current state the player is in
 	"frames": 1 # The number of frames the player has been in the current state
@@ -52,7 +51,8 @@ var current_state:={
 
 
 func _physics_process(delta: float) -> void:
-	handle_inputs()
+	if current_action=="none":
+		handle_inputs()
 	
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -86,26 +86,15 @@ func _physics_process(delta: float) -> void:
 	
 
 func handle_inputs():
-	var action: Array
-	
-	
-	if not current_state["state"] and not action_in_progress:
+	if not current_state["state"]:
 		if forced_state_by_action=="":
 			current_state = InputStates.get_base_state()
 		else:
 			current_state = InputStates.get_base_state(forced_state_by_action)
 			forced_state_by_action=""
 	
-	if current_state["state"]:
-		handle_movement_inputs_and_state()
-		handle_action_inputs()
-	
-	
-	
-	if action_in_progress:
-		action = inputs_for_current_action.duplicate(true)
-		start_action(action)
-	
+	handle_movement_inputs_and_state()
+	handle_action_inputs()
 	
 
 func handle_movement_inputs_and_state():
@@ -139,7 +128,7 @@ func get_current_input():
 
 
 
-## Handles everything related to action inputs and returns the action that was decided on
+## Handles everything related to action inputs
 func handle_action_inputs():
 	update_current_action_frame_data()
 	var previous_frame: Array = get_frame_data(write_index-1)
@@ -150,8 +139,8 @@ func handle_action_inputs():
 		current_input_size=0
 		input_frames_held=0
 		action_starting=false
-		action_in_progress=true
 		had_input=false
+		start_action(inputs_for_current_action.duplicate(true))
 	# End the last input
 	elif not current_action_frame_data and had_input:
 		update_inputs_for_current_action() # Checks for valid input somewhere
@@ -200,7 +189,7 @@ func find_suitable_input(frame_index):
 		frame_being_searched=get_frame_data(write_index-frame_index-i)
 		if frame_being_searched == []:
 			return frame_being_searched
-		var valid = InputActions.check_action_validity(inputs_for_current_action,
+		var valid = InputActions.check_input_validity(inputs_for_current_action,
 														frame_being_searched)
 		if valid: return frame_being_searched
 		else: continue
@@ -264,15 +253,13 @@ func get_frame_data(frame_index):
 # be the one to start the next state. Inputs cannot be made until the action
 # enters a state. This function must also set [member current_state] to null.
 func start_action(action): # placeholder
-	action = inputs_for_current_action.duplicate(true)
 	if action.size()==0:
 		push_error("action_failed")
-		action_in_progress=false
 		return
-	action.append(InputActions.get_most_suitable_valid_action(action))
-	await get_tree().process_frame
-	action_in_progress=false
+	current_action=InputActions.get_most_suitable_valid_action(action)
+	await get_tree().create_timer(1).timeout
 	inputs_for_current_action.clear()
+	current_action="none"
 	
 
 
