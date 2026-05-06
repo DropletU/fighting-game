@@ -25,7 +25,6 @@ func get_next_state(current_state: Dictionary, current_input: Array):
 		next_state["frames"]+=1
 		return next_state
 	
-	print(frames)
 	
 	next_state["frames"]=1
 	next_state["state"]=get_transition_requirement_met(transitions, current_input,
@@ -190,7 +189,7 @@ var states: Dictionary = {
 				"frames_required": 8,
 				"input_required": ["right"]
 			}, {
-				"target": "standing",
+				"target": "stop_running_right",
 				"frames_required": 0,
 				"input_required": ["!right"]
 			}
@@ -208,6 +207,19 @@ var states: Dictionary = {
 			}
 		]
 	},
+	"stop_running_right": {
+		"name": "stop_running_right",
+		"input_requirement": ["!right"],
+		"max_frames": 9,
+		"is_stance": true,
+		"transitions": [{
+				"target": "standing",
+				"frames_required": 9,
+				"input_required": ["!right"]
+			}
+		]
+	},
+	
 	"start_running_left": {
 		"name": "start_running_left",
 		"input_requirement": ["left"],
@@ -218,7 +230,7 @@ var states: Dictionary = {
 				"frames_required": 8,
 				"input_required": ["left"]
 			}, {
-				"target": "standing",
+				"target": "stop_running_left",
 				"frames_required": 0,
 				"input_required": ["!left"]
 			}
@@ -232,6 +244,18 @@ var states: Dictionary = {
 		"transitions": [{
 				"target": "standing",
 				"frames_required": 0,
+				"input_required": ["!left"]
+			}
+		]
+	},
+	"stop_running_left": {
+		"name": "stop_running_left",
+		"input_requirement": ["!left"],
+		"max_frames": 9,
+		"is_stance": true,
+		"transitions": [{
+				"target": "standing",
+				"frames_required": 9,
 				"input_required": ["!left"]
 			}
 		]
