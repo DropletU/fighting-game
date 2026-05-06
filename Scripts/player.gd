@@ -143,8 +143,8 @@ func handle_action_inputs():
 		start_action(inputs_for_current_action.duplicate(true))
 	# End the last input
 	elif not current_action_frame_data and had_input:
-		update_inputs_for_current_action() # Checks for valid input somewhere
-		if inputs_for_current_action.back().is_empty():
+		update_inputs_for_current_action()
+		if inputs_for_current_action.back().is_empty(): # Input didn't match an action
 			input_frames_held+=input_frame_limit # Force start the action
 			return
 		current_input_size=0
@@ -167,8 +167,6 @@ func update_inputs_for_current_action():
 	var input_action = find_suitable_input(frame_index)
 	if input_action:
 		inputs_for_current_action.append(input_action)
-		return true
-	return false
 	
 
 ## Finds and returns the biggest recent frame
