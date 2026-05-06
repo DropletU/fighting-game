@@ -138,7 +138,7 @@ var states: Dictionary = {
 		"name": "while_crouching",
 		"input_requirement": ["down"],
 		"max_frames": 10,
-		"is_stance": false,
+		"is_stance": true,
 		"transitions": [{
 				"target": "crouching",
 				"frames_required": 10,
@@ -154,7 +154,7 @@ var states: Dictionary = {
 		"name": "crouching",
 		"input_requirement": ["down"],
 		"max_frames": -1,
-		"is_stance": false,
+		"is_stance": true,
 		"transitions": [{
 				"target": "while_standing",
 				"frames_required": 0,
@@ -166,7 +166,7 @@ var states: Dictionary = {
 		"name": "while_standing",
 		"input_requirement": ["!down"],
 		"max_frames": 10,
-		"is_stance": false,
+		"is_stance": true,
 		"transitions": [{
 				"target": "standing",
 				"frames_required": 10,
@@ -184,7 +184,7 @@ var states: Dictionary = {
 		"name": "start_running_right",
 		"input_requirement": ["right"],
 		"max_frames": 8,
-		"is_stance": false,
+		"is_stance": true,
 		"transitions": [{
 				"target": "running_right",
 				"frames_required": 8,
@@ -200,7 +200,7 @@ var states: Dictionary = {
 		"name": "running_right",
 		"input_requirement": ["right"],
 		"max_frames": -1,
-		"is_stance": false,
+		"is_stance": true,
 		"transitions": [{
 				"target": "standing",
 				"frames_required": 0,
@@ -212,7 +212,7 @@ var states: Dictionary = {
 		"name": "start_running_left",
 		"input_requirement": ["left"],
 		"max_frames": 8,
-		"is_stance": false,
+		"is_stance": true,
 		"transitions": [{
 				"target": "running_left",
 				"frames_required": 8,
@@ -228,7 +228,7 @@ var states: Dictionary = {
 		"name": "running_left",
 		"input_requirement": ["left"],
 		"max_frames": -1,
-		"is_stance": false,
+		"is_stance": true,
 		"transitions": [{
 				"target": "standing",
 				"frames_required": 0,
