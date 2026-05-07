@@ -96,6 +96,35 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 
+# Important notes: This function must decide what the next state is, and also must
+# be the one to start the next state. Inputs cannot be made until the action
+# enters a state. This function must also set [member current_state] to null.
+func start_action(action): # placeholder
+	if action.size()==0:
+		push_error("action_failed")
+		return
+	current_action=InputActions.get_most_suitable_valid_action(action, current_state)
+	if current_action=="none":
+		return
+	action = InputActions.actions[current_action]
+	
+	if current_action=="jump":
+		velocity.y=JUMP_VELOCITY
+	var wait_for_s = action["frames"]/60.0
+	await get_tree().create_timer(wait_for_s).timeout
+	inputs_for_current_action.clear()
+	current_action="none"
+	
+
+
+
+## EVERYTHING Input related below
+## EVERYTHING Input related below
+## EVERYTHING Input related below
+## EVERYTHING Input related below
+## EVERYTHING Input related below
+
+
 func handle_inputs():
 	if not current_state["state"]:
 		if forced_state_by_action=="":
@@ -117,8 +146,6 @@ func handle_movement_inputs_and_state():
 	# Make this function force a next state if current_state is none
 	
 
-
-
 func get_current_input():
 	var inputs:=[]
 	if Input.is_action_pressed("up"):
@@ -133,11 +160,6 @@ func get_current_input():
 		inputs.append("neutral")
 	return inputs
 	
-
-
-
-
-
 
 ## Handles everything related to action inputs
 func handle_action_inputs():
@@ -261,25 +283,7 @@ func get_frame_data(frame_index):
 	
 
 
-# Important notes: This function must decide what the next state is, and also must
-# be the one to start the next state. Inputs cannot be made until the action
-# enters a state. This function must also set [member current_state] to null.
-func start_action(action): # placeholder
-	if action.size()==0:
-		push_error("action_failed")
-		return
-	current_action=InputActions.get_most_suitable_valid_action(action, current_state)
-	if current_action=="none":
-		return
-	action = InputActions.actions[current_action]
-	
-	if current_action=="jump":
-		velocity.y=JUMP_VELOCITY
-	var wait_for_s = action["frames"]/60.0
-	await get_tree().create_timer(wait_for_s).timeout
-	inputs_for_current_action.clear()
-	current_action="none"
-	
+
 
 
 
