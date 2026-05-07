@@ -117,12 +117,42 @@ func start_action(action): # placeholder
 	
 
 
+## All action functions below
+## All action functions below
+## All action functions below
+## All action functions below
+## All action functions below
 
-## EVERYTHING Input related below
-## EVERYTHING Input related below
-## EVERYTHING Input related below
-## EVERYTHING Input related below
-## EVERYTHING Input related below
+func dash():
+	pass
+	
+
+
+
+# Remember to make this work with start_action()
+func crouch():
+	hitboxStanding.disabled = true
+	standingSprite.visible = false
+	hitboxCrouching.disabled = false
+	crouchingSprite.visible = true
+	crouching = true
+	
+
+# Remember to make this work with start_action()
+func stand():
+	hitboxCrouching.disabled = true
+	crouchingSprite.visible = false
+	hitboxStanding.disabled = false
+	standingSprite.visible = true
+	standing = true
+	
+
+
+## Everything input related below
+## Everything input related below
+## Everything input related below
+## Everything input related below
+## Everything input related below
 
 
 func handle_inputs():
@@ -280,25 +310,4 @@ func get_frame_data(frame_index):
 	while frame_index>last_frames.size()-1:
 		frame_index-=last_frames.size()
 	return last_frames[frame_index]
-	
-
-
-
-
-
-
-func crouch():
-	hitboxStanding.disabled = true
-	standingSprite.visible = false
-	hitboxCrouching.disabled = false
-	crouchingSprite.visible = true
-	crouching = true
-	
-
-func stand():
-	hitboxCrouching.disabled = true
-	crouchingSprite.visible = false
-	hitboxStanding.disabled = false
-	standingSprite.visible = true
-	standing = true
 	
