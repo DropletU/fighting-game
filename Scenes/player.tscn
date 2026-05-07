@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dosxtdg8yid7v" path="res://Scripts/player.gd" id="1_cvnsp"]
 [ext_resource type="Texture2D" uid="uid://ciro7bxh00eu1" path="res://icon.svg" id="1_v0iea"]
+[ext_resource type="PackedScene" uid="uid://bjmk0qrlupy53" path="res://Scenes/input_display.tscn" id="3_6t5aa"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cvnsp"]
 size = Vector2(56, 56)
@@ -31,3 +32,9 @@ shape = SubResource("RectangleShape2D_6t5aa")
 disabled = true
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=478620449]
+
+[node name="InputDisplay" parent="." unique_id=1057187563 instance=ExtResource("3_6t5aa")]
+offset_left = 343.0
+offset_top = -323.0
+offset_right = 575.0
+offset_bottom = -241.0
