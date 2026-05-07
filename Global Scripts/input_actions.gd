@@ -75,11 +75,11 @@ func _inputs_match_current(input_sequence: Array, inputs_done: Array):
 
 
 const actions: Dictionary = {
-	"placeholder_action": {
-		"name": "placeholder_action",
-		"frames": 30, # Number of frames until a new state starts
+	"jump": {
+		"name": "jump",
+		"frames": 10, # Number of frames until a new state starts
 		"next_state": "", # State that will force start after this, ""=="standing"
 		"required_stance": "standing", # Stance required to be in for this to happen
-		"input_sequence": [["one"], ["two"], ["three"], ["four"]] # Input sequence needed
+		"input_sequence": [["one", "two"], ["one", "two"]] # Input sequence needed
 	}
 }
