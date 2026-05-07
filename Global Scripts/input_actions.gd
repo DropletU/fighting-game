@@ -49,8 +49,9 @@ func _get_actions_possible(current_state: Dictionary):
 	var state = current_state["state"]
 	var actions_possible:=[]
 	for action in actions.values():
-		if action["required_stance"]==state:
-			actions_possible.append(action)
+		for stance in action["required_stance"]:
+			if stance==state:
+				actions_possible.append(action)
 	return actions_possible
 	
 
@@ -79,7 +80,8 @@ const actions: Dictionary = {
 		"name": "jump",
 		"frames": 10, # Number of frames until a new state starts
 		"next_state": "", # State that will force start after this, ""=="standing"
-		"required_stance": "standing", # Stance required to be in for this to happen
+		"required_stance": ["standing", "start_running_right", "running_right",
+		"start_running_left", "running_left"], # Stance required for this to happen
 		"input_sequence": [["one", "two"], ["one", "two"]] # Input sequence needed
 	}
 }
