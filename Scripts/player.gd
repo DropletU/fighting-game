@@ -258,7 +258,10 @@ func start_action(action): # placeholder
 		push_error("action_failed")
 		return
 	current_action=InputActions.get_most_suitable_valid_action(action, current_state)
-	await get_tree().create_timer(1).timeout
+	if current_action=="none":
+		return
+	action = InputActions.actions[current_action]
+	
 	inputs_for_current_action.clear()
 	current_action="none"
 	
