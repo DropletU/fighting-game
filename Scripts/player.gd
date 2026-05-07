@@ -16,9 +16,20 @@ var standing := true
 var crouching := false
 
 
+### Player Stats
 
-const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
+# Velocity
+@export_category("Movement")
+@export var SPEED = 300.0
+@export var JUMP_VELOCITY = -400.0
+
+# Stats
+@export_category("Stats")
+@export_range(0, 10, 1) var hp:=4
+@export_range(10, 20, 1) var damage:=10
+@export var invincible:=false
+@export_range(0.0, 2.0, 0.05) var magic_buff:=1.05
+
 
 
 
