@@ -1,0 +1,129 @@
+[gd_scene format=3 uid="uid://bjmk0qrlupy53"]
+
+[node name="InputDisplay" type="Control" unique_id=1057187563]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1003.0
+offset_top = 1.0
+offset_right = -1.0
+offset_bottom = -592.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=943710765]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Up" type="Button" parent="." unique_id=66955613]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -125.0
+offset_top = 8.0
+offset_right = -106.0
+offset_bottom = 27.0
+grow_horizontal = 0
+
+[node name="Down" type="Button" parent="." unique_id=1896363941]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -125.0
+offset_top = 29.0
+offset_right = -106.0
+offset_bottom = 48.0
+grow_horizontal = 0
+
+[node name="Left" type="Button" parent="." unique_id=1526309205]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -146.0
+offset_top = 29.0
+offset_right = -127.0
+offset_bottom = 48.0
+grow_horizontal = 0
+
+[node name="Right" type="Button" parent="." unique_id=2106379413]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -104.0
+offset_top = 29.0
+offset_right = -85.0
+offset_bottom = 48.0
+grow_horizontal = 0
+
+[node name="One" type="Button" parent="." unique_id=1062627801]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -76.0
+offset_top = 8.0
+offset_right = -57.0
+offset_bottom = 27.0
+grow_horizontal = 0
+
+[node name="Two" type="Button" parent="." unique_id=696412674]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -55.0
+offset_top = 8.0
+offset_right = -36.0
+offset_bottom = 27.0
+grow_horizontal = 0
+
+[node name="Three" type="Button" parent="." unique_id=815681490]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -76.0
+offset_top = 29.0
+offset_right = -57.0
+offset_bottom = 48.0
+grow_horizontal = 0
+
+[node name="Four" type="Button" parent="." unique_id=1136705534]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -55.0
+offset_top = 29.0
+offset_right = -36.0
+offset_bottom = 48.0
+grow_horizontal = 0
+
+[node name="RightShift" type="Button" parent="." unique_id=1029354810]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -32.0
+offset_top = 29.0
+offset_right = -4.0
+offset_bottom = 48.0
+grow_horizontal = 0
