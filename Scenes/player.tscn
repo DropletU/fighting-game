@@ -34,7 +34,7 @@ disabled = true
 [node name="Camera2D" type="Camera2D" parent="." unique_id=478620449]
 
 [node name="InputDisplay" parent="." unique_id=1057187563 instance=ExtResource("3_6t5aa")]
-offset_left = 343.0
-offset_top = -323.0
-offset_right = 575.0
-offset_bottom = -241.0
+offset_left = -116.0
+offset_top = -298.0
+offset_right = 116.0
+offset_bottom = -216.0

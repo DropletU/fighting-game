@@ -34,7 +34,7 @@ var write_index:=0 # The current index in [member last_frames]
 var inputs_for_current_action: Array # Holds all the inputs in the current action
 var had_input:=false # Checks whether the previous frame had an input
 var input_frames_held:=0 # The amount of frames the current input has held
-var input_frame_limit:=9 # The maximum amount of frames an input can hold
+var input_frame_limit:=6 # The maximum amount of frames an input can hold
 var current_input_size:=0 # The number of inputs the current action has been given
 
 # Action Data
