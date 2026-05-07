@@ -262,6 +262,8 @@ func start_action(action): # placeholder
 		return
 	action = InputActions.actions[current_action]
 	
+	var wait_for_s = action["frames"]/60.0
+	await get_tree().create_timer(wait_for_s).timeout
 	inputs_for_current_action.clear()
 	current_action="none"
 	
