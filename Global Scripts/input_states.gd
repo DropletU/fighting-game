@@ -36,6 +36,7 @@ func force_start_state(state: Dictionary):
 	var forced_state: Dictionary
 	forced_state["state"]=state["name"]
 	forced_state["frames"] = 1
+	return forced_state
 	
 
 
