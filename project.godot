@@ -15,11 +15,6 @@ run/main_scene="uid://bdg682gc7k3nu"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
-[autoload]
-
-InputActions="*uid://dnb4chhv357hr"
-InputStates="*uid://b23ciovokbdh2"
-
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg")
