@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bjmk0qrlupy53" path="res://Scenes/input_display.tscn" id="3_6t5aa"]
 [ext_resource type="Script" uid="uid://dhvws2scqnspl" path="res://Scripts/Input Scripts/input_history_display.gd" id="3_fkybt"]
 [ext_resource type="Script" uid="uid://7gq12adr3ue4" path="res://Scripts/Input Scripts/input_sequence_handler.gd" id="4_x3wgy"]
+[ext_resource type="Script" uid="uid://ccgp0n2f2fgo4" path="res://Scripts/Move List/move_list.gd" id="5_3smsa"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cvnsp"]
 size = Vector2(56, 56)
@@ -39,6 +40,9 @@ grow_vertical = 2
 [node name="InputSequenceHandler" type="Node" parent="." unique_id=1228990788]
 script = ExtResource("4_x3wgy")
 
+[node name="MoveList" type="Node" parent="." unique_id=1630984145]
+script = ExtResource("5_3smsa")
+
 [node name="Standing" type="Sprite2D" parent="." unique_id=1609274281]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("1_v0iea")
@@ -64,3 +68,5 @@ offset_left = 338.0
 offset_top = -318.0
 offset_right = 570.0
 offset_bottom = -236.0
+
+[node name="Node" type="Node" parent="." unique_id=1354429304]
