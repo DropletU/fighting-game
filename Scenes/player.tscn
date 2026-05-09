@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dosxtdg8yid7v" path="res://Scripts/player.gd" id="1_cvnsp"]
 [ext_resource type="Texture2D" uid="uid://ciro7bxh00eu1" path="res://icon.svg" id="1_v0iea"]
-[ext_resource type="Script" uid="uid://cs7ih4k2fimg0" path="res://Scripts/input_handler.gd" id="2_vgqql"]
+[ext_resource type="Script" uid="uid://cs7ih4k2fimg0" path="res://Scripts/input_history.gd" id="2_vgqql"]
 [ext_resource type="PackedScene" uid="uid://bjmk0qrlupy53" path="res://Scenes/input_display.tscn" id="3_6t5aa"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cvnsp"]
@@ -14,7 +14,7 @@ size = Vector2(56, 40)
 [node name="Player" type="CharacterBody2D" unique_id=302819608]
 script = ExtResource("1_cvnsp")
 
-[node name="InputHandler" type="Node" parent="." unique_id=1718507192]
+[node name="InputHistory" type="Node" parent="." unique_id=1718507192]
 script = ExtResource("2_vgqql")
 
 [node name="Standing" type="Sprite2D" parent="." unique_id=1609274281]
