@@ -5,38 +5,6 @@ extends Node
 var frame_data: Array
 
 
-func _ready() -> void:
-	pass
-	
-
-
-func add_display_slot():
-	var slot = HBoxContainer.new()
-	
-	# Add icon slots
-	for j in 5:
-		var icon = TextureRect.new()
-		icon.visible=false
-		slot.add_child(icon)
-		var texture = AtlasTexture.new()
-		texture.atlas = load("res://Assets/icons-keyboard-16x16-1bit-ansdor.png")
-		texture.region = Rect2(0, 0, 16, 16)
-		icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		icon.texture = texture
-	
-	# Add counter slot
-	var counter = Label.new()
-	
-	counter.text = str(1)
-	slot.add_child(counter)
-	
-	vbox.add_child(slot)
-	vbox.move_child(slot, 0)
-	if vbox.get_child_count()>24:
-		vbox.remove_child(vbox.get_child(-1))
-	
-
-
 func _physics_process(_delta: float) -> void:
 	if vbox.get_child_count()==0:
 		add_display_slot()
@@ -48,4 +16,54 @@ func _physics_process(_delta: float) -> void:
 	frame_data=history_node.input_history.back()
 	add_display_slot()
 	
+	
+
+
+func add_display_slot():
+	var slot = HBoxContainer.new()
+	
+	# Add icon slots
+	for input in frame_data:
+		var icon = TextureRect.new()
+		slot.add_child(icon)
+		var texture: AtlasTexture = get_icon(input)
+		icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		icon.texture = texture
+	
+	# Add counter slot
+	var counter = Label.new()
+	counter.text = str(1)
+	slot.add_child(counter)
+	
+	vbox.add_child(slot)
+	vbox.move_child(slot, 0)
+	if vbox.get_child_count()>24:
+		vbox.remove_child(vbox.get_child(-1))
+	
+
+func get_icon(input: String):
+	var texture=AtlasTexture.new()
+	texture.atlas = load("res://Assets/Icons/icons-keyboard-16x16-1bit-ansdor.png")
+	match input:
+		"up":
+			texture.region = Rect2(144, 64, 16, 16)
+		"down":
+			texture.region = Rect2(160, 64, 16, 16)
+		"left":
+			texture.region = Rect2(112, 64, 16, 16)
+		"right":
+			texture.region = Rect2(128, 64, 16, 16)
+		"one":
+			texture.region = Rect2(16, 48, 16, 16)
+		"two":
+			texture.region = Rect2(32, 48, 16, 16)
+		"three":
+			texture.region = Rect2(48, 48, 16, 16)
+		"four":
+			texture.region = Rect2(64, 48, 16, 16)
+		"magic_button":
+			texture.region = Rect2(16, 64, 16, 16)
+		_:
+			push_error("No valid input found in get_icon().")
+	return texture
 	
