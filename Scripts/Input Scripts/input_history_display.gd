@@ -21,14 +21,19 @@ func _physics_process(_delta: float) -> void:
 
 func add_display_slot():
 	var slot = HBoxContainer.new()
-	
+	slot.add_theme_constant_override("separation", 2)
 	# Add icon slots
 	for input in frame_data:
 		var icon = TextureRect.new()
 		slot.add_child(icon)
 		var texture: AtlasTexture = get_icon(input)
 		icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		icon.expand_mode = TextureRect.EXPAND_FIT_WIDTH
 		icon.texture = texture
+	
+	var spacer = Control.new()
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	slot.add_child(spacer)
 	
 	# Add counter slot
 	var counter = Label.new()
