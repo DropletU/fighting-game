@@ -17,10 +17,12 @@ size = Vector2(56, 40)
 [node name="Player" type="CharacterBody2D" unique_id=302819608]
 script = ExtResource("1_cvnsp")
 
-[node name="InputHistory" type="Node" parent="." unique_id=1718507192]
+[node name="InputSystem" type="Node2D" parent="." unique_id=990762491]
+
+[node name="InputHistory" type="Node" parent="InputSystem" unique_id=1718507192]
 script = ExtResource("2_vgqql")
 
-[node name="InputHistoryDisplay" type="Control" parent="." unique_id=1535414987]
+[node name="InputHistoryDisplay" type="Control" parent="InputSystem" unique_id=1535414987]
 layout_mode = 3
 anchors_preset = 0
 offset_left = -576.0
@@ -29,7 +31,7 @@ offset_right = -353.0
 offset_bottom = 324.0
 script = ExtResource("3_fkybt")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="InputHistoryDisplay" unique_id=1191360604]
+[node name="VBoxContainer" type="VBoxContainer" parent="InputSystem/InputHistoryDisplay" unique_id=1191360604]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -37,11 +39,19 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="InputSequenceHandler" type="Node" parent="." unique_id=1228990788]
+[node name="InputSequenceHandler" type="Node" parent="InputSystem" unique_id=1228990788]
 script = ExtResource("4_x3wgy")
 
-[node name="MoveList" type="Node" parent="." unique_id=1630984145]
+[node name="MoveList" type="Node" parent="InputSystem" unique_id=1630984145]
 script = ExtResource("5_3smsa")
+
+[node name="Executor" type="Node" parent="InputSystem" unique_id=1237187565]
+
+[node name="InputDisplay" parent="InputSystem" unique_id=1057187563 instance=ExtResource("3_6t5aa")]
+offset_left = 338.0
+offset_top = -318.0
+offset_right = 570.0
+offset_bottom = -236.0
 
 [node name="Standing" type="Sprite2D" parent="." unique_id=1609274281]
 scale = Vector2(0.5, 0.5)
@@ -62,11 +72,3 @@ shape = SubResource("RectangleShape2D_6t5aa")
 disabled = true
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=478620449]
-
-[node name="InputDisplay" parent="." unique_id=1057187563 instance=ExtResource("3_6t5aa")]
-offset_left = 338.0
-offset_top = -318.0
-offset_right = 570.0
-offset_bottom = -236.0
-
-[node name="Node" type="Node" parent="." unique_id=1354429304]
