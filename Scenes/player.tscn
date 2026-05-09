@@ -6,7 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://bjmk0qrlupy53" path="res://Scenes/input_display.tscn" id="3_6t5aa"]
 [ext_resource type="Script" uid="uid://dhvws2scqnspl" path="res://Scripts/Input Scripts/input_history_display.gd" id="3_fkybt"]
 [ext_resource type="Script" uid="uid://7gq12adr3ue4" path="res://Scripts/Input Scripts/input_sequence_handler.gd" id="4_x3wgy"]
-[ext_resource type="Script" uid="uid://ccgp0n2f2fgo4" path="res://Scripts/Move List/move_list.gd" id="5_3smsa"]
+[ext_resource type="Script" uid="uid://ccgp0n2f2fgo4" path="res://Scripts/Move Scripts/move_list.gd" id="5_3smsa"]
+[ext_resource type="Script" uid="uid://cn4s7tdve2wai" path="res://Scripts/Move Scripts/executor.gd" id="6_8erm5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cvnsp"]
 size = Vector2(56, 56)
@@ -46,6 +47,7 @@ script = ExtResource("4_x3wgy")
 script = ExtResource("5_3smsa")
 
 [node name="Executor" type="Node" parent="InputSystem" unique_id=1237187565]
+script = ExtResource("6_8erm5")
 
 [node name="InputDisplay" parent="InputSystem" unique_id=1057187563 instance=ExtResource("3_6t5aa")]
 offset_left = 338.0
