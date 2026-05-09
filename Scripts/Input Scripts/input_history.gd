@@ -12,7 +12,7 @@ func _physics_process(_delta: float) -> void:
 
 
 func set_input():
-	if Input.is_action_pressed("up"):
+	if Input.is_action_pressed("up") and not Input.is_action_pressed("down"):
 		if not current_frame_inputs.has("up"):
 			current_frame_inputs.append("up")
 	elif Input.is_action_just_released("up"):
@@ -24,7 +24,7 @@ func set_input():
 	elif Input.is_action_just_released("down"):
 		if current_frame_inputs.has("down"):
 			current_frame_inputs.pop_at(current_frame_inputs.find("down"))
-	if Input.is_action_pressed("left"):
+	if Input.is_action_pressed("left") and not Input.is_action_pressed("right"):
 		if not current_frame_inputs.has("left"):
 			current_frame_inputs.append("left")
 	elif Input.is_action_just_released("left"):
