@@ -5,6 +5,7 @@ var current_sequence: Array[String] = []
 var sequence_buffer:=0.0
 var sequence_started:=false
 var skip_action_frame: = false
+var last_input:="neutral"
 
 @onready var input_history = $"../InputHistory"
 @onready var player = $"../.."
@@ -20,14 +21,19 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	var history: Array = input_history.input_history
 	var frame_count = history.size()
-	if frame_count<2: # Edge case on the first frame from when the player is instantiated
+	if frame_count<3: # Edge case on the first three frames from when the player is instantiated
 		return
 	var second_last_frame: Array = history[-2]
 	var current_input:=""
 	current_input = track_movement_keys(second_last_frame, current_input)
 	current_input = track_action_keys(history, second_last_frame, current_input)
 	
-	match_from_move_list(current_input)
+	if current_input!=last_input:
+		last_input=current_input
+		match_from_move_list(current_input)
+	
+	
+	
 
 
 
@@ -60,20 +66,21 @@ func track_action_keys(history: Array, second_last_frame: Array, current_input: 
 	if history.back().size()<=second_last_frame.size(): # Last frame is not a superset of current
 		for input in second_last_frame:
 			if input in action_keys:
+				if current_input=="neutral":
+					current_input=""
 				current_input+=input
 	elif second_last_frame.all(func(i): return i in history.back()): # Last frame is a superset
 		for input in history.back():
 			if input in action_keys:
 				skip_action_frame=true
+				if current_input=="neutral":
+					current_input=""
 				current_input+=input
 	return current_input
 	
 
 
 func match_from_move_list(current_input):
-	
-	
-	
 	var test_sequence = current_sequence.duplicate(true)
 	test_sequence.append(current_input)
 	
@@ -83,7 +90,6 @@ func match_from_move_list(current_input):
 	
 	for i in stance_moves.size():
 		var sequence: Array = movelist.get_value(stance_moves[i], "sequence")
-		print(stance_moves[i])
 		if match_sequences(test_sequence, sequence):
 			return true
 		continue
