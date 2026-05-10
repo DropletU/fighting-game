@@ -60,10 +60,10 @@ func set_input():
 	elif Input.is_action_just_released("four"):
 		if current_frame_inputs.has("four"):
 			current_frame_inputs.pop_at(current_frame_inputs.find("four"))
-	if Input.is_action_pressed("magic_button"):
-		if not current_frame_inputs.has("magic_button"):
-			current_frame_inputs.append("magic_button")
-	elif Input.is_action_just_released("magic_button"):
-		if current_frame_inputs.has("magic_button"):
-			current_frame_inputs.pop_at(current_frame_inputs.find("magic_button"))
+	if Input.is_action_pressed("(R)"):
+		if not current_frame_inputs.has("(R)"):
+			current_frame_inputs.append("(R)")
+	elif Input.is_action_just_released("(R)"):
+		if current_frame_inputs.has("(R)"):
+			current_frame_inputs.pop_at(current_frame_inputs.find("(R)"))
 	

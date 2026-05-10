@@ -52,7 +52,7 @@ func track_action_keys(history: Array, second_last_frame: Array, current_input: 
 	if skip_action_frame:
 		skip_action_frame=false
 		return current_input
-	var action_keys = ["one", "two", "three", "four", "magic_button"]
+	var action_keys = ["one", "two", "three", "four", "(R)"]
 	
 	if second_last_frame.all(func(i): return i not in action_keys): # No action was made
 		return current_input
