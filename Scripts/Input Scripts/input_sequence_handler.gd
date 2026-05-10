@@ -20,8 +20,10 @@ func _physics_process(_delta: float) -> void:
 		return
 	var second_last_frame: Array = history[-2]
 	var current_input:=""
-	current_input = track_movement_keys(history, second_last_frame, current_input)
+	current_input = track_movement_keys(second_last_frame, current_input)
 	current_input = track_action_keys(history, second_last_frame, current_input)
+	
+	
 	
 
 func track_action_keys(history: Array, second_last_frame: Array, current_input: String):
@@ -44,4 +46,20 @@ func track_action_keys(history: Array, second_last_frame: Array, current_input: 
 				current_input+=input
 	return current_input
 	
+
+func track_movement_keys(second_last_frame: Array, current_input: String):
+	var movement_keys = ["up", "down", "left", "right"]
+	var facing = $"../..".facing
+	if second_last_frame.all(func(i): return i not in movement_keys): # No movement was made
+		current_input+="neutral"
+		return current_input
+	
+	for input in second_last_frame:
+		if input=="up" or input=="down":
+			current_input+=input
+		elif input=="right":
+			current_input+="forward" if facing=="right" else "back"
+		elif input=="left":
+			current_input+="forward" if facing=="left" else "back"
+	return current_input
 	
