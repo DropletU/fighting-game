@@ -63,8 +63,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_released("four"):
 		four.button_pressed=false
 	
-	if event.is_action_pressed("magic_button"):
+	if event.is_action_pressed("(R)"):
 		magic.button_pressed=true
-	elif event.is_action_released("magic_button"):
+	elif event.is_action_released("(R)"):
 		magic.button_pressed=false
 	

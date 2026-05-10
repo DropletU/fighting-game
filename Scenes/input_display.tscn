@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bjmk0qrlupy53"]
 
-[ext_resource type="Script" uid="uid://d0gx5cugt6fie" path="res://Scripts/input_display.gd" id="1_52mb4"]
+[ext_resource type="Script" uid="uid://d0gx5cugt6fie" path="res://Scripts/Input Scripts/input_display.gd" id="1_52mb4"]
 
 [node name="InputDisplay" type="Control" unique_id=1057187563]
 custom_minimum_size = Vector2(232, 82)
