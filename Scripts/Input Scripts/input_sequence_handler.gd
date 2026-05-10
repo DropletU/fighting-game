@@ -2,7 +2,8 @@ extends Node
 
 ## The current input sequence that the Executor node reads from to start the next action.
 var current_sequence: Array[String] = []
-var sequence_buffer:=0.0
+@export var sequence_buffer:=15
+var buffer_timer:=0
 var sequence_started:=false
 var skip_action_frame: = false
 var last_input:="neutral"
@@ -30,9 +31,19 @@ func _physics_process(_delta: float) -> void:
 	
 	if current_input!=last_input:
 		last_input=current_input
-		match_from_move_list(current_input)
+		if match_from_move_list(current_input):
+			print("matched")
+			sequence_started=true
+			buffer_timer=0
+			current_sequence.append(current_input)
 	
+	if sequence_started:
+		buffer_timer+=1
 	
+	if buffer_timer>=sequence_buffer:
+		sequence_started=false
+		buffer_timer=0
+		current_sequence.clear()
 	
 
 
@@ -91,6 +102,7 @@ func match_from_move_list(current_input):
 	for i in stance_moves.size():
 		var sequence: Array = movelist.get_value(stance_moves[i], "sequence")
 		if match_sequences(test_sequence, sequence):
+			print(stance_moves[i])
 			return true
 		continue
 	return false
