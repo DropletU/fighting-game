@@ -16,6 +16,7 @@ var standing := true
 var crouching := false
 var facing:="right"
 
+var stance := "standing"
 
 ### Player Stats
 
