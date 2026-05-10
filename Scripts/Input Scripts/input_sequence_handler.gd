@@ -7,9 +7,11 @@ var sequence_started:=false
 var skip_action_frame: = false
 
 @onready var input_history = $"../InputHistory"
-
+@onready var player = $"../.."
+var movelist = ConfigFile.new()
 
 func _ready() -> void:
+	movelist.load("res://Scripts/Move Scripts/move_list.cfg")
 	process_physics_priority = 1
 	
 
@@ -25,12 +27,13 @@ func _physics_process(_delta: float) -> void:
 	current_input = track_movement_keys(second_last_frame, current_input)
 	current_input = track_action_keys(history, second_last_frame, current_input)
 	
-	
-	
+	match_from_move_list(current_input)
+
+
 
 func track_movement_keys(second_last_frame: Array, current_input: String):
 	var movement_keys = ["up", "down", "left", "right"]
-	var facing = $"../..".facing
+	var facing = player.facing
 	if second_last_frame.all(func(i): return i not in movement_keys): # No movement was made
 		current_input+="neutral"
 		return current_input
@@ -64,4 +67,35 @@ func track_action_keys(history: Array, second_last_frame: Array, current_input: 
 				skip_action_frame=true
 				current_input+=input
 	return current_input
+	
+
+
+func match_from_move_list(current_input):
+	
+	
+	
+	var test_sequence = current_sequence.duplicate(true)
+	test_sequence.append(current_input)
+	
+	var stance: String = player.stance
+	var stance_moves: Array = Array(movelist.get_sections()).filter(func(s: String):
+		return s.begins_with(stance+"/"))
+	
+	for i in stance_moves.size():
+		var sequence: Array = movelist.get_value(stance_moves[i], "sequence")
+		print(stance_moves[i])
+		if match_sequences(test_sequence, sequence):
+			return true
+		continue
+	return false
+	
+
+func match_sequences(test_sequence: Array, match_sequence: Array):
+	if test_sequence.size()>match_sequence.size():
+		return false
+	for i in test_sequence.size():
+		if test_sequence[i]==match_sequence[i]:
+			continue
+		return false
+	return true
 	
