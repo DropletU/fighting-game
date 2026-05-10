@@ -24,10 +24,15 @@ func _physics_process(_delta: float) -> void:
 	var frame_count = history.size()
 	if frame_count<3: # Edge case on the first three frames from when the player is instantiated
 		return
+	var last_frame: Array = history[-1]
 	var second_last_frame: Array = history[-2]
 	var current_input:=""
-	current_input = track_movement_keys(second_last_frame, current_input)
-	current_input = track_action_keys(history.back(), second_last_frame, current_input)
+	var wasd_keys = track_movement_keys(second_last_frame)
+	var action_keys = new_track_action_keys(last_frame, second_last_frame)
+	if wasd_keys=="neutral": # Remove neutral statement if an action input was made
+		if action_keys!="":
+			wasd_keys=""
+	current_input=wasd_keys+action_keys
 	
 	if current_input!=last_input:
 		last_input=current_input
@@ -35,7 +40,6 @@ func _physics_process(_delta: float) -> void:
 			sequence_started=true
 			buffer_timer=0
 			current_sequence.append(current_input)
-			print("current sequence ", current_sequence)
 		else:
 			buffer_timer+=sequence_buffer
 	
@@ -50,7 +54,8 @@ func _physics_process(_delta: float) -> void:
 
 
 
-func track_movement_keys(second_last_frame: Array, current_input: String):
+func track_movement_keys(second_last_frame: Array):
+	var current_input=""
 	var movement_keys = ["up", "down", "left", "right"]
 	var facing = player.facing
 	if second_last_frame.all(func(i): return i not in movement_keys): # No movement was made
@@ -61,31 +66,21 @@ func track_movement_keys(second_last_frame: Array, current_input: String):
 	return current_input
 	
 
-
-
-func track_action_keys(last_frame: Array, second_last_frame: Array, current_input: String):
+func new_track_action_keys(last_frame: Array, second_last_frame: Array):
 	var action_keys = ["one", "two", "three", "four", "(R)"]
-	if waiting_for_release and second_last_frame.any(func(input): return input in action_keys):
-		return current_input
-	else: waiting_for_release=false
+	var current_input: = ""
+	if second_last_frame.all(func(i): return i not in action_keys):
+		waiting_for_release=false
+	if waiting_for_release:
+		return "" # Player has not released keys since last action input
 	
-	if second_last_frame.all(func(i): return i not in action_keys): # No action was made
-		return current_input
+	if second_last_frame.all(func(i): return i not in action_keys):
+		return "" # No action input was made in this frame
 	
-	if last_frame.size()<=second_last_frame.size(): # Last frame is not a superset of current
-		for input in second_last_frame:
-			if input in action_keys:
-				if current_input=="neutral":
-					current_input=""
-				current_input+=input
-	elif second_last_frame.all(func(i): return i in last_frame): # Last frame is a superset
-		print(second_last_frame, last_frame)
-		for input in last_frame:
-			if input in action_keys:
-				if current_input=="neutral":
-					current_input=parse_movement_keys(last_frame, player.facing)
-				current_input+=input
-				print(current_input)
+	if not has_more_actions(second_last_frame, last_frame, action_keys):
+		current_input=add_action_inputs(last_frame, action_keys)
+	else:
+		current_input=add_action_inputs(second_last_frame, action_keys)
 	waiting_for_release=true
 	return current_input
 	
@@ -103,6 +98,28 @@ func parse_movement_keys(frame_data: Array, facing: String):
 	return parsed_input
 	
 
+## Checks if the first sequence has more action inputs than the second sequence.
+func has_more_actions(test_sequence: Array, match_sequence: Array, action_keys: Array):
+	var test_count:=0
+	var match_count:=0
+	for i in test_sequence.size():
+		if test_sequence[i] in action_keys:
+			test_count+=1
+	
+	for i in match_sequence.size():
+		if match_sequence[i] in action_keys:
+			match_count+=1
+	
+	return test_count>match_count
+	
+
+func add_action_inputs(frame_data: Array, action_keys: Array):
+	var current_input:=""
+	for input in frame_data:
+		if input in action_keys:
+			current_input+=input
+	return current_input
+
 func match_from_move_list(current_input):
 	var test_sequence = current_sequence.duplicate(true)
 	test_sequence.append(current_input)
@@ -110,11 +127,12 @@ func match_from_move_list(current_input):
 	var stance: String = player.stance
 	var stance_moves: Array = Array(movelist.get_sections()).filter(func(s: String):
 		return s.begins_with(stance+"/"))
-	
+	print(current_input)
 	for i in stance_moves.size():
 		var sequence: Array = movelist.get_value(stance_moves[i], "sequence")
 		if match_sequences(test_sequence, sequence):
 			print(stance_moves[i])
+			print(test_sequence)
 			return true
 	return false
 	
