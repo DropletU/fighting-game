@@ -14,6 +14,7 @@ var coyote_started:=false
 
 var standing := true
 var crouching := false
+var facing:=1
 
 
 ### Player Stats
