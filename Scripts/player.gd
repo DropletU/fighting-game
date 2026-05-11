@@ -5,6 +5,8 @@ extends CharacterBody2D
 @onready var crouchingSprite = $Crouching
 @onready var hitboxStanding = $HitboxStanding
 @onready var hitboxCrouching = $HitboxCrouching
+@onready var sprites = $SlimeSprites
+
 
 @export var coyote_time:=0.1
 @export var jump_buffer_time:=0.1
@@ -15,6 +17,8 @@ var coyote_started:=false
 var standing := true
 var crouching := false
 var facing:="right"
+var facing_buffer_limit:=12
+var change_facing_buffer:=0
 
 var stance := "standing"
 
@@ -43,11 +47,6 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 	
-	var down_held := Input.is_action_pressed("down")
-	if down_held: 
-		crouch()
-	elif crouching:
-		stand()
 	
 	if is_on_floor():
 		coyote_timer=coyote_time
@@ -62,24 +61,33 @@ func _physics_process(delta: float) -> void:
 	coyote_timer-=delta
 	jump_buffer_timer-=delta
 	
+	handle_animations()
+	
 	move_and_slide()
 	
 
 
-# Remember to make this work with start_action()
-func crouch():
-	hitboxStanding.disabled = true
-	standingSprite.visible = false
-	hitboxCrouching.disabled = false
-	crouchingSprite.visible = true
-	crouching = true
+func handle_animations():
+	if velocity.x!=0:
+		sprites.play("Walk")
+	elif sprites.frame==0:
+		sprites.play("Idle")
+	else: change_facing_buffer=0
+		
 	
-
-# Remember to make this work with start_action()
-func stand():
-	hitboxCrouching.disabled = true
-	crouchingSprite.visible = false
-	hitboxStanding.disabled = false
-	standingSprite.visible = true
-	standing = true
+	if velocity.x>0:
+		if not facing=="right":
+			change_facing_buffer+=1
+		if change_facing_buffer>=facing_buffer_limit:
+			facing = "right"
+			sprites.flip_h=false
+			change_facing_buffer=0
+	
+	if velocity.x<0:
+		if not facing=="left":
+			change_facing_buffer+=1
+		if change_facing_buffer>=facing_buffer_limit:
+			facing = "left"
+			sprites.flip_h=true
+			change_facing_buffer=0
 	
