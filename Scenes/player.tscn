@@ -23,6 +23,7 @@ script = ExtResource("1_cvnsp")
 script = ExtResource("2_vgqql")
 
 [node name="InputHistoryDisplay" type="Control" parent="InputSystem" unique_id=1535414987]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_left = -576.0
