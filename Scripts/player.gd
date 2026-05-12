@@ -17,7 +17,7 @@ var coyote_started:=false
 var standing := true
 var crouching := false
 var facing:="right"
-var facing_buffer_limit:=12
+var facing_buffer_limit:=9
 var change_facing_buffer:=0
 
 var stance := "standing"
