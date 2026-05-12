@@ -30,10 +30,19 @@ func _physics_process(_delta: float) -> void:
 	var last_frame: Array = history[-1]
 	var second_last_frame: Array = history[-2]
 	
+	if sequence_started:
+		buffer_timer+=1
+	
+	if buffer_timer>=sequence_buffer:
+		sequence_started=false
+		buffer_timer=0
+		current_sequence.clear()
+	
 	if second_last_frame.size()==0: # If all keys have been released since last input
 		waiting_for_release=false
 	if waiting_for_release: # If all keys have not been released since last input
 		return
+	
 	
 	var wasd_keys = track_movement_keys(second_last_frame)
 	var action_keys = track_action_keys(last_frame, second_last_frame)
@@ -55,14 +64,15 @@ func set_next_input(wasd_keys: String, action_keys: String, delta):
 		movement_action_timer=0
 	elif movement_action_timer>movement_action_buffer:
 		movement_keys_pressed=false
+		movement_action_timer=0
 	elif action_keys!="" and movement_keys_pressed:
-		print("movement action timer ", movement_action_timer)
 		dont_append_input=true # Make last input be this one rather than append a new one
 		movement_action_timer=0
 		movement_keys_pressed=false
-	elif movement_action_timer<movement_action_buffer: # Increment buffer
+	elif movement_action_timer<movement_action_buffer and wasd_keys!="neutral":
 		movement_keys_pressed=true
 		movement_action_timer+=1
+		# Increment buffer
 	
 	
 	if current_input!=last_input:
@@ -76,14 +86,6 @@ func set_next_input(wasd_keys: String, action_keys: String, delta):
 				current_sequence.append(current_input)
 		else:
 			buffer_timer+=sequence_buffer
-	
-	if sequence_started:
-		buffer_timer+=1
-	
-	if buffer_timer>=sequence_buffer:
-		sequence_started=false
-		buffer_timer=0
-		current_sequence.clear()
 	
 
 
@@ -179,6 +181,5 @@ func match_sequences(test_sequence: Array, match_sequence: Array):
 		return false
 	if test_sequence.size()==match_sequence.size():
 		print("Action Successful")
-	print(test_sequence)
 	return true
 	
