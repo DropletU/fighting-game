@@ -5,7 +5,10 @@ var current_sequence: Array[String] = []
 @export var sequence_buffer:=15
 var buffer_timer:=0
 var sequence_started:=false
-var waiting_for_release: = false
+var waiting_for_release:=false
+@export var movement_action_buffer:=12
+var movement_keys_pressed:=false
+var movement_action_timer:=0
 var last_input:="neutral"
 var last_action_input
 
@@ -26,29 +29,51 @@ func _physics_process(_delta: float) -> void:
 		return
 	var last_frame: Array = history[-1]
 	var second_last_frame: Array = history[-2]
-	var current_input:=""
 	
-	if second_last_frame.size()==0:
+	if second_last_frame.size()==0: # If all keys have been released since last input
 		waiting_for_release=false
-	if waiting_for_release:
-		current_input = last_input
+	if waiting_for_release: # If all keys have not been released since last input
 		return
 	
 	var wasd_keys = track_movement_keys(second_last_frame)
 	var action_keys = track_action_keys(last_frame, second_last_frame)
 	
-	
+	set_next_input(wasd_keys, action_keys, _delta)
+
+
+func set_next_input(wasd_keys: String, action_keys: String, delta):
+	var dont_append_input:=false
+	var current_input:=""
 	if wasd_keys=="neutral": # Remove neutral statement if an action input was made
 		if action_keys!="":
 			wasd_keys=""
+	
 	current_input=wasd_keys+action_keys
+	
+	if wasd_keys=="neutral": # Buffer between movement and action keys
+		movement_keys_pressed=false
+		movement_action_timer=0
+	elif movement_action_timer>movement_action_buffer:
+		movement_keys_pressed=false
+	elif action_keys!="" and movement_keys_pressed:
+		print("movement action timer ", movement_action_timer)
+		dont_append_input=true # Make last input be this one rather than append a new one
+		movement_action_timer=0
+		movement_keys_pressed=false
+	elif movement_action_timer<movement_action_buffer: # Increment buffer
+		movement_keys_pressed=true
+		movement_action_timer+=1
+	
 	
 	if current_input!=last_input:
 		last_input=current_input
-		if match_from_move_list(current_input):
+		if match_from_move_list(current_input, dont_append_input):
 			sequence_started=true
 			buffer_timer=0
-			current_sequence.append(current_input)
+			if dont_append_input and current_sequence.size()>0: # Buffer case
+				current_sequence[-1]=current_input
+			else: # Normal case
+				current_sequence.append(current_input)
 		else:
 			buffer_timer+=sequence_buffer
 	
@@ -91,7 +116,6 @@ func track_action_keys(last_frame: Array, second_last_frame: Array):
 	return current_input
 	
 
-
 func parse_movement_keys(frame_data: Array, facing: String):
 	var parsed_input:=""
 	for input in frame_data:
@@ -125,10 +149,14 @@ func add_action_inputs(frame_data: Array, action_keys: Array):
 		if input in action_keys:
 			current_input+=input
 	return current_input
+	
 
-func match_from_move_list(current_input):
+func match_from_move_list(current_input: String, dont_append_sequence:=false):
 	var test_sequence = current_sequence.duplicate(true)
-	test_sequence.append(current_input)
+	if dont_append_sequence and test_sequence.size()>0:
+		test_sequence[-1]=current_input
+	else:
+		test_sequence.append(current_input)
 	
 	var stance: String = player.stance
 	var stance_moves: Array = Array(movelist.get_sections()).filter(func(s: String):
@@ -151,5 +179,6 @@ func match_sequences(test_sequence: Array, match_sequence: Array):
 		return false
 	if test_sequence.size()==match_sequence.size():
 		print("Action Successful")
+	print(test_sequence)
 	return true
 	
