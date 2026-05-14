@@ -13,6 +13,18 @@
 atlas = ExtResource("9_f1ek2")
 region = Rect2(0, 0, 200, 200)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_l6n3p"]
+atlas = ExtResource("9_f1ek2")
+region = Rect2(0, 400, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_olqyp"]
+atlas = ExtResource("9_f1ek2")
+region = Rect2(0, 600, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wpjfl"]
+atlas = ExtResource("9_f1ek2")
+region = Rect2(200, 600, 200, 200)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_f1ek2"]
 atlas = ExtResource("9_f1ek2")
 region = Rect2(0, 200, 200, 200)
@@ -69,6 +81,20 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_l6n3p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_olqyp")
+}, {
+"duration": 4.0,
+"texture": SubResource("AtlasTexture_wpjfl")
+}],
+"loop": false,
+"name": &"Parry",
+"speed": 16.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_f1ek2")
 }, {
 "duration": 1.0,
@@ -88,7 +114,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"SwordStance",
-"speed": 30.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -171,7 +197,7 @@ texture = ExtResource("1_v0iea")
 position = Vector2(-3.8146973e-06, -17.000004)
 scale = Vector2(0.49999997, 0.49999997)
 sprite_frames = SubResource("SpriteFrames_h4iuc")
-animation = &"Idle"
+animation = &"SwordStance"
 autoplay = "Idle"
 
 [node name="HitboxStanding" type="CollisionShape2D" parent="." unique_id=606276087]

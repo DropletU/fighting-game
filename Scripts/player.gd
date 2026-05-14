@@ -70,13 +70,13 @@ func _physics_process(delta: float) -> void:
 func handle_animations():
 	
 	if Input.is_action_just_pressed("test_input"):
-		print("play")
 		if sprites.animation!="SwordStance":
-			sprites.speed_scale=1
 			sprites.play("SwordStance")
-		else:
-			sprites.speed_scale=-1
-			sprites.play("SwordStance")
+		elif sprites.animation=="SwordStance":
+			sprites.play("Parry")
+	if Input.is_action_just_pressed("test_input_two"):
+		sprites.speed_scale=-1
+		sprites.play("Parry")
 	
 	
 	if velocity.x!=0:
@@ -85,7 +85,7 @@ func handle_animations():
 		elif sprites.animation=="SwordStance":
 			sprites.speed_scale=-1
 			sprites.play("SwordStance")
-	elif sprites.frame==0 and sprites.animation!="SwordStance":
+	elif sprites.frame==0 and sprites.animation=="Walk":
 		sprites.play("Idle")
 	else: change_facing_buffer=0
 		
@@ -109,8 +109,12 @@ func handle_animations():
 
 
 func _on_slime_sprites_animation_finished() -> void:
-	if sprites.animation=="SwordStance" and sprites.speed_scale==-1:
-		sprites.speed_scale=1
-		sprites.play("Idle")
-	
+	if sprites.animation=="SwordStance":
+		if sprites.speed_scale==-1:
+			sprites.play("Idle")
+			sprites.speed_scale=1
+	if sprites.animation=="Parry":
+		if sprites.speed_scale==-1:
+			sprites.speed_scale=1
+			sprites.play_backwards("SwordStance")
 	
