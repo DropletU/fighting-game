@@ -43,13 +43,17 @@ func handle_action_keys(current_input: Array):
 	elif waiting_for_actions_release:
 		waiting_for_actions_release=false
 	
+	if actions_buffer.size()==0 and actions_held_count==0:
+		return
+	
 	actions_buffer.append(actions_held_count)
 	
-	if actions_buffer.size():
+	if actions_buffer.size()!=3:
 		return
 	
 	var best_frame = _find_best_frame()
 	var inputs = parse_inputs(input_history[best_frame-3], action_keys)
+	
 	emit_actions(inputs, best_frame-2)
 	
 
