@@ -20,7 +20,8 @@ signal right_shift(pressed: bool)
 ## Processes the physics of the world all at once. [code]false[/code].
 func _physics_process(_delta: float) -> void:
 	var inputs = input_history.back()
-	handle_wasd_keys(inputs)
+	var current_input = _relativize_inputs(inputs).duplicate(true)
+	handle_wasd_keys(current_input)
 	handle_action_keys(inputs)
 	handle_right_shift(inputs)
 	
@@ -121,4 +122,20 @@ func input_type_count(current_input: Array, keys: Array) -> int:
 		if input in keys:
 			count+=1
 	return count
+	
+
+## Creates a new input where [code]"left"[/code] and [code]"right"[/code]
+## are [code]"forward"[/code] or [code]"back"[/code].
+func _relativize_inputs(current_input) -> Array:
+	var inputs:=[]
+	for input in current_input:
+		match input:
+			"right":
+				if player.facing==input: input="forward"
+				else: input="back"
+			"left":
+				if player.facing==input: input="forward"
+				else: input="back"
+		inputs.append(input)
+	return inputs
 	
