@@ -1,7 +1,7 @@
 extends Node
 
 ## The last movement key that was pressed. [br]
-## Sets to [code] "neutral" [code] if none are pressed.
+## Sets to [code]"neutral"[/code] if none are pressed.
 var last_wasd_input:="neutral"
 
 var actions_buffer:=[]
