@@ -1,10 +1,6 @@
 extends CharacterBody2D
 
 # Children
-@onready var standingSprite = $Standing
-@onready var crouchingSprite = $Crouching
-@onready var hitboxStanding = $HitboxStanding
-@onready var hitboxCrouching = $HitboxCrouching
 @onready var sprites = $SlimeSprites
 
 
