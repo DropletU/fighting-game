@@ -3,12 +3,15 @@ extends Node
 ## The last movement key that was pressed. [br]
 ## Sets to [code]"neutral"[/code] if none are pressed.
 var last_wasd_input:="neutral"
+## Whether [code](R)[/code] is pressed or not.
+var r_shift_state:=false
 
 var actions_buffer:=[]
 var waiting_for_actions_release:=false
 
 signal movement_inputs(inputs: String)
-signal action_inputs(inputs: String, subtract_by: int, right_shift: bool)
+signal action_inputs(inputs: String, subtract_by: int)
+signal right_shift(pressed: bool)
 
 @onready var input_history = $"../InputHistory".input_history
 @onready var player = $"../.."
@@ -19,6 +22,7 @@ func _physics_process(_delta: float) -> void:
 	var inputs = input_history.back()
 	handle_wasd_keys(inputs)
 	handle_action_keys(inputs)
+	handle_right_shift(inputs)
 	
 
 
@@ -57,17 +61,32 @@ func handle_action_keys(current_input: Array):
 	emit_actions(inputs, best_frame-2)
 	
 
+## Emits a boolean value every time [code]"(R)"[/code] is pressed or released.
+func handle_right_shift(current_input: Array):
+	var emit_the_signal:=false
+	
+	# Checks if pressed state changed
+	if current_input.has("(R)") and r_shift_state==false:
+		r_shift_state=true
+		emit_the_signal=true
+	elif not current_input.has("(R)") and r_shift_state==true:
+		r_shift_state=false
+		emit_the_signal=true
+	
+	if not emit_the_signal:
+		return
+	
+	right_shift.emit(r_shift_state)
+	
+
 
 
 ## Emits the data given to it by [method handle_action_keys] as well as whether
 ## [code]"(R)"[/code] is being pressed or not.
 func emit_actions(inputs: String, subtract_by: int):
-	var right_shift:=false
 	waiting_for_actions_release=true
 	actions_buffer.clear()
-	if Input.is_action_pressed("(R)"):
-		right_shift=true
-	action_inputs.emit(inputs, subtract_by, right_shift)
+	action_inputs.emit(inputs, subtract_by)
 	
 
 
