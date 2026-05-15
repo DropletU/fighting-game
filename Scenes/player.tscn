@@ -192,6 +192,4 @@ shape = SubResource("RectangleShape2D_cvnsp")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=478620449]
 
-[connection signal="action_inputs" from="InputSystem/InputParser" to="." method="_on_input_parser_action_inputs"]
-[connection signal="movement_inputs" from="InputSystem/InputParser" to="." method="_on_input_parser_movement_inputs"]
 [connection signal="animation_finished" from="SlimeSprites" to="." method="_on_slime_sprites_animation_finished"]
