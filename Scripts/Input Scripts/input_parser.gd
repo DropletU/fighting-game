@@ -29,7 +29,7 @@ func _physics_process(_delta: float) -> void:
 
 ## Parses movement keys and emits the [signal movement_inputs] signal.
 func handle_wasd_keys(current_input: Array):
-	var wasd_keys: = ["up", "down", "left", "right"]
+	var wasd_keys: = ["up", "down", "forward", "back"]
 	var inputs:=parse_inputs(current_input, wasd_keys, "neutral")
 	
 	if last_wasd_input==inputs:
