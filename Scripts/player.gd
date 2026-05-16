@@ -10,8 +10,7 @@ var coyote_timer = 0.0
 var jump_buffer_timer:= 0.0
 var coyote_started:=false
 
-var standing := true
-var crouching := false
+
 var facing:="right"
 var facing_buffer_limit:=9
 var change_facing_buffer:=0
