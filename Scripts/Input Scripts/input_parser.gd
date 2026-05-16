@@ -4,14 +4,14 @@ extends Node
 ## Sets to [code]"neutral"[/code] if none are pressed.
 var last_wasd_input:="neutral"
 ## Whether [code](R)[/code] is pressed or not.
-var r_shift_state:=false
+var r_shift_state:=""
 
 var actions_buffer:=[]
 var waiting_for_actions_release:=false
 
 signal movement_inputs(inputs: String)
 signal action_inputs(inputs: String, subtract_by: int)
-signal right_shift(pressed: bool)
+signal right_shift(input: String)
 
 @onready var input_history = $"../InputHistory".input_history
 @onready var player = $"../.."
@@ -67,11 +67,11 @@ func handle_right_shift(current_input: Array):
 	var emit_the_signal:=false
 	
 	# Checks if pressed state changed
-	if current_input.has("(R)") and r_shift_state==false:
-		r_shift_state=true
+	if current_input.has("(R)") and r_shift_state=="":
+		r_shift_state="(R)"
 		emit_the_signal=true
-	elif not current_input.has("(R)") and r_shift_state==true:
-		r_shift_state=false
+	elif not current_input.has("(R)") and r_shift_state=="(R)":
+		r_shift_state=""
 		emit_the_signal=true
 	
 	if not emit_the_signal:
