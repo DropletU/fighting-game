@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bjmk0qrlupy53" path="res://Scenes/input_display.tscn" id="3_6t5aa"]
 [ext_resource type="Script" uid="uid://dhvws2scqnspl" path="res://Scripts/Input Scripts/input_history_display.gd" id="3_fkybt"]
 [ext_resource type="Script" uid="uid://7gq12adr3ue4" path="res://Scripts/Input Scripts/input_parser.gd" id="4_x3wgy"]
-[ext_resource type="Script" uid="uid://cn4s7tdve2wai" path="res://Scripts/Move Scripts/executor.gd" id="6_8erm5"]
+[ext_resource type="Script" uid="uid://cn4s7tdve2wai" path="res://Scripts/Input Scripts/sequence_builder.gd" id="6_8erm5"]
 [ext_resource type="Texture2D" uid="uid://doob4qhdwvfmo" path="res://Assets/Player Sprites/Slime Spritesheet One.png" id="9_f1ek2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8erm5"]
@@ -148,6 +148,13 @@ SPEED = 250.0
 [node name="InputHistory" type="Node" parent="InputSystem" unique_id=1718507192]
 script = ExtResource("2_vgqql")
 
+[node name="InputParser" type="Node" parent="InputSystem" unique_id=1228990788]
+process_physics_priority = 1
+script = ExtResource("4_x3wgy")
+
+[node name="SequenceBuilder" type="Node" parent="InputSystem" unique_id=1237187565]
+script = ExtResource("6_8erm5")
+
 [node name="InputHistoryDisplay" type="Control" parent="InputSystem" unique_id=1535414987]
 visible = false
 layout_mode = 3
@@ -165,13 +172,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="InputParser" type="Node" parent="InputSystem" unique_id=1228990788]
-process_physics_priority = 1
-script = ExtResource("4_x3wgy")
-
-[node name="Executor" type="Node" parent="InputSystem" unique_id=1237187565]
-script = ExtResource("6_8erm5")
 
 [node name="InputDisplay" parent="InputSystem" unique_id=1057187563 instance=ExtResource("3_6t5aa")]
 offset_left = 338.0
@@ -192,4 +192,7 @@ shape = SubResource("RectangleShape2D_cvnsp")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=478620449]
 
+[connection signal="action_inputs" from="InputSystem/InputParser" to="InputSystem/SequenceBuilder" method="_on_input_parser_action_inputs"]
+[connection signal="movement_inputs" from="InputSystem/InputParser" to="InputSystem/SequenceBuilder" method="_on_input_parser_movement_inputs"]
+[connection signal="right_shift" from="InputSystem/InputParser" to="InputSystem/SequenceBuilder" method="_on_input_parser_right_shift"]
 [connection signal="animation_finished" from="SlimeSprites" to="." method="_on_slime_sprites_animation_finished"]
