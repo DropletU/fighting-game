@@ -6,6 +6,7 @@ var last_wasd_input:="neutral"
 ## Whether [code](R)[/code] is pressed or not.
 var r_shift_state:=""
 
+var action_just_emitted:=false
 var actions_buffer:=[]
 var waiting_for_actions_release:=false
 
@@ -42,6 +43,10 @@ func handle_wasd_keys(current_input: Array):
 func handle_action_keys(current_input: Array):
 	var action_keys: = ["one", "two", "three", "four"]
 	var actions_held_count:=input_type_count(current_input, action_keys)
+	
+	if action_just_emitted:
+		action_inputs.emit("", 0)
+		action_just_emitted=false
 	
 	if waiting_for_actions_release and actions_held_count>0:
 		return
@@ -88,6 +93,7 @@ func emit_actions(inputs: String, subtract_by: int):
 	waiting_for_actions_release=true
 	actions_buffer.clear()
 	action_inputs.emit(inputs, subtract_by)
+	action_just_emitted=true
 	
 
 
