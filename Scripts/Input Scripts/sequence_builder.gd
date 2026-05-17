@@ -110,6 +110,10 @@ func any_sequence_matches(test_sequence: Array):
 	return false
 	
 
+## Checks if [member test_sequence] matches [member match_sequence] up to the size of
+## [member test_sequence]. [br]
+## If [member rshift_required] is [code]true[/code], then [member test_sequence] must
+## match the [code]"(R)"[/code] inputs as well.
 func sequence_matches(test_sequence: Array, match_sequence: Array, rshift_required: bool):
 	if test_sequence.size()>match_sequence.size():
 		return false
