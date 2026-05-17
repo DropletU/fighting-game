@@ -1,6 +1,7 @@
 extends Node
 
 @onready var current_stance=$"../..".stance
+@onready var executor=$"../Executor"
 
 # Move List
 var move_list: ConfigFile
@@ -147,11 +148,15 @@ func is_new_action():
 
 
 func new_action_input(inputs: String) -> void:
+	if executor.executing:
+		return
 	sequence_ongoing=true
 	newest_action=inputs
 	
 
 func new_movement_input(inputs: String) -> void:
+	if executor.executing:
+		return
 	sequence_ongoing=true
 	newest_movement=inputs
 	
