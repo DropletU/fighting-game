@@ -4,6 +4,10 @@ extends CharacterBody2D
 @onready var sprites = $SlimeSprites
 
 
+# Signals
+signal stance_changed(new_stance: String)
+
+
 @export var coyote_time:=0.1
 @export var jump_buffer_time:=0.1
 var coyote_timer = 0.0
@@ -112,4 +116,11 @@ func _on_slime_sprites_animation_finished() -> void:
 		if sprites.speed_scale==-1:
 			sprites.speed_scale=1
 			sprites.play_backwards("SwordStance")
+	
+
+
+
+func change_stance(new_stance: String):
+	stance=new_stance
+	stance_changed.emit(new_stance)
 	
