@@ -11,7 +11,7 @@ var actions_buffer:=[]
 var waiting_for_actions_release:=false
 
 signal movement_inputs(inputs: String)
-signal action_inputs(inputs: String, subtract_by: int)
+signal action_inputs(inputs: String)
 signal right_shift(input: String)
 
 @onready var input_history = $"../InputHistory".input_history
@@ -44,14 +44,11 @@ func handle_action_keys(current_input: Array):
 	var action_keys: = ["one", "two", "three", "four"]
 	var actions_held_count:=input_type_count(current_input, action_keys)
 	
-	if action_just_emitted:
-		action_inputs.emit("", 0)
-		action_just_emitted=false
-	
 	if waiting_for_actions_release and actions_held_count>0:
 		return
 	elif waiting_for_actions_release:
 		waiting_for_actions_release=false
+		action_inputs.emit("")
 	
 	if actions_buffer.size()==0 and actions_held_count==0:
 		return
@@ -63,8 +60,7 @@ func handle_action_keys(current_input: Array):
 	
 	var best_frame = _find_best_frame()
 	var inputs = parse_inputs(input_history[best_frame-3], action_keys)
-	
-	emit_actions(inputs, best_frame-2)
+	emit_actions(inputs)
 	
 
 ## Emits a boolean value every time [code]"(R)"[/code] is pressed or released.
@@ -89,10 +85,10 @@ func handle_right_shift(current_input: Array):
 
 ## Emits the data given to it by [method handle_action_keys] as well as whether
 ## [code]"(R)"[/code] is being pressed or not.
-func emit_actions(inputs: String, subtract_by: int):
+func emit_actions(inputs: String):
 	waiting_for_actions_release=true
 	actions_buffer.clear()
-	action_inputs.emit(inputs, subtract_by)
+	action_inputs.emit(inputs)
 	action_just_emitted=true
 	
 
