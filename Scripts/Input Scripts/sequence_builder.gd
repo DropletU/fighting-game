@@ -159,3 +159,7 @@ func new_movement_input(inputs: String) -> void:
 func right_shift_updated(input: String) -> void:
 	newest_rshift=input
 	
+
+
+func _on_player_stance_changed(new_stance: String) -> void:
+	current_stance=new_stance
