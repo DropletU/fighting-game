@@ -146,15 +146,16 @@ func is_new_action():
 	
 
 
-func _on_input_parser_action_inputs(inputs: String) -> void:
+func new_action_input(inputs: String) -> void:
 	sequence_ongoing=true
 	newest_action=inputs
+	
 
-
-func _on_input_parser_movement_inputs(inputs: String) -> void:
+func new_movement_input(inputs: String) -> void:
 	sequence_ongoing=true
 	newest_movement=inputs
+	
 
-
-func _on_input_parser_right_shift(input: String) -> void:
+func right_shift_updated(input: String) -> void:
 	newest_rshift=input
+	

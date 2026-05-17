@@ -16,7 +16,7 @@ signal right_shift(input: String)
 
 @onready var input_history = $"../InputHistory".input_history
 @onready var player = $"../.."
-
+@onready var sequence_builder = $"../SequenceBuilder"
 
 ## Processes the physics of the world all at once. [code]false[/code].
 func _physics_process(_delta: float) -> void:
@@ -36,7 +36,8 @@ func handle_wasd_keys(current_input: Array):
 	if last_wasd_input==inputs:
 		return
 	last_wasd_input=inputs
-	movement_inputs.emit(inputs)
+	sequence_builder.new_movement_input(inputs)
+	#movement_inputs.emit(inputs)
 	
 
 ## Parses action keys and deals with a bunch of mind numbing stuff and emits them.
@@ -48,7 +49,8 @@ func handle_action_keys(current_input: Array):
 		return
 	elif waiting_for_actions_release:
 		waiting_for_actions_release=false
-		action_inputs.emit("")
+		sequence_builder.new_action_input("")
+		#action_inputs.emit("")
 	
 	if actions_buffer.size()==0 and actions_held_count==0:
 		return
@@ -78,7 +80,8 @@ func handle_right_shift(current_input: Array):
 	if not emit_the_signal:
 		return
 	
-	right_shift.emit(r_shift_state)
+	sequence_builder.right_shift_updated(r_shift_state)
+	#right_shift.emit(r_shift_state)
 	
 
 
@@ -88,7 +91,8 @@ func handle_right_shift(current_input: Array):
 func emit_actions(inputs: String):
 	waiting_for_actions_release=true
 	actions_buffer.clear()
-	action_inputs.emit(inputs)
+	sequence_builder.new_action_input(inputs)
+	#action_inputs.emit(inputs)
 	action_just_emitted=true
 	
 
