@@ -153,6 +153,7 @@ process_physics_priority = 1
 script = ExtResource("4_x3wgy")
 
 [node name="SequenceBuilder" type="Node" parent="InputSystem" unique_id=1237187565]
+process_physics_priority = 2
 script = ExtResource("6_8erm5")
 
 [node name="InputHistoryDisplay" type="Control" parent="InputSystem" unique_id=1535414987]
