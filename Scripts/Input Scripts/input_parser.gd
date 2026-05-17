@@ -10,10 +10,6 @@ var action_just_emitted:=false
 var actions_buffer:=[]
 var waiting_for_actions_release:=false
 
-signal movement_inputs(inputs: String)
-signal action_inputs(inputs: String)
-signal right_shift(input: String)
-
 @onready var input_history = $"../InputHistory".input_history
 @onready var player = $"../.."
 @onready var sequence_builder = $"../SequenceBuilder"
@@ -28,7 +24,8 @@ func _physics_process(_delta: float) -> void:
 	
 
 
-## Parses movement keys and emits the [signal movement_inputs] signal.
+## Parses movement keys and calls [method new_movement_input] from through
+## [member sequence_builder].
 func handle_wasd_keys(current_input: Array):
 	var wasd_keys: = ["up", "down", "forward", "back"]
 	var inputs:=parse_inputs(current_input, wasd_keys, "neutral")
@@ -37,10 +34,11 @@ func handle_wasd_keys(current_input: Array):
 		return
 	last_wasd_input=inputs
 	sequence_builder.new_movement_input(inputs)
-	#movement_inputs.emit(inputs)
 	
 
-## Parses action keys and deals with a bunch of mind numbing stuff and emits them.
+## Parses action keys and deals with a bunch of mind numbing stuff. [br]
+## Once it's done, it sends them to [method new_action_input] through
+## [member sequence_builder].
 func handle_action_keys(current_input: Array):
 	var action_keys: = ["one", "two", "three", "four"]
 	var actions_held_count:=input_type_count(current_input, action_keys)
@@ -50,7 +48,6 @@ func handle_action_keys(current_input: Array):
 	elif waiting_for_actions_release:
 		waiting_for_actions_release=false
 		sequence_builder.new_action_input("")
-		#action_inputs.emit("")
 	
 	if actions_buffer.size()==0 and actions_held_count==0:
 		return
@@ -65,7 +62,8 @@ func handle_action_keys(current_input: Array):
 	emit_actions(inputs)
 	
 
-## Emits a boolean value every time [code]"(R)"[/code] is pressed or released.
+## Sends a boolean value every time [code]"(R)"[/code] is pressed or released to
+## [method right_shift_updated] through [member sequence_builder].
 func handle_right_shift(current_input: Array):
 	var emit_the_signal:=false
 	
@@ -81,18 +79,16 @@ func handle_right_shift(current_input: Array):
 		return
 	
 	sequence_builder.right_shift_updated(r_shift_state)
-	#right_shift.emit(r_shift_state)
 	
 
 
 
-## Emits the data given to it by [method handle_action_keys] as well as whether
-## [code]"(R)"[/code] is being pressed or not.
+## Sends the data given to it by [method handle_action_keys] to [method new_action_input]
+## through [member sequence_builder].
 func emit_actions(inputs: String):
 	waiting_for_actions_release=true
 	actions_buffer.clear()
 	sequence_builder.new_action_input(inputs)
-	#action_inputs.emit(inputs)
 	action_just_emitted=true
 	
 
