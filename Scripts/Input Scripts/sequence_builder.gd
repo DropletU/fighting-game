@@ -24,9 +24,9 @@ var frame_buffer:=0
 
 # Signals
 ## Emits when a stance is perfectly matched from the players inputs. 
-signal stance_matched(sequence: Array)
+signal stance_matched(sequence: Array, stance: String)
 ## Emits when a valid input is made by the player. 
-signal valid_action(sequence: Array)
+signal valid_action(sequence: Array, stance: String)
 
 
 func _ready() -> void:
@@ -63,10 +63,10 @@ func end_sequence():
 func append_valid_sequence(current_input: String):
 	valid_sequence.append(current_input)
 	if matches_stance():
-		stance_matched.emit(valid_sequence.duplicate())
+		stance_matched.emit(valid_sequence.duplicate(), current_stance)
 		end_sequence()
 	if is_new_action():
-		valid_action.emit(valid_sequence)
+		valid_action.emit(valid_sequence.duplicate(), current_stance)
 	
 
 func handle_new_input(current_input: String):
