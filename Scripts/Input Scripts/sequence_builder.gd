@@ -38,11 +38,9 @@ func _physics_process(_delta: float) -> void:
 		if newest_movement.begins_with("neutral"):
 			current_input=newest_action+newest_rshift
 	
-	
 	if newest_input!=current_input:
 		handle_new_input(current_input)
 		newest_input=current_input
-	
 	
 	if frame_buffer==frame_buffer_limit:
 		end_sequence()
@@ -78,7 +76,7 @@ func handle_new_input(current_input: String):
 	if test_sequence.size()<=1:
 		return
 	
-	if current_input.begins_with(test_sequence[-2]):
+	if current_input.begins_with(test_sequence[-2]): # If current is a superset of previous
 		test_sequence.remove_at(-2)
 	else:
 		return
@@ -87,7 +85,6 @@ func handle_new_input(current_input: String):
 		valid_sequence.remove_at(-1)
 		append_valid_sequence(current_input)
 		frame_buffer_limit=frame_buffer+10
-		return
 	
 
 
