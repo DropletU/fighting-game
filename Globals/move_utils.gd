@@ -35,6 +35,15 @@ func get_move(sequence: Array, stance:=""):
 	return ""
 	
 
+## Gets the stance move in the current stance. Assumes that the current stance is
+## [code]"standing"[/code]. [br]
+## If no stance is found, it will return [code]""[/code].
+func get_stance_move(sequence: Array, stance:="standing"):
+	for stance_move in stances:
+		if stances[stance_move]==sequence:
+			return stance
+	return ""
+	
 
 
 
