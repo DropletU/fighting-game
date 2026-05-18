@@ -152,17 +152,17 @@ func is_new_action():
 
 
 func new_action_input(inputs: String) -> void:
+	newest_action=inputs
 	if executor.executing:
 		return
 	sequence_ongoing=true
-	newest_action=inputs
 	
 
 func new_movement_input(inputs: String) -> void:
+	newest_movement=inputs
 	if executor.executing:
 		return
 	sequence_ongoing=true
-	newest_movement=inputs
 	
 
 func right_shift_updated(input: String) -> void:
