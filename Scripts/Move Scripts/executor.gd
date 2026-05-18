@@ -27,9 +27,17 @@ func execute(keep_executing_false:=false):
 		current_index=0
 		callable_sequence.clear()
 	
-	
-	
 
+
+func force_execute(callable, r_count:=0, keep_executing_false:=false):
+	if move_functions.has_method(callable):
+		if not keep_executing_false:
+			executing=false
+		print("executing ", callable)
+		await move_functions.call(callable, r_count)
+		executing=true
+	executing=false
+	
 
 func add_to_executing_queue(callable_move: String, total_right_shifts,
 							keep_executing_false:=false, is_stance:=false):
