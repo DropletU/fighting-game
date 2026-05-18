@@ -22,7 +22,22 @@ func _ready() -> void:
 	
 
 
-## Finds the callable action based on the [member move_name] and [member sequence].[method size].
+func get_keep_executing_false(move: String):
+	return move_list.get_value(move, "keep_executing_false", false)
+	
+
+## Returns the total number of times [code]"(R)"[/code] was found at the
+## end of an input in the [member sequence].
+func find_total_rshifts(sequence: Array):
+	var r_count:=0
+	for input in sequence:
+		if input.ends_with("(R)"):
+			r_count+=1
+	return r_count
+	
+
+## Finds  and returns the callable action based on the [member move_name]
+## and [member sequence].[method size].
 func find_callable_action(move_name: String, sequence: Array) -> String:
 	var int_to_str:={1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six",
 	7: "seven", 8: "eight", 9: "nine", 10: "ten"}
@@ -33,6 +48,18 @@ func find_callable_action(move_name: String, sequence: Array) -> String:
 	return callable_action
 	
 
+## Gets the stance move in the current stance. Assumes that the current stance is
+## [code]"standing"[/code]. [br]
+## If no stance is found, it will return [code]""[/code].
+func find_callable_stance(sequence: Array, stance:="standing"):
+	for stance_move: String in stances:
+		if not stance_move.begins_with(stance):
+			continue
+		if sequence_matches(sequence, stances[stance_move], true):
+			var slash_index:=stance_move.find("/")
+			return stance_move.substr(slash_index+1)
+	return ""
+	
 
 ## Gets the move in the current stance. If no stance is given, it will return any move that
 ## matches. [br]
@@ -49,15 +76,15 @@ func get_move(sequence: Array, stance:="", rshift_required:=false):
 	return ""
 	
 
-## Gets the stance move in the current stance. Assumes that the current stance is
-## [code]"standing"[/code]. [br]
-## If no stance is found, it will return [code]""[/code].
-func find_callable_stance(sequence: Array, stance:="standing"):
-	for stance_move: String in stances:
-		if stances[stance_move]==sequence and stance_move.begins_with(stance):
-			var slash_index:=stance_move.find("/")
-			return stance_move.substr(slash_index+1)
-	return ""
+## Gets the name of the stance based on the sequence given. This does not care
+## about the stance the player is currently in, and matches against all sequences in
+## [member stances].
+func get_stance(sequence: Array, fully_matches:=false, rshift_required:=false):
+	for stance_name in stances:
+		if sequence.size()!=stances[stance_name].size():
+			continue
+		if sequence_matches(sequence, stances[stance_name], fully_matches, rshift_required):
+			return stance_name
 	
 
 
