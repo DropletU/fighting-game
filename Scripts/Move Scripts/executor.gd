@@ -11,12 +11,12 @@ func execute(keep_executing_false:=false):
 	if not keep_executing_false:
 		executing=true
 	
-	print("executed")
 	var callable: String = callable_sequence[current_index]["callable"]
 	var r_count: int = callable_sequence[current_index]["right_shift_count"]
 	
 	if move_functions.has_method(callable):
 		await move_functions.call(callable, r_count)
+		print("executed")
 	current_index+=1
 	
 	
