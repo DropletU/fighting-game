@@ -3,7 +3,7 @@ extends Node
 ## The config file holding the move list
 var move_list: ConfigFile
 
-## All moves
+## All moves in the move list as well as their sequences.
 var moves:={}
 ## Moves that have no action inputs and enter stances.
 var stances:={}
@@ -19,6 +19,18 @@ func _ready() -> void:
 	for move in move_list.get_sections():
 		if move_list.get_value(move, "stance", false):
 			stances[move]=move_list.get_value(move, "sequence")
+	
+
+
+## Finds the callable action based on the [member move_name] and [member sequence].[method size].
+func find_callable_action(move_name: String, sequence: Array) -> String:
+	var int_to_str:={1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six",
+	7: "seven", 8: "eight", 9: "nine", 10: "ten"}
+	var callable_action:=""
+	var slash_index:=move_name.find("/")
+	var number = int_to_str[sequence.size()]
+	callable_action+=move_name.left(slash_index)+"_"+move_name.substr(slash_index+1)+"_"+number
+	return callable_action
 	
 
 
@@ -38,10 +50,11 @@ func get_move(sequence: Array, stance:=""):
 ## Gets the stance move in the current stance. Assumes that the current stance is
 ## [code]"standing"[/code]. [br]
 ## If no stance is found, it will return [code]""[/code].
-func get_stance_move(sequence: Array, stance:="standing"):
-	for stance_move in stances:
-		if stances[stance_move]==sequence:
-			return stance
+func find_callable_stance(sequence: Array, stance:="standing"):
+	for stance_move: String in stances:
+		if stances[stance_move]==sequence and stance_move.begins_with(stance):
+			var slash_index:=stance_move.find("/")
+			return stance_move.substr(slash_index+1)
 	return ""
 	
 
