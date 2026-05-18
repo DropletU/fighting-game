@@ -3,8 +3,6 @@ extends Node
 @onready var current_stance=$"../..".stance
 @onready var executor=$"../Executor"
 
-# Move List
-var move_list: ConfigFile
 
 # New Input Info
 var newest_movement:="neutral"
@@ -30,10 +28,6 @@ signal stance_matched(sequence: Array, stance: String)
 signal valid_action(sequence: Array, stance: String)
 
 
-func _ready() -> void:
-	move_list = ConfigFile.new()
-	move_list.load("res://Scripts/Move Scripts/move_list.cfg")
-	
 
 func _physics_process(_delta: float) -> void:
 	if not sequence_ongoing:
@@ -63,12 +57,11 @@ func end_sequence():
 
 func append_valid_sequence(current_input: String):
 	valid_sequence.append(current_input)
-	if matches_stance():
+	if MoveUtils.matches_any_stance(valid_sequence):
 		stance_matched.emit(valid_sequence.duplicate(), current_stance)
 		end_sequence()
 	if is_new_action():
 		valid_action.emit(valid_sequence.duplicate(), current_stance)
-	
 
 func handle_new_input(current_input: String):
 	var test_sequence: Array
@@ -77,7 +70,7 @@ func handle_new_input(current_input: String):
 		test_sequence.append(input)
 	test_sequence.append(current_input)
 	
-	if any_sequence_matches(test_sequence):
+	if MoveUtils.matches_any_sequence(test_sequence, current_stance):
 		append_valid_sequence(current_input)
 		frame_buffer_limit=frame_buffer+10
 		return
@@ -90,55 +83,13 @@ func handle_new_input(current_input: String):
 	else:
 		return
 	
-	if any_sequence_matches(test_sequence):
+	if MoveUtils.matches_any_sequence(test_sequence, current_stance):
 		valid_sequence.remove_at(-1)
 		append_valid_sequence(current_input)
 		frame_buffer_limit=frame_buffer+10
 		return
 	
 
-
-func any_sequence_matches(test_sequence: Array):
-	var stance_moves: Array = Array(move_list.get_sections()).filter(func(s: String):
-		return s.begins_with(current_stance+"/"))
-	
-	for i in stance_moves.size():
-		var sequence: Array = move_list.get_value(stance_moves[i], "sequence")
-		var rshift_required: bool = move_list.get_value(stance_moves[i], "required", false)
-		if sequence_matches(test_sequence, sequence, rshift_required):
-			return true
-	return false
-	
-
-## Checks if [member test_sequence] matches [member match_sequence] up to the size of
-## [member test_sequence]. [br]
-## If [member rshift_required] is [code]true[/code], then [member test_sequence] must
-## match the [code]"(R)"[/code] inputs as well.
-func sequence_matches(test_sequence: Array, match_sequence: Array, rshift_required: bool):
-	if test_sequence.size()>match_sequence.size():
-		return false
-	for i in test_sequence.size():
-		if test_sequence[i]==match_sequence[i]:
-			continue
-		elif test_sequence[i]+"(R)"==match_sequence[i] and not rshift_required:
-			continue
-		else:
-			return false
-	return true
-	
-
-func matches_stance():
-	var stance_moves: Array = Array(move_list.get_sections()).filter(func(s: String):
-		return s.begins_with(current_stance+"/"))
-	for i in stance_moves.size():
-		var sequence: Array = move_list.get_value(stance_moves[i], "sequence")
-		var is_stance: bool = move_list.get_value(stance_moves[i], "stance", false)
-		if valid_sequence.size()==sequence.size() and is_stance:
-			var rshift_required: bool = move_list.get_value(stance_moves[i], "required", false)
-			if sequence_matches(valid_sequence, sequence, rshift_required):
-				return true
-	return false
-	
 
 func is_new_action():
 	if valid_sequence.size()<1:
