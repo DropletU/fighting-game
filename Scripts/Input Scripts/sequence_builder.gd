@@ -76,7 +76,8 @@ func handle_new_input(current_input: String):
 	if test_sequence.size()<=1:
 		return
 	
-	if current_input.begins_with(test_sequence[-2]): # If current is a superset of previous
+	# If current is a superset of previous
+	if current_input.begins_with(test_sequence[-2]) and current_input>test_sequence[-2]:
 		test_sequence.remove_at(-2)
 	else:
 		return
