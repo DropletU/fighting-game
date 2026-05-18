@@ -161,6 +161,7 @@ script = ExtResource("6_8erm5")
 script = ExtResource("5_8erm5")
 
 [node name="InputHistoryDisplay" type="Control" parent="InputSystem" unique_id=1535414987]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_left = -576.0
