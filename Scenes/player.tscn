@@ -160,6 +160,8 @@ script = ExtResource("6_8erm5")
 [node name="Executor" type="Node" parent="InputSystem" unique_id=1530260128]
 script = ExtResource("5_8erm5")
 
+[node name="MoveFunctions" type="Node" parent="InputSystem" unique_id=1106468094]
+
 [node name="InputHistoryDisplay" type="Control" parent="InputSystem" unique_id=1535414987]
 visible = false
 layout_mode = 3
