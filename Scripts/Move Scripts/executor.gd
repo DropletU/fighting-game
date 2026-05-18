@@ -19,7 +19,6 @@ func execute(keep_executing_false:=false):
 		await move_functions.call(callable, r_count)
 	current_index+=1
 	
-	print(callable_sequence.size())
 	if callable_sequence.size()>current_index:
 		execute(keep_executing_false)
 	else:
