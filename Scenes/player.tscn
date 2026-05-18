@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bjmk0qrlupy53" path="res://Scenes/input_display.tscn" id="3_6t5aa"]
 [ext_resource type="Script" uid="uid://dhvws2scqnspl" path="res://Scripts/Input Scripts/input_history_display.gd" id="3_fkybt"]
 [ext_resource type="Script" uid="uid://7gq12adr3ue4" path="res://Scripts/Input Scripts/input_parser.gd" id="4_x3wgy"]
+[ext_resource type="Script" uid="uid://b5val80qgeae8" path="res://Scripts/Move Scripts/executor.gd" id="5_8erm5"]
 [ext_resource type="Script" uid="uid://cn4s7tdve2wai" path="res://Scripts/Input Scripts/sequence_builder.gd" id="6_8erm5"]
 [ext_resource type="Texture2D" uid="uid://doob4qhdwvfmo" path="res://Assets/Player Sprites/Slime Spritesheet One.png" id="9_f1ek2"]
 
@@ -156,8 +157,10 @@ script = ExtResource("4_x3wgy")
 process_physics_priority = 2
 script = ExtResource("6_8erm5")
 
+[node name="Executor" type="Node" parent="InputSystem" unique_id=1530260128]
+script = ExtResource("5_8erm5")
+
 [node name="InputHistoryDisplay" type="Control" parent="InputSystem" unique_id=1535414987]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_left = -576.0
@@ -193,4 +196,7 @@ shape = SubResource("RectangleShape2D_cvnsp")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=478620449]
 
+[connection signal="stance_changed" from="." to="InputSystem/SequenceBuilder" method="_on_player_stance_changed"]
+[connection signal="stance_matched" from="InputSystem/SequenceBuilder" to="InputSystem/Executor" method="_on_sequence_builder_stance_matched"]
+[connection signal="valid_action" from="InputSystem/SequenceBuilder" to="InputSystem/Executor" method="_on_sequence_builder_valid_action"]
 [connection signal="animation_finished" from="SlimeSprites" to="." method="_on_slime_sprites_animation_finished"]
