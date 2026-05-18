@@ -121,3 +121,4 @@ func right_shift_updated(input: String) -> void:
 
 func _on_player_stance_changed(new_stance: String) -> void:
 	current_stance=new_stance
+	
