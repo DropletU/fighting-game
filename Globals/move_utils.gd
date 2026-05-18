@@ -38,11 +38,13 @@ func find_callable_action(move_name: String, sequence: Array) -> String:
 ## matches. [br]
 ## If no move is found, it will return [code]""[/code]. [br]
 ## WARNING: There can be two identical moves in different stances.
-func get_move(sequence: Array, stance:=""):
-	for move in moves:
+func get_move(sequence: Array, stance:="", rshift_required:=false):
+	for move: String in moves:
 		if not move.begins_with(stance):
 			continue
-		if sequence==moves[move]:
+		if sequence[0]==moves[move][0]:
+			return move
+		elif sequence[0]+"(R)"==moves[move][0] and not rshift_required:
 			return move
 	return ""
 	
