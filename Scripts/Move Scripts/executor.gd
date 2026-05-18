@@ -17,7 +17,7 @@ func execute(keep_executing_false:=false):
 	
 	if move_functions.has_method(callable):
 		await move_functions.call(callable, r_count)
-		current_index+=1
+	current_index+=1
 	
 	
 	if callable_sequence.size()>current_index:
@@ -25,6 +25,8 @@ func execute(keep_executing_false:=false):
 	else:
 		executing=false
 		current_index=0
+		callable_sequence.clear()
+	
 	
 	
 
@@ -50,8 +52,10 @@ func _on_sequence_builder_stance_matched(sequence: Array, stance: String = "stan
 	add_to_executing_queue(stance_callable, total_right_shifts, keep_executing_false)
 	
 
-
-
 func _on_sequence_builder_valid_action(sequence: Array, stance: String) -> void:
-	pass # Replace with function body.
+	var move_name = MoveUtils.get_move(sequence, stance, false)
+	var move_callable = MoveUtils.find_callable_action(move_name, sequence)
+	var total_right_shifts = MoveUtils.find_total_rshifts(sequence)
+	var keep_executing_false = MoveUtils.get_keep_executing_false(move_name)
+	add_to_executing_queue(move_callable, total_right_shifts, keep_executing_false)
 	
