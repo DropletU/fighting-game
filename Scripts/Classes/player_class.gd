@@ -13,7 +13,7 @@ class_name Player
 @export_range(1, 10, 1) var health:=4 : set = set_health
 
 
-# Movement
+# Jumping
 
 ## How high the player jumps
 @export_range(-600, -100, 5) var jump_velocity:=-400
@@ -24,6 +24,13 @@ class_name Player
 ## How much gravity affects the player after space is released
 @export_range(1500, 2400, 50) var fall_gravity:=2000 # TODO: Remove @export after finding a good value
 var jumping:=false
+
+
+# Facing
+@export var facing:="right"
+var facing_buffer:=0
+var facing_buffer_limit:=9
+
 
 # Fighting related
 
@@ -155,9 +162,29 @@ func apply_gravity(delta: float) -> void:
 		velocity.y+=jump_gravity*delta
 	else:
 		velocity.y+=fall_gravity*delta
+	var direction:=""
+	if Input.is_action_pressed("left"):
+		direction="left"
+	if Input.is_action_pressed("right"):
+		direction="right"
+	_try_turn(direction)
 	
 	
-	
+
+## Attempts to turn if the player is moving in the opposite direction of [member facing].
+## Increments [member facing_buffer] every frame until [member facing_buffer_limit] is reached,
+## or until the player stops moving in the opposite direction. [br]
+## Once [member facing_buffer] reaches [member facing_buffer_limit], [member facing] is
+## allowed to change.
+func _try_turn(direction: String) -> void:
+	if direction=="" or direction==facing:
+		facing_buffer=0
+		return
+	elif facing_buffer>=facing_buffer_limit:
+		facing=direction
+		facing_buffer=0
+	else:
+		facing_buffer+=1
 	
 
 ## Sets [member velocity].[member y] to [member jump_vel]
