@@ -81,7 +81,7 @@ signal hazard_damage_taken(last_safe_position: Vector2)
 ## [br] Emits [signal max_health_changed] after changing [member max_health].
 func set_max_health(value: int):
 	if value < 0:
-		push_error("Attempted to set max health to zero.")
+		push_warning("Attempted to set max health to zero.")
 		value = 1
 	max_health = value
 	max_health_changed.emit(value)
@@ -117,7 +117,7 @@ func change_stance(new_stance: String):
 ## Emits [signal damage_taken] afterwards.
 func take_damage(damage: int):
 	if damage<0:
-		push_error("Damage value given was negative.")
+		push_warning("Damage value given was negative.")
 		damage*=-1
 	set_health(health-damage)
 	damage_taken.emit(damage)
@@ -168,7 +168,6 @@ func apply_gravity(delta: float) -> void:
 	if Input.is_action_pressed("right"):
 		direction="right"
 	_try_turn(direction)
-	
 	
 
 ## Attempts to turn if the player is moving in the opposite direction of [member facing].
