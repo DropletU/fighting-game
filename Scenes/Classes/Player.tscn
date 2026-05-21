@@ -4,3 +4,4 @@
 
 [node name="Player" type="CharacterBody2D" unique_id=1384659598]
 script = ExtResource("1_hy5s7")
+fall_gravity = 1000

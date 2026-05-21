@@ -11,13 +11,29 @@ class_name Player
 @export_range(1, 10, 1) var max_health:=4 : set = set_max_health
 ## The players current health
 @export_range(1, 10, 1) var health:=4 : set = set_health
+
+
+# Movement
+
+## How high the player jumps
+@export_range(-600, -100, 5) var jump_velocity:=-400
+## How high the player double jumps
+@export_range(-400, -100, 5) var double_jump_velocity:=-250
+## How much gravity affects the player while space is pressed
+@export_range(600, 1800, 50) var jump_gravity:=1000 # TODO: Remove @export after finding a good value
+## How much gravity affects the player after space is released
+@export_range(1500, 2400, 50) var fall_gravity:=2000 # TODO: Remove @export after finding a good value
+var jumping:=false
+
+# Fighting related
+
 ## The players current stance
 @export var stance:="standing" : set = change_stance
 ## The players base damage
 @export_range(5, 25, 1) var base_damage:=10
 ## The location the [Player]'s [member global_position] will be set to when
 ## taking hazard damage
-@export var hazard_respawn_point:=Vector2(0, 0) : set = set_hazard_respawn_point
+var hazard_respawn_point:=Vector2(0, 0) : set = set_hazard_respawn_point
 ## Whether the player is invincible or not
 @export var invincible:=false : set = set_invincibility
 
@@ -32,7 +48,7 @@ class_name Player
 ## The [CollisionShape2D] that detects attacks that hit it
 @onready var hurtbox: CollisionShape2D = $Hurtbox
 ## The [Control] node that displays all the UI
-@export var ui: Control # TODO Add a UI scene that handles the ui
+@onready var ui: Control # TODO Add a UI scene that handles the ui
 
 
 # Signals
@@ -51,6 +67,7 @@ signal player_died
 signal hazard_damage_taken(last_safe_position: Vector2)
 
 
+# Basic Functions
 
 ## Sets the players [member max_health] to the given [member value]. If [member value] is less
 ## than [member health], it also calls [method set_health] and sets it to [member max_health].
@@ -119,4 +136,32 @@ func set_hazard_respawn_point(respawn_point: Vector2):
 func set_invincibility(value: bool):
 	invincible=value
 	hurtbox.disabled=value
+	
+
+
+# Mechanics
+
+func _physics_process(delta: float) -> void:
+	if jumping and not (velocity.y < 0 and Input.is_action_pressed("jump")):
+			jumping = false # If the player lets go of space or starts falling
+	if not is_on_floor():
+		apply_gravity(delta)
+	
+
+## Applies gravity to the player based on whether they're jumping or not, and
+## sets jumping to false when they s
+func apply_gravity(delta: float) -> void:
+	if jumping:
+		velocity.y+=jump_gravity*delta
+	else:
+		velocity.y+=fall_gravity*delta
+	
+	
+	
+	
+
+## Sets [member velocity].[member y] to [member jump_vel]
+func _jump(jump_vel: float=-400) -> void:
+	velocity.y=jump_vel
+	jumping=true
 	
