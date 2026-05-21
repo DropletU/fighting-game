@@ -69,6 +69,6 @@ func get_icon(input: String):
 		"(R)":
 			texture.region = Rect2(16, 64, 16, 16)
 		_:
-			push_error("No valid input found in get_icon().")
+			push_warning("No valid input found in get_icon().")
 	return texture
 	
