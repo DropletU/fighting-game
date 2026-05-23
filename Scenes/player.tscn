@@ -10,21 +10,13 @@
 [ext_resource type="Script" uid="uid://cpvtgdc86tm88" path="res://Scripts/Move Scripts/move_functions.gd" id="6_f1ek2"]
 [ext_resource type="Texture2D" uid="uid://c7364i8lls5vi" path="res://Assets/Player Sprites/Slime Spritesheet.png" id="9_f1ek2"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_tx1dd"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1ek2"]
 atlas = ExtResource("9_f1ek2")
 region = Rect2(0, 600, 200, 200)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gymyn"]
 atlas = ExtResource("9_f1ek2")
 region = Rect2(200, 600, 200, 200)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_pu2lt"]
-atlas = ExtResource("9_f1ek2")
-region = Rect2(400, 600, 200, 200)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ukyrk"]
-atlas = ExtResource("9_f1ek2")
-region = Rect2(600, 600, 200, 200)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7dp3o"]
 atlas = ExtResource("9_f1ek2")
@@ -89,21 +81,15 @@ region = Rect2(800, 0, 200, 200)
 [sub_resource type="SpriteFrames" id="SpriteFrames_h4iuc"]
 animations = [{
 "frames": [{
-"duration": 0.6,
-"texture": SubResource("AtlasTexture_tx1dd")
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_f1ek2")
 }, {
-"duration": 2.0,
+"duration": 0.5,
 "texture": SubResource("AtlasTexture_gymyn")
-}, {
-"duration": 0.9,
-"texture": SubResource("AtlasTexture_pu2lt")
-}, {
-"duration": 0.4,
-"texture": SubResource("AtlasTexture_ukyrk")
 }],
 "loop": false,
 "name": &"BodySlam",
-"speed": 3.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -177,6 +163,7 @@ size = Vector2(56, 56)
 [node name="Player" type="CharacterBody2D" unique_id=302819608]
 script = ExtResource("1_cvnsp")
 SPEED = 250.0
+JUMP_VELOCITY = -600.0
 
 [node name="InputSystem" type="Node2D" parent="." unique_id=990762491]
 
@@ -216,6 +203,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="InputDisplay" parent="InputSystem" unique_id=1057187563 instance=ExtResource("3_6t5aa")]
+visible = false
 offset_left = 338.0
 offset_top = -318.0
 offset_right = 570.0
@@ -227,8 +215,6 @@ scale = Vector2(0.49999997, 0.49999997)
 sprite_frames = SubResource("SpriteFrames_h4iuc")
 animation = &"BodySlam"
 autoplay = "Idle"
-frame = 3
-frame_progress = 1.0
 
 [node name="Hitbox" type="CollisionShape2D" parent="." unique_id=606276087]
 visible = false

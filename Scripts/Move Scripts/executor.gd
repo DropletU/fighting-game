@@ -1,6 +1,7 @@
 extends Node
 
 @onready var move_functions = $"../MoveFunctions"
+@onready var player = $"../.."
 
 var executing:=false
 
@@ -16,7 +17,9 @@ func execute(keep_executing_false:=false):
 	
 	if move_functions.has_method(callable):
 		print("executing ", callable)
+		player.attacking=true
 		await move_functions.call(callable, r_count)
+		player.attacking=false
 	current_index+=1
 	
 	if callable_sequence.size()>current_index:

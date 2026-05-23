@@ -4,10 +4,14 @@ extends Node
 @onready var slime_sprites = $"../../SlimeSprites"
 @onready var input_history = $"../InputHistory"
 
+# Dash
+
 func dash_stance(_r_count: int):
 	player.change_stance("dash")
 	change_stance_after_delay("standing", 1.0)
 	
+
+# Sword Stance
 
 func counter_stance(_r_count: int):
 	player.change_stance("counter")
@@ -41,3 +45,68 @@ func change_stance_after_delay(stance: String, time_sec: float):
 	await get_tree().create_timer(time_sec).timeout
 	player.change_stance(stance)
 	
+
+
+# Slam Uppercut Slam
+
+func standing_triple_slam_one(_r_count:=0):
+	var direction=1
+	if player.facing=="left":
+		direction=-1
+	
+	slime_sprites.play("BodySlam")
+	player.velocity.y=-25
+	player.velocity.x=1250*direction
+	await slime_sprites.frame_changed
+	player.velocity.y=0
+	player.velocity.x=1250*direction
+	await slime_sprites.animation_finished
+	
+	slime_sprites.play("Idle")
+	
+
+func standing_triple_slam_two(_r_count:=0):
+	var direction=-1
+	if player.facing=="left":
+		direction=1
+		slime_sprites.flip_h=false
+	else:
+		slime_sprites.flip_h=true
+	
+	slime_sprites.play("BodySlam")
+	player.velocity.y=-25
+	player.velocity.x=1250*direction
+	await slime_sprites.frame_changed
+	player.velocity.y=0
+	player.velocity.x=1250*direction
+	await slime_sprites.animation_finished
+	
+	if player.facing=="left":
+		player.facing="right"
+	else:
+		player.facing="left"
+	
+	slime_sprites.play("Idle")
+
+func standing_triple_slam_three(_r_count:=0):
+	var direction=-1
+	if player.facing=="left":
+		direction=1
+		slime_sprites.flip_h=false
+	else:
+		slime_sprites.flip_h=true
+	
+	slime_sprites.play("BodySlam")
+	player.velocity.y=-25
+	player.velocity.x=1250*direction
+	await slime_sprites.frame_changed
+	player.velocity.y=0
+	player.velocity.x=1250*direction
+	await slime_sprites.animation_finished
+	
+	if player.facing=="left":
+		player.facing="right"
+	else:
+		player.facing="left"
+	
+	slime_sprites.play("Idle")

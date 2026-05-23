@@ -19,6 +19,8 @@ var change_facing_buffer:=0
 
 var stance := "standing"
 
+var attacking:=false
+
 ### Player Stats
 
 # Velocity
@@ -35,30 +37,31 @@ var stance := "standing"
 
 
 func _physics_process(delta: float) -> void:
-	if not is_on_floor():
-		velocity += get_gravity() * delta
-	
-	var direction := Input.get_axis("left", "right")
-	if direction:
-		velocity.x = direction * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-	
-	
-	if is_on_floor():
-		coyote_timer=coyote_time
-	if Input.is_action_just_pressed("jump"):
-		jump_buffer_timer=jump_buffer_time
-	
-	if jump_buffer_timer > 0 and coyote_timer > 0.0:
-		velocity.y=JUMP_VELOCITY
-		jump_buffer_timer = 0.0
-		coyote_timer = 0.0
-	
-	coyote_timer-=delta
-	jump_buffer_timer-=delta
-	
-	handle_animations()
+	if not attacking:
+		if not is_on_floor():
+			velocity += get_gravity() * delta
+		
+		var direction := Input.get_axis("left", "right")
+		if direction:
+			velocity.x = direction * SPEED
+		else:
+			velocity.x = move_toward(velocity.x, 0, SPEED)
+		
+		
+		if is_on_floor():
+			coyote_timer=coyote_time
+		if Input.is_action_just_pressed("jump"):
+			jump_buffer_timer=jump_buffer_time
+		
+		if jump_buffer_timer > 0 and coyote_timer > 0.0:
+			velocity.y=JUMP_VELOCITY
+			jump_buffer_timer = 0.0
+			coyote_timer = 0.0
+		
+		coyote_timer-=delta
+		jump_buffer_timer-=delta
+		
+		handle_animations()
 	
 	move_and_slide()
 	
