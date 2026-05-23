@@ -235,6 +235,8 @@ visible = false
 position = Vector2(0, 19)
 shape = SubResource("RectangleShape2D_cvnsp")
 
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1628613176]
+
 [connection signal="stance_changed" from="." to="InputSystem/SequenceBuilder" method="_on_player_stance_changed"]
 [connection signal="stance_matched" from="InputSystem/SequenceBuilder" to="InputSystem/Executor" method="_on_sequence_builder_stance_matched"]
 [connection signal="valid_action" from="InputSystem/SequenceBuilder" to="InputSystem/Executor" method="_on_sequence_builder_valid_action"]
