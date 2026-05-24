@@ -106,7 +106,6 @@ size = Vector2(72, 36)
 
 [node name="Player" type="CharacterBody2D" unique_id=1384659598]
 script = ExtResource("1_fiu32")
-fall_gravity = 1000
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=563924040]
 libraries/ = SubResource("AnimationLibrary_2ortc")

@@ -5,6 +5,7 @@ extends CharacterBody2D
 
 # Stats
 
+@export_category("Health")
 ## The max health the player can have
 @export_range(1, 10, 1) var max_health:=4 : set = set_max_health
 ## The players current health
@@ -13,14 +14,13 @@ extends CharacterBody2D
 
 # Jumping
 
+@export_category("Jump")
 ## How high the player jumps
 @export var jump_velocity:=-400
 ## How high the player double jumps
 @export_range(-400, -100, 5) var double_jump_velocity:=-250
-## How much gravity affects the player while space is pressed
-@export var jump_gravity:=1800.0 # TODO: Remove @export after finding a good value
-## How much gravity affects the player after space is released
-@export var fall_gravity:=2000.0 # TODO: Remove @export after finding a good value
+## How much gravity affects the player
+@export var fall_gravity:=1800.0 # TODO: Remove @export after finding a good value
 var jumping:=false
 
 var coyote_time:=0.1
@@ -32,14 +32,16 @@ var jump_buffer_limit:=0.1
 # Movement
 
 ## The max speed the player can move
-@export_range(-600.0, 600.0) var max_speed:=400
+var max_speed:=350
 ## The players acceleration to the max speed
-@export_range(4000, 12000) var acceleration:=8000
+var acceleration:=8000
 ## The friction the player experiences every frame
-@export_range(2000, 6000) var friction:=4000
+var friction:=4000
 
 
 # Facing
+
+@export_category("Face")
 @export var facing:="right"
 var facing_buffer:=0
 var facing_buffer_limit:=9
@@ -47,6 +49,7 @@ var facing_buffer_limit:=9
 
 # Fighting related
 
+@export_category("Fighting")
 ## The players current stance
 @export var stance:="standing" : set = change_stance
 ## The players base damage
@@ -197,11 +200,9 @@ func handle_movement(delta):
 ## Applies gravity to the player based on whether they're jumping or not, and
 ## sets jumping to false when they stop rising.
 func apply_gravity(delta: float) -> void:
-	if jumping:
-		velocity.y+=jump_gravity*delta
-	else:
-		print(fall_gravity)
-		velocity.y+=fall_gravity*delta
+	velocity.y+=fall_gravity*delta
+	if velocity.y>abs(jump_velocity):
+		velocity.y=abs(jump_velocity)
 	
 
 ## Attempts to turn if the player is moving in the opposite direction of [member facing].
@@ -234,6 +235,9 @@ func handle_jumping(delta: float):
 	if jumping:
 		if velocity.y>0 or Input.is_action_just_released("jump"):
 			jumping=false
+	else:
+		if velocity.y<0:
+			velocity.y*=0.8
 	if is_on_floor():
 		coyote_time=0.0
 	if Input.is_action_just_pressed("jump"):
