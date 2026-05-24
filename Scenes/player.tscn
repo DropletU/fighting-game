@@ -213,7 +213,7 @@ offset_bottom = -236.0
 position = Vector2(5.9604645e-08, -1.3552527e-20)
 scale = Vector2(0.49999997, 0.49999997)
 sprite_frames = SubResource("SpriteFrames_h4iuc")
-animation = &"BodySlam"
+animation = &"Idle"
 autoplay = "Idle"
 
 [node name="Hitbox" type="CollisionShape2D" parent="." unique_id=606276087]

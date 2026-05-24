@@ -146,3 +146,5 @@ tile_set = SubResource("TileSet_8gbba")
 
 [node name="Player" parent="." unique_id=1384659598 instance=ExtResource("2_bo1nx")]
 position = Vector2(1590, -762)
+jump_velocity = -800
+fall_gravity = 4000.0

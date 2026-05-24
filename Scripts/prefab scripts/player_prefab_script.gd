@@ -14,14 +14,19 @@ extends CharacterBody2D
 # Jumping
 
 ## How high the player jumps
-@export_range(-600, -100, 5) var jump_velocity:=-400
+@export var jump_velocity:=-400
 ## How high the player double jumps
 @export_range(-400, -100, 5) var double_jump_velocity:=-250
 ## How much gravity affects the player while space is pressed
-@export_range(600, 1800, 50) var jump_gravity:=1000 # TODO: Remove @export after finding a good value
+@export var jump_gravity:=1800.0 # TODO: Remove @export after finding a good value
 ## How much gravity affects the player after space is released
-@export_range(1500, 2400, 50) var fall_gravity:=2000 # TODO: Remove @export after finding a good value
+@export var fall_gravity:=2000.0 # TODO: Remove @export after finding a good value
 var jumping:=false
+
+var coyote_time:=0.1
+var coyote_time_limit:=0.1
+var jump_buffer:=0.1
+var jump_buffer_limit:=0.1
 
 
 # Movement
@@ -158,8 +163,7 @@ func set_invincibility(value: bool):
 
 func _physics_process(delta: float) -> void:
 	# Jumping/gravity handling
-	if jumping and not (velocity.y < 0 and Input.is_action_pressed("jump")):
-			jumping = false # If the player lets go of space or starts falling
+	handle_jumping(delta)
 	if not is_on_floor():
 		apply_gravity(delta)
 	
@@ -196,9 +200,8 @@ func apply_gravity(delta: float) -> void:
 	if jumping:
 		velocity.y+=jump_gravity*delta
 	else:
+		print(fall_gravity)
 		velocity.y+=fall_gravity*delta
-	if (velocity.y<0 or Input.is_action_just_released("jump")) and jumping:
-		jumping = false
 	
 
 ## Attempts to turn if the player is moving in the opposite direction of [member facing].
@@ -227,10 +230,27 @@ func force_turn(direction: String) -> void:
 		spritesheet.flip_h=false
 	
 
+func handle_jumping(delta: float):
+	if jumping:
+		if velocity.y>0 or Input.is_action_just_released("jump"):
+			jumping=false
+	if is_on_floor():
+		coyote_time=0.0
+	if Input.is_action_just_pressed("jump"):
+		jump_buffer=0.0
+	if jump_buffer<jump_buffer_limit and coyote_time<coyote_time_limit:
+		if not jumping:
+			_jump(jump_velocity)
+	coyote_time+=delta
+	jump_buffer+=delta
+	
+
 ## Sets [member velocity].[member y] to [member jump_vel]
 func _jump(jump_vel: float=-400) -> void:
-	velocity.y=jump_vel
+	jump_buffer=jump_buffer_limit
+	coyote_time=coyote_time_limit
 	jumping=true
+	velocity.y=jump_vel
 	
 
 ## Plays the animation given from [member anim] in the [member animation_player]. [br]
