@@ -231,9 +231,11 @@ func force_turn(direction: String) -> void:
 		spritesheet.flip_h=false
 	
 
+## Handles [member coyote_time] and [member jump_buffer] to decide whether
+## to jump or not.
 func handle_jumping(delta: float):
 	if jumping:
-		if velocity.y>0 or Input.is_action_just_released("jump"):
+		if velocity.y>0 or not Input.is_action_pressed("jump"):
 			jumping=false
 	else:
 		if velocity.y<0:
