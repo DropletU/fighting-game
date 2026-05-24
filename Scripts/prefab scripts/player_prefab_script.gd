@@ -218,7 +218,7 @@ func _try_turn(direction: String) -> void:
 
 ## Sets [member facing] to [member direction] and resets [member facing_buffer].
 func force_turn(direction: String) -> void:
-	var spritesheet = $Spritesheet
+	var spritesheet = $Resizer/Spritesheet
 	facing=direction
 	facing_buffer=0
 	if facing=="left":

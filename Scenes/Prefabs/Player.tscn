@@ -10,7 +10,7 @@ step = 0.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Spritesheet:frame")
+tracks/0/path = NodePath("Resizer/Spritesheet:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -25,7 +25,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Spritesheet:frame")
+tracks/0/path = NodePath("Resizer/Spritesheet:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -37,7 +37,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Spritesheet:rotation")
+tracks/1/path = NodePath("Resizer/Spritesheet:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -49,7 +49,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Spritesheet:scale")
+tracks/2/path = NodePath("Resizer/Spritesheet:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -66,7 +66,7 @@ step = 0.083333336
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Spritesheet:frame")
+tracks/0/path = NodePath("Resizer/Spritesheet:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -83,7 +83,7 @@ step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Spritesheet:frame")
+tracks/0/path = NodePath("Resizer/Spritesheet:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -102,7 +102,7 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2ortc"]
-size = Vector2(143, 79)
+size = Vector2(72, 36)
 
 [node name="Player" type="CharacterBody2D" unique_id=1384659598]
 script = ExtResource("1_fiu32")
@@ -111,7 +111,10 @@ fall_gravity = 1000
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=563924040]
 libraries/ = SubResource("AnimationLibrary_2ortc")
 
-[node name="Spritesheet" type="Sprite2D" parent="." unique_id=1422613868]
+[node name="Resizer" type="Node2D" parent="." unique_id=1397241231]
+scale = Vector2(0.5, 0.5)
+
+[node name="Spritesheet" type="Sprite2D" parent="Resizer" unique_id=1422613868]
 texture = ExtResource("2_42ksm")
 hframes = 10
 vframes = 10
@@ -121,5 +124,5 @@ vframes = 10
 [node name="Hitbox" type="CollisionShape2D" parent="." unique_id=1363941198]
 
 [node name="Hurtbox" type="CollisionShape2D" parent="." unique_id=748243845]
-position = Vector2(0, 53)
+position = Vector2(0, 29)
 shape = SubResource("RectangleShape2D_2ortc")
