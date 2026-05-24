@@ -157,5 +157,5 @@ vframes = 10
 [node name="Hitbox" type="CollisionShape2D" parent="." unique_id=1363941198]
 
 [node name="Hurtbox" type="CollisionShape2D" parent="." unique_id=748243845]
-position = Vector2(1.5, 85.5)
+position = Vector2(0, 53)
 shape = SubResource("RectangleShape2D_2ortc")
