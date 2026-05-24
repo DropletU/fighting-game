@@ -141,7 +141,7 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cvnsp"]
 size = Vector2(56, 56)
 
-[node name="Player" type="CharacterBody2D" unique_id=302819608]
+[node name="Player2" type="CharacterBody2D" unique_id=302819608]
 script = ExtResource("1_cvnsp")
 SPEED = 250.0
 
@@ -192,7 +192,7 @@ offset_bottom = -236.0
 position = Vector2(-3.8146973e-06, -17.000004)
 scale = Vector2(0.49999997, 0.49999997)
 sprite_frames = SubResource("SpriteFrames_h4iuc")
-animation = &"SwordStance"
+animation = &"Idle"
 autoplay = "Idle"
 
 [node name="Hitbox" type="CollisionShape2D" parent="." unique_id=606276087]
