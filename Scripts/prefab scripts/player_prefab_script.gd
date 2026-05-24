@@ -177,9 +177,9 @@ func handle_movement(delta):
 		velocity.x += acceleration*direction*delta
 		velocity.x = clamp(velocity.x, -max_speed, max_speed)
 	if abs(velocity.x)>75.0:
-		animation_player.play("Walking")
+		play_animation("Walking")
 	elif animation_player.current_animation!="Idle":
-		animation_player.play("Idle")
+		play_animation("Idle")
 	
 	match direction:
 		1:
