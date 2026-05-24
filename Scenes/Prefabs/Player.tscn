@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dl65cv50aixt7"]
 
-[ext_resource type="Script" uid="uid://dre248bmbx1qo" path="res://Scripts/prefab scripts/player_prefab_script.gd" id="1_fiu32"]
+[ext_resource type="Script" uid="uid://dre248bmbx1qo" path="res://Scripts/Prefab Scripts/player_prefab_script.gd" id="1_fiu32"]
 [ext_resource type="Texture2D" uid="uid://c7364i8lls5vi" path="res://Assets/Player Sprites/Slime Spritesheet.png" id="2_42ksm"]
 
 [sub_resource type="Animation" id="Animation_imvdw"]
@@ -57,42 +57,6 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(1, 1)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Spritesheet:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath(".:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Camera2D:position")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_8wf5m"]
