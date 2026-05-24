@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dl65cv50aixt7"]
 
-[ext_resource type="Script" uid="uid://bmxjnrv4ltqhv" path="res://Scripts/Classes/player_class.gd" id="1_hy5s7"]
+[ext_resource type="Script" uid="uid://bmxjnrv4ltqhv" path="res://Scripts/prefab scripts/player_prefab_script.gd" id="1_hy5s7"]
 
 [node name="Player" type="CharacterBody2D" unique_id=1384659598]
 script = ExtResource("1_hy5s7")

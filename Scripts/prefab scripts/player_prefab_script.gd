@@ -1,7 +1,5 @@
 extends CharacterBody2D
 
-class_name Player
-
 # TODO: Add a way to save player stats as they update
 
 
