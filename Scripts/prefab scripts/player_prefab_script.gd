@@ -292,3 +292,8 @@ func play_animation(anim: String, backwards:=false, force:=false):
 			animation_player.play(anim)
 	last_animation=anim
 	
+
+func apply_velocity(x:=0.0, y:=0.0, add_x:=false, add_y:=false):
+	velocity.x = velocity.x + x if add_x else x
+	velocity.y = velocity.y + y if add_y else y
+		
