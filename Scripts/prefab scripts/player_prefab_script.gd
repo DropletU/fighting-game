@@ -16,11 +16,11 @@ extends CharacterBody2D
 
 @export_category("Jump")
 ## How high the player jumps
-@export var jump_velocity:=-400
+var jump_velocity:=-650
 ## How high the player double jumps
-@export_range(-400, -100, 5) var double_jump_velocity:=-250
+@export_range(-400, -100, 5) var double_jump_velocity:=-250 # TODO: Remove @export after finding a good value
 ## How much gravity affects the player
-@export var fall_gravity:=1800.0 # TODO: Remove @export after finding a good value
+var fall_gravity:=1300.0
 var jumping:=false
 
 var coyote_time:=0.1
@@ -37,7 +37,8 @@ var max_speed:=350
 var acceleration:=8000
 ## The friction the player experiences every frame
 var friction:=4000
-
+## The last animation the player has entered
+var last_animation:="Idle"
 
 # Facing
 
@@ -59,6 +60,7 @@ var facing_buffer_limit:=9
 var hazard_respawn_point:=Vector2(0, 0) : set = set_hazard_respawn_point
 ## Whether the player is invincible or not
 @export var invincible:=false : set = set_invincibility
+var attacking:=false
 
 # References
 
@@ -165,6 +167,8 @@ func set_invincibility(value: bool):
 # Mechanics
 
 func _physics_process(delta: float) -> void:
+	if attacking:
+		return
 	# Jumping/gravity handling
 	handle_jumping(delta)
 	if not is_on_floor():
@@ -178,15 +182,13 @@ func _physics_process(delta: float) -> void:
 
 ## Handles left and right movement and applies friction every frame
 func handle_movement(delta):
-	velocity.x = move_toward(velocity.x, 0.0, friction*delta)
 	var direction = Input.get_axis("left", "right")
+	velocity.x = move_toward(velocity.x, 0.0, friction*delta)
 	if direction:
 		velocity.x += acceleration*direction*delta
 		velocity.x = clamp(velocity.x, -max_speed, max_speed)
-	if abs(velocity.x)>140:
-		play_animation("Walking")
-	elif animation_player.current_animation!="Idle":
-		play_animation("Idle")
+	
+	handle_walking_animation()
 	
 	match direction:
 		1.0:
@@ -195,6 +197,16 @@ func handle_movement(delta):
 			_try_turn("left")
 		0.0:
 			_try_turn("")
+	
+
+func handle_walking_animation():
+	var current = animation_player.current_animation
+	if stance!="standing":
+		return
+	if abs(velocity.x)>140 and current!="Walking":
+		play_animation("Walking")
+	elif last_animation!="Idle" and current=="":
+		play_animation("Idle")
 	
 
 ## Applies gravity to the player based on whether they're jumping or not, and
@@ -239,7 +251,7 @@ func handle_jumping(delta: float):
 			jumping=false
 	else:
 		if velocity.y<0:
-			velocity.y*=0.8
+			velocity.y=move_toward(velocity.y, 0, 54)
 	if is_on_floor():
 		coyote_time=0.0
 	if Input.is_action_just_pressed("jump"):
@@ -262,15 +274,21 @@ func _jump(jump_vel: float=-400) -> void:
 ## Plays the animation given from [member anim] in the [member animation_player]. [br]
 ## If [member anim] doesn't match any animation in [member animation_player],
 ## nothing happens. [br]
+## If [member backwards] is [code]true[/code], it will play the animation backwards. [br]
 ## If [member force] is [code]true[/code], it will override the current animation and
 ## start the one given immediately.
-func play_animation(anim: String, force:=false):
-	if not anim in animation_player.get_animation_list():
+func play_animation(anim: String, backwards:=false, force:=false):
+	if anim not in animation_player.get_animation_list():
 		return
 	if force:
-		animation_player.play(anim)
+		if backwards: animation_player.play_backwards(anim)
+		else: animation_player.play(anim)
 	else:
 		if animation_player.is_playing():
 			await animation_player.animation_finished
-		animation_player.play(anim)
+		if backwards:
+			animation_player.play_backwards(anim)
+		else: 
+			animation_player.play(anim)
+	last_animation=anim
 	

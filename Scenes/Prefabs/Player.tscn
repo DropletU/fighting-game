@@ -2,11 +2,17 @@
 
 [ext_resource type="Script" uid="uid://dre248bmbx1qo" path="res://Scripts/Prefab Scripts/player_prefab_script.gd" id="1_fiu32"]
 [ext_resource type="Texture2D" uid="uid://c7364i8lls5vi" path="res://Assets/Player Sprites/Slime Spritesheet.png" id="2_42ksm"]
+[ext_resource type="Script" uid="uid://cs7ih4k2fimg0" path="res://Scripts/Input Scripts/input_history.gd" id="2_p8iar"]
+[ext_resource type="Script" uid="uid://7gq12adr3ue4" path="res://Scripts/Input Scripts/input_parser.gd" id="3_r4csm"]
+[ext_resource type="Script" uid="uid://cn4s7tdve2wai" path="res://Scripts/Input Scripts/sequence_builder.gd" id="4_6srnc"]
+[ext_resource type="Script" uid="uid://b5val80qgeae8" path="res://Scripts/Move Scripts/executor.gd" id="5_7vt35"]
+[ext_resource type="Script" uid="uid://cpvtgdc86tm88" path="res://Scripts/Move Scripts/move_functions.gd" id="6_7lrdb"]
+[ext_resource type="Script" uid="uid://dhvws2scqnspl" path="res://Scripts/Input Scripts/input_history_display.gd" id="7_avmds"]
+[ext_resource type="PackedScene" uid="uid://bjmk0qrlupy53" path="res://Scenes/input_display.tscn" id="8_7myqs"]
 
 [sub_resource type="Animation" id="Animation_imvdw"]
 resource_name = "Idle"
-length = 0.001
-step = 0.0
+length = 0.033333335
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -61,7 +67,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_8wf5m"]
 resource_name = "SwordStance"
-length = 0.41666666
+length = 0.5
 step = 0.083333336
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -70,7 +76,7 @@ tracks/0/path = NodePath("Resizer/Spritesheet:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.083333336, 0.16666669, 0.25, 0.33333334, 0.41666666),
+"times": PackedFloat32Array(0.08333334, 0.16666669, 0.25000003, 0.33333334, 0.4166667, 0.5),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [10, 11, 12, 13, 14, 20]
@@ -107,8 +113,53 @@ size = Vector2(72, 36)
 [node name="Player" type="CharacterBody2D" unique_id=1384659598]
 script = ExtResource("1_fiu32")
 
+[node name="InputSystem" type="Node2D" parent="." unique_id=57665178]
+
+[node name="InputHistory" type="Node" parent="InputSystem" unique_id=2054856332]
+script = ExtResource("2_p8iar")
+
+[node name="InputParser" type="Node" parent="InputSystem" unique_id=1992681858]
+process_physics_priority = 1
+script = ExtResource("3_r4csm")
+
+[node name="SequenceBuilder" type="Node" parent="InputSystem" unique_id=900769459]
+process_physics_priority = 2
+script = ExtResource("4_6srnc")
+
+[node name="Executor" type="Node" parent="InputSystem" unique_id=1794993323]
+script = ExtResource("5_7vt35")
+
+[node name="MoveFunctions" type="Node" parent="InputSystem" unique_id=1014776679]
+script = ExtResource("6_7lrdb")
+
+[node name="InputHistoryDisplay" type="Control" parent="InputSystem" unique_id=179884700]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_left = -576.0
+offset_top = -324.0
+offset_right = -353.0
+offset_bottom = 324.0
+script = ExtResource("7_avmds")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InputSystem/InputHistoryDisplay" unique_id=23745676]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InputDisplay" parent="InputSystem" unique_id=1057187563 instance=ExtResource("8_7myqs")]
+visible = false
+offset_left = 338.0
+offset_top = -318.0
+offset_right = 570.0
+offset_bottom = -236.0
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=563924040]
 libraries/ = SubResource("AnimationLibrary_2ortc")
+autoplay = &"Idle"
 
 [node name="Resizer" type="Node2D" parent="." unique_id=1397241231]
 scale = Vector2(0.5, 0.5)
@@ -125,3 +176,7 @@ vframes = 10
 [node name="Hurtbox" type="CollisionShape2D" parent="." unique_id=748243845]
 position = Vector2(0, 29)
 shape = SubResource("RectangleShape2D_2ortc")
+
+[connection signal="stance_changed" from="." to="InputSystem/SequenceBuilder" method="_on_player_stance_changed"]
+[connection signal="stance_matched" from="InputSystem/SequenceBuilder" to="InputSystem/Executor" method="_on_sequence_builder_stance_matched"]
+[connection signal="valid_action" from="InputSystem/SequenceBuilder" to="InputSystem/Executor" method="_on_sequence_builder_valid_action"]
