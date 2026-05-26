@@ -21,7 +21,6 @@ func spawn_new_player(spawn_location:=respawn_point):
 	_handle_new_player_instance_info(instance, spawn_location)
 	add_child(instance)
 	player = instance
-	print(player)
 	
 
 func _handle_new_player_instance_info(instance, spawn_location: Vector2):
