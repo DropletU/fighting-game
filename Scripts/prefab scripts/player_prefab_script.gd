@@ -7,9 +7,6 @@ extends CharacterBody2D
 
 enum State {NORMAL, ATTACKING, HITSTUN, DASHING, DEAD}
 var current_state: = State.NORMAL : set = set_current_state
-## The respawn point the player will go after dying or taking hazard damage
-@export var respawn_point:=global_position
-# TODO: Separate death and hazard damage respawn points
 
 # Stats
 
@@ -69,6 +66,9 @@ var facing_buffer_limit:=9
 ## The location the [Player]'s [member global_position] will be set to when
 ## taking hazard damage
 var hazard_respawn_point:=Vector2(0, 0) : set = set_hazard_respawn_point
+## The respawn point the player will go after dying or taking hazard damage
+@export var respawn_point:=Vector2(0, 0) : set = set_respawn_point
+# TODO: Separate death and hazard death respawn points
 ## Whether the player is invincible or not
 @export var invincible:=false : set = set_invincibility
 
@@ -106,6 +106,8 @@ signal hazard_damage_taken(last_safe_position: Vector2)
 
 func _ready() -> void:
 	add_to_group("Player")
+	respawn_point=global_position
+	z_index=1
 	
 
 func set_current_state(state):
@@ -180,7 +182,7 @@ func take_damage(damage: int):
 ## Emits [signal player_died].
 func died():
 	player_died.emit()
-	global_position=respawn_point
+	GameManager.player_died()
 	
 
 ## Calls [method take_damage] and emits [signal hazard_damage_taken].
@@ -189,9 +191,14 @@ func take_hazard_damage(damage:=1):
 	hazard_damage_taken.emit()
 	
 
-## Sets [member hazard_respawn_point] to [member respawn_point].
-func set_hazard_respawn_point(respawn_point: Vector2):
-	hazard_respawn_point=respawn_point
+## Sets [member hazard_respawn_point] to [member respawn_pos].
+func set_hazard_respawn_point(respawn_pos: Vector2):
+	hazard_respawn_point=respawn_pos
+	
+
+func set_respawn_point(respawn_pos: Vector2):
+	GameManager.respawn_point=respawn_pos
+	respawn_point=respawn_pos
 	
 
 ## Sets [member invincible] and [member hurtbox].[member disabled] to [member value].
