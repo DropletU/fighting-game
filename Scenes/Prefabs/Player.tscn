@@ -110,7 +110,7 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2ortc"]
 size = Vector2(72, 36)
 
-[node name="Player" type="CharacterBody2D" unique_id=1384659598]
+[node name="Player" type="CharacterBody2D" unique_id=1384659598 groups=["Player"]]
 script = ExtResource("1_fiu32")
 
 [node name="InputSystem" type="Node2D" parent="." unique_id=57665178]

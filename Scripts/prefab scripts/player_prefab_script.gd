@@ -104,6 +104,10 @@ signal hazard_damage_taken(last_safe_position: Vector2)
 
 # Basic Functions
 
+func _ready() -> void:
+	add_to_group("Player")
+	
+
 func set_current_state(state):
 	match state:
 		State.NORMAL:
@@ -176,6 +180,7 @@ func take_damage(damage: int):
 ## Emits [signal player_died].
 func died():
 	player_died.emit()
+	global_position=respawn_point
 	
 
 ## Calls [method take_damage] and emits [signal hazard_damage_taken].
@@ -213,6 +218,9 @@ func _physics_process(delta: float) -> void:
 	if apply_gravity:
 		if not is_on_floor():
 			handle_gravity(delta)
+	
+	if Input.is_action_just_pressed("test_input"):
+		died()
 	
 	move_and_slide()
 	
