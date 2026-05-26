@@ -7,6 +7,9 @@ extends CharacterBody2D
 
 enum State {NORMAL, ATTACKING, HITSTUN, DASHING, DEAD}
 var current_state: = State.NORMAL : set = set_current_state
+## The respawn point the player will go after dying or taking hazard damage
+@export var respawn_point:=global_position
+# TODO: Separate death and hazard damage respawn points
 
 # Stats
 
@@ -26,11 +29,10 @@ var jump_velocity:=-650
 ## How high the player double jumps
 @export_range(-400, -100, 5) var double_jump_velocity:=-250 # TODO: Remove @export after finding a good value
 ## How much gravity affects the player
-var fall_gravity:=1300.0
 var jumping:=false
-
+# Gravity
+var fall_gravity:=1300.0
 var apply_gravity:=true
-
 # Coyote + Buffer
 var coyote_time:=0.1
 var coyote_time_limit:=0.1
