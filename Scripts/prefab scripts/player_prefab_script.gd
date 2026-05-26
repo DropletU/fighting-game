@@ -220,7 +220,6 @@ func _physics_process(delta: float) -> void:
 			handle_hitstun(delta)
 		State.DASHING:
 			handle_dashing(delta)
-	# NORMAL, ATTACKING, HITSTUN, DASHING, DEAD
 	
 	if apply_gravity:
 		if not is_on_floor():
