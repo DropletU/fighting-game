@@ -3,6 +3,11 @@ extends CharacterBody2D
 # TODO: Add a way to save player stats as they update
 
 
+# State Machine
+
+enum State {NORMAL, ATTACKING, HITSTUN, DASHING, DEAD}
+var current_state: = State.NORMAL : set = set_current_state
+
 # Stats
 
 @export_category("Health")
@@ -10,9 +15,10 @@ extends CharacterBody2D
 @export_range(1, 10, 1) var max_health:=4 : set = set_max_health
 ## The players current health
 @export_range(1, 10, 1) var health:=4 : set = set_health
+## The max damage the player can take
+@export var max_damage:=-1
 
-
-# Jumping
+# Jumping / Gravity
 
 @export_category("Jump")
 ## How high the player jumps
@@ -23,6 +29,9 @@ var jump_velocity:=-650
 var fall_gravity:=1300.0
 var jumping:=false
 
+var apply_gravity:=true
+
+# Coyote + Buffer
 var coyote_time:=0.1
 var coyote_time_limit:=0.1
 var jump_buffer:=0.1
@@ -60,7 +69,6 @@ var facing_buffer_limit:=9
 var hazard_respawn_point:=Vector2(0, 0) : set = set_hazard_respawn_point
 ## Whether the player is invincible or not
 @export var invincible:=false : set = set_invincibility
-var attacking:=false
 
 # References
 
@@ -93,6 +101,25 @@ signal hazard_damage_taken(last_safe_position: Vector2)
 
 
 # Basic Functions
+
+func set_current_state(state):
+	match state:
+		State.NORMAL:
+			if not current_state==State.DEAD:
+				current_state=state
+		State.ATTACKING:
+			if current_state==State.NORMAL or current_state==State.DASHING:
+				current_state=state
+		State.HITSTUN:
+			if not current_state==State.DEAD:
+				current_state=state
+		State.DASHING:
+			if current_state==State.NORMAL or current_state==State.ATTACKING:
+				current_state=state
+		State.DEAD:
+			current_state=state
+	# NORMAL, ATTACKING, HITSTUN, DASHING, DEAD
+
 
 ## Sets the players [member max_health] to the given [member value]. If [member value] is less
 ## than [member health], it also calls [method set_health] and sets it to [member max_health].
@@ -137,8 +164,11 @@ func take_damage(damage: int):
 	if damage<0:
 		push_warning("Damage value given was negative.")
 		damage*=-1
+	if damage>max_damage and max_damage>0:
+		damage=max_damage
 	set_health(health-damage)
 	damage_taken.emit(damage)
+	
 	
 
 ## Emits [signal player_died].
@@ -167,18 +197,66 @@ func set_invincibility(value: bool):
 # Mechanics
 
 func _physics_process(delta: float) -> void:
-	if attacking:
-		return
+	match current_state:
+		State.NORMAL:
+			handle_normal(delta)
+		State.ATTACKING:
+			handle_attacking(delta)
+		State.HITSTUN:
+			handle_hitstun(delta)
+		State.DASHING:
+			handle_dashing(delta)
+	# NORMAL, ATTACKING, HITSTUN, DASHING, DEAD
+	
+	if apply_gravity:
+		if not is_on_floor():
+			handle_gravity(delta)
+	
+	move_and_slide()
+	
+
+# State Processes
+
+func handle_normal(delta: float):
 	# Jumping/gravity handling
 	handle_jumping(delta)
-	if not is_on_floor():
-		apply_gravity(delta)
 	
 	# Movement handling
 	handle_movement(delta)
 	
-	move_and_slide()
+
+func handle_attacking(_delta: float):
+	if stance=="dash" and not invincible:
+		invincible=true
+	else:
+		invincible=false
+	if stance=="counter":
+		max_damage=1
+	else:
+		max_damage=-1
 	
+
+func handle_hitstun(_delta: float):
+	if not animation_player.current_animation=="Hitstun":
+		apply_gravity=false
+		await _play_hitstun()
+		apply_gravity=true
+		current_state=State.NORMAL
+	
+
+func handle_dashing(_delta: float):
+	if not invincible:
+		invincible=true
+	
+
+func handle_dead():
+	if not invincible:
+		invincible=true
+	if apply_gravity:
+		apply_gravity=false
+	
+
+
 
 ## Handles left and right movement and applies friction every frame
 func handle_movement(delta):
@@ -209,9 +287,8 @@ func handle_walking_animation():
 		play_animation("Idle")
 	
 
-## Applies gravity to the player based on whether they're jumping or not, and
-## sets jumping to false when they stop rising.
-func apply_gravity(delta: float) -> void:
+## Applies gravity to the player based on whether they're jumping or not.
+func handle_gravity(delta: float) -> void:
 	velocity.y+=fall_gravity*delta
 	if velocity.y>abs(jump_velocity):
 		velocity.y=abs(jump_velocity)
@@ -231,6 +308,12 @@ func _try_turn(direction: String) -> void:
 	else:
 		facing_buffer+=1
 	
+
+func _play_hitstun():
+	invincible=true
+	play_animation("Hitstun", false, true)
+	await animation_player.animation_finished
+	invincible=false
 
 ## Sets [member facing] to [member direction] and resets [member facing_buffer].
 func force_turn(direction: String) -> void:
