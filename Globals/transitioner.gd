@@ -16,9 +16,9 @@ func scene_transition(target_scene: String, coordinates: Vector2, respawn:=false
 		get_tree().root.add_child(new_scene)
 		current_scene=get_tree().current_scene
 	if respawn:
-		player.queue_free()
-		var new_player = load("res://Scenes/player.tscn")
-		current_scene.add_child(new_player)
-		player = get_tree().get_first_node_in_group("Player")
-	player.global_position=coordinates
+		GameManager.player_died()
+		GameManager.spawn_new_player(coordinates)
+		player = GameManager.get_player()
+	else:
+		player.global_position=coordinates
 	
