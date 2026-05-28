@@ -17,7 +17,7 @@ func _ready() -> void:
 		new_collision = self.get_node("CollisionShape2D2")
 	
 
-func _notification(what: int) -> void:
+func _notification(_what: int) -> void:
 	if not is_node_ready():
 		return
 	if new_collision:

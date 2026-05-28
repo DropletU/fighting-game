@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 MoveUtils="*uid://cq2dftjuexw5n"
 GameManager="*uid://6x7c8gwjiv2q"
+Transitioner="*uid://cfpupp4vjthyp"
 
 [display]
 
