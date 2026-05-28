@@ -100,8 +100,6 @@ signal damage_taken(damage: int)
 signal player_died
 ## Emits when player takes damage from a hazard
 signal hazard_damage_taken(last_safe_position: Vector2)
-## Emits on [member _ready]
-signal player_spawned
 
 
 # Basic Functions
@@ -110,7 +108,7 @@ func _ready() -> void:
 	add_to_group("Player")
 	respawn_point=global_position
 	z_index=1
-	player_spawned.emit()
+	GameManager.set_player(self)
 	
 
 func set_current_state(state):
