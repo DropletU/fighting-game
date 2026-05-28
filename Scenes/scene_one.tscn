@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://dxrrmxcirs84j" path="res://Scripts/Scene Scripts/scene_one.gd" id="1_q4gya"]
 [ext_resource type="Texture2D" uid="uid://ciro7bxh00eu1" path="res://icon.svg" id="2_ju033"]
 [ext_resource type="PackedScene" uid="uid://b26lsc3jsbjd0" path="res://Scenes/Prefabs/respawn_area_2d.tscn" id="3_l55jj"]
-[ext_resource type="PackedScene" uid="uid://dc2i1yfb8lrmx" path="res://Scenes/Prefabs/door_2d.tscn" id="4_l55jj"]
+[ext_resource type="PackedScene" path="res://Scenes/Prefabs/door_2d.tscn" id="4_l55jj"]
 [ext_resource type="Script" uid="uid://cmlr52nrttfi5" path="res://Scripts/Resource Scripts/door_data.gd" id="5_4xouq"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bo1nx"]
@@ -145,6 +145,7 @@ sources/0 = SubResource("TileSetAtlasSource_bo1nx")
 script = ExtResource("5_4xouq")
 scene_a = "res://Scenes/scene_one.tscn"
 scene_b = "res://Scenes/scene_two.tscn"
+coords_a = Vector2(811, -368)
 metadata/_custom_type_script = "uid://cmlr52nrttfi5"
 
 [node name="SceneOne" type="Node2D" unique_id=249591582]
