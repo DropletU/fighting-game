@@ -4,6 +4,11 @@ var player: CharacterBody2D: set = set_player, get = get_player
 var respawn_point:=Vector2.ZERO
 var player_node = preload("res://Scenes/Prefabs/Player.tscn")
 
+func _ready() -> void:
+	await get_tree().current_scene.ready
+	spawn_new_player(Vector2(131, -48))
+	
+
 func player_died():
 	player.visible=false
 	player.queue_free()
