@@ -108,7 +108,7 @@ func _ready() -> void:
 	add_to_group("Player")
 	respawn_point=global_position
 	z_index=1
-	GameManager.set_player(self)
+	GameManager.player = self
 	
 
 func set_current_state(state):
@@ -184,6 +184,7 @@ func take_damage(damage: int):
 func died():
 	player_died.emit()
 	GameManager.player_died()
+	GameManager.spawn_new_player()
 	
 
 ## Calls [method take_damage] and emits [signal hazard_damage_taken].
