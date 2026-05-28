@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DoorData" format=3 uid="uid://j73og3wxpeam"]
+
+[ext_resource type="Script" uid="uid://cmlr52nrttfi5" path="res://Scripts/Resource Scripts/door_data.gd" id="1_1lear"]
+
+[resource]
+script = ExtResource("1_1lear")
+scene_a = "res://Scenes/scene_one.tscn"
+scene_b = "res://Scenes/scene_two.tscn"
+coords_a = Vector2(811, -368)
+coords_b = Vector2(-194, -144)
+metadata/_custom_type_script = "uid://cmlr52nrttfi5"
