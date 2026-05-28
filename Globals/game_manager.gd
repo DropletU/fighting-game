@@ -17,6 +17,12 @@ func spawn_new_player(spawn_location:=respawn_point):
 	player = instance
 	
 
+func enter_new_scene(new_scene: String):
+	get_tree().current_scene.queue_free()
+	get_tree().change_scene_to_file(new_scene)
+	get_tree().current_scene=get_tree().current_scene
+	
+
 func _handle_new_player_instance_info(instance, spawn_location: Vector2):
 	instance.global_position = spawn_location
 	
