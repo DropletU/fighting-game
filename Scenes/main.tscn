@@ -139,7 +139,7 @@ texture = ExtResource("1_jjgbg")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_bo1nx")
 
-[node name="Main" type="Node2D" unique_id=249591582]
+[node name="SceneOne" type="Node2D" unique_id=249591582]
 script = ExtResource("1_jjvhh")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=422934254]
