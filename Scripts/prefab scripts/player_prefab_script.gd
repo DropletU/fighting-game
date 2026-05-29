@@ -183,8 +183,7 @@ func take_damage(damage: int):
 ## Emits [signal player_died].
 func died():
 	player_died.emit()
-	GameManager.player_died()
-	GameManager.spawn_new_player()
+	GameManager.die_and_respawn()
 	
 
 ## Calls [method take_damage] and emits [signal hazard_damage_taken].

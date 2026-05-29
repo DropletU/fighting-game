@@ -33,6 +33,11 @@ func spawn_new_player(spawn_scene:=respawn_scene, spawn_coords:=respawn_point):
 	player = instance
 	
 
+func die_and_respawn():
+	player_died()
+	spawn_new_player()
+	
+
 ## Calls [method get_tree].[member current_scene].[method queue_free], and then calls
 ## [method get_tree].[method change_scene_to_file] with [member new_scene]. [br]
 ## Note: [method get_tree].[member current_scene] is updated once
