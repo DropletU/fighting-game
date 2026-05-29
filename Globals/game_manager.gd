@@ -13,7 +13,7 @@ func _ready() -> void:
 	await get_tree().current_scene.ready
 	respawn_scene = get_tree().current_scene.scene_file_path
 	respawn_point = Vector2(131, -48)
-	spawn_new_player(respawn_point)
+	spawn_new_player()
 	
 
 ## Calls [member player].[method queue_free()]. [br]
@@ -24,11 +24,11 @@ func player_died():
 
 ## Creates a new instance of the [member player] and sets the info given through
 ## [member _handle_new_player_instance_info].
-func spawn_new_player(spawn_location:=respawn_point):
-	if get_tree().current_scene.scene_file_path!=respawn_scene:
-		enter_new_scene(respawn_scene)
+func spawn_new_player(spawn_scene:=respawn_scene, spawn_coords:=respawn_point):
+	if get_tree().current_scene.scene_file_path!=spawn_scene:
+		enter_new_scene(spawn_scene)
 	var instance:=player_node.instantiate()
-	_handle_new_player_instance_info(instance, spawn_location)
+	_handle_new_player_instance_info(instance, spawn_coords)
 	add_child(instance)
 	player = instance
 	
