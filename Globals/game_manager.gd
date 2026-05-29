@@ -9,15 +9,9 @@ var respawn_scene: String
 ## A preload of the player scene
 var player_node = preload("res://Scenes/Prefabs/Player.tscn")
 
-func _ready() -> void:
-	await get_tree().current_scene.ready
-	respawn_scene = get_tree().current_scene.scene_file_path
-	respawn_point = Vector2(131, -48)
-	spawn_new_player()
-	
-
 ## Calls [member player].[method queue_free()]. [br]
-## You are recommended to call [method spawn_new_player] immediately after this.
+## You are recommended to call [method spawn_new_player] immediately after this. [br]
+## If you can't then call [member die_and_respawn] instead.
 func player_died():
 	player.queue_free()
 	
@@ -41,10 +35,15 @@ func die_and_respawn():
 ## Calls [method get_tree].[member current_scene].[method queue_free], and then calls
 ## [method get_tree].[method change_scene_to_file] with [member new_scene]. [br]
 ## Note: [method get_tree].[member current_scene] is updated once
-## [method change_scene_to_file] is finished.
-func enter_new_scene(new_scene: String):
+## [method change_scene_to_file] is finished. [br]
+## If [member spawn_player] is [code]true[/code], it will spawn the player at the
+## given location.
+func enter_new_scene(new_scene: String, spawn_player:=false, coords:=Vector2.ZERO):
 	get_tree().current_scene.queue_free()
 	get_tree().change_scene_to_file(new_scene)
+	await get_tree().scene_changed
+	if spawn_player:
+		spawn_new_player(new_scene, coords)
 	
 
 ## Sets the args for the [memebr player_instance] given one by one. [br]
