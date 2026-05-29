@@ -12,7 +12,7 @@ func scene_transition(target_scene: String, coordinates: Vector2, respawn:=false
 		GameManager.enter_new_scene(target_scene)
 	if respawn:
 		GameManager.player_died()
-		GameManager.spawn_new_player(coordinates)
+		GameManager.spawn_new_player(target_scene, coordinates)
 		player = GameManager.get_player()
 	else:
 		player.global_position=coordinates
