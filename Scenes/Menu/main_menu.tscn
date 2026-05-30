@@ -69,7 +69,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_7jtkx")
 
-[node name="OptionsDetails" type="MarginContainer" parent="Details" unique_id=248142915]
+[node name="LoadPage" type="MarginContainer" parent="Details" unique_id=2074831844]
 visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 30
@@ -77,14 +77,29 @@ theme_override_constants/margin_top = 30
 theme_override_constants/margin_right = 30
 theme_override_constants/margin_bottom = 30
 
-[node name="PanelContainer" type="PanelContainer" parent="Details/OptionsDetails" unique_id=1225422748]
+[node name="PanelContainer" type="PanelContainer" parent="Details/LoadPage" unique_id=688076357]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Details/OptionsDetails/PanelContainer" unique_id=1875522559]
+[node name="Label" type="Label" parent="Details/LoadPage/PanelContainer" unique_id=1497028436]
+layout_mode = 2
+text = "My load page will go here"
+
+[node name="OptionsPage" type="MarginContainer" parent="Details" unique_id=248142915]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="PanelContainer" type="PanelContainer" parent="Details/OptionsPage" unique_id=1225422748]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Details/OptionsPage/PanelContainer" unique_id=1875522559]
 layout_mode = 2
 text = "My options will go here"
 
-[node name="CreditsDetails" type="MarginContainer" parent="Details" unique_id=131709404]
+[node name="CreditsPage" type="MarginContainer" parent="Details" unique_id=131709404]
 visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 30
@@ -92,10 +107,10 @@ theme_override_constants/margin_top = 30
 theme_override_constants/margin_right = 30
 theme_override_constants/margin_bottom = 30
 
-[node name="PanelContainer" type="PanelContainer" parent="Details/CreditsDetails" unique_id=573655637]
+[node name="PanelContainer" type="PanelContainer" parent="Details/CreditsPage" unique_id=573655637]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Details/CreditsDetails/PanelContainer" unique_id=1179115857]
+[node name="Label" type="Label" parent="Details/CreditsPage/PanelContainer" unique_id=1179115857]
 layout_mode = 2
 text = "My credits will go here"
 
@@ -126,28 +141,35 @@ theme_override_constants/separation = 20
 [node name="Play" type="Button" parent="MainButtons/MarginContainer/VBoxContainer" unique_id=500669842]
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
+disabled = true
 text = "Play"
+
+[node name="Load" type="Button" parent="MainButtons/MarginContainer/VBoxContainer" unique_id=1662105555]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Load"
 
 [node name="Options" type="Button" parent="MainButtons/MarginContainer/VBoxContainer" unique_id=1493593805]
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 text = "Options"
 
-[node name="Quit" type="Button" parent="MainButtons/MarginContainer/VBoxContainer" unique_id=1933790583]
-layout_mode = 2
-theme_override_font_sizes/font_size = 50
-text = "Quit"
-
-[node name="Separator" type="Control" parent="MainButtons/MarginContainer/VBoxContainer" unique_id=772118048]
-layout_mode = 2
-size_flags_vertical = 3
-
 [node name="Credits" type="Button" parent="MainButtons/MarginContainer/VBoxContainer" unique_id=954058913]
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 text = "Credits"
 
+[node name="Separator" type="Control" parent="MainButtons/MarginContainer/VBoxContainer" unique_id=772118048]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Quit" type="Button" parent="MainButtons/MarginContainer/VBoxContainer" unique_id=1933790583]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Quit"
+
 [connection signal="pressed" from="MainButtons/MarginContainer/VBoxContainer/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="MainButtons/MarginContainer/VBoxContainer/Load" to="." method="_on_load_pressed"]
 [connection signal="pressed" from="MainButtons/MarginContainer/VBoxContainer/Options" to="." method="_on_options_pressed"]
-[connection signal="pressed" from="MainButtons/MarginContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="MainButtons/MarginContainer/VBoxContainer/Credits" to="." method="_on_credits_pressed"]
+[connection signal="pressed" from="MainButtons/MarginContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
