@@ -3,9 +3,9 @@ extends Node
 ## Refers directly to the current player
 var player: CharacterBody2D: set = set_player, get = get_player 
 ## The coordinates that the player should respawn to if they die.
-var respawn_point: Vector2
+var respawn_point: Vector2: set = set_respawn_point
 ## The scene that the player should respawn to if they die.
-var respawn_scene: String
+var respawn_scene: String: set = set_respawn_scene
 ## A preload of the player scene
 var player_node = preload("res://Scenes/Prefabs/Player.tscn")
 
@@ -20,7 +20,7 @@ func player_died():
 ## [member _handle_new_player_instance_info].
 func spawn_new_player(spawn_scene:=respawn_scene, spawn_coords:=respawn_point):
 	if get_tree().current_scene.scene_file_path!=spawn_scene:
-		enter_new_scene(spawn_scene)
+		await enter_new_scene(spawn_scene)
 	var instance:=player_node.instantiate()
 	_handle_new_player_instance_info(instance, spawn_coords)
 	add_child(instance)
@@ -63,4 +63,12 @@ func get_player():
 func set_player(new_player: CharacterBody2D):
 	if new_player.is_in_group("Player"):
 		player = new_player
+	
+
+func set_respawn_point(point: Vector2):
+	respawn_point=point
+	
+
+func set_respawn_scene(scene_path: String):
+	respawn_scene=scene_path
 	
