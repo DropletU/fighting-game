@@ -2,7 +2,6 @@
 
 [ext_resource type="Texture2D" uid="uid://ciro7bxh00eu1" path="res://icon.svg" id="1_bkwd7"]
 [ext_resource type="Script" uid="uid://bjkyc0yi1vo8c" path="res://Scripts/Menu Scripts/main_menu.gd" id="1_tself"]
-[ext_resource type="PackedScene" uid="uid://b84gvw8s5pu30" path="res://Scenes/Menu/play_page.tscn" id="3_7jtkx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tself"]
 bg_color = Color(0, 16.900549, 14.834261, 1)
@@ -43,10 +42,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_bkwd7")
-
-[node name="PlayPage" parent="." unique_id=763190419 instance=ExtResource("3_7jtkx")]
-layout_mode = 0
-anchors_preset = 0
 
 [node name="MainButtons" type="PanelContainer" parent="." unique_id=1082047286]
 custom_minimum_size = Vector2(300, 200)
