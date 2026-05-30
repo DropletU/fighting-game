@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://b84gvw8s5pu30"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7jtkx"]
+bg_color = Color(0, 16.900549, 14.834261, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0.93, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[node name="PlayPage" type="PanelContainer" unique_id=763190419]
+anchors_preset = -1
+anchor_left = 0.31
+anchor_right = 0.31
+anchor_bottom = 1.0
+offset_top = 24.0
+offset_right = 765.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7jtkx")
