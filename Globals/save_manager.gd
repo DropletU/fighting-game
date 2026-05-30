@@ -29,7 +29,7 @@ func add_new_save(slot_name: String):
 	if slot_name.length()>32:
 		push_error("Name is too long.")
 		return
-	var path = "res://Text Files/Save Files/"+slot_name+".cfg"
+	var path = _get_path_with_name(slot_name)
 	current_file.clear()
 	add_data("meta", "name", slot_name)
 	add_data("meta", "data_added", Time.get_datetime_dict_from_system())
@@ -105,4 +105,17 @@ func clear_data():
 ## Returns whether [member current_file] has the section key pair given.
 func has_data(section: String, key: String):
 	return current_file.has_section_key(section, key)
+	
+
+## Returns whether the save file exists or not based off of [member file_name].
+func save_file_exists(file_name: String):
+	var path = _get_path_with_name(file_name)
+	if not FileAccess.file_exists(path):
+		return false
+	return true
+	
+
+func _get_path_with_name(file_name: String):
+	var initial_path: = "res://Text Files/Save Files/"
+	return initial_path+file_name+".cfg"
 	
