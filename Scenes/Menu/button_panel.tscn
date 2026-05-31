@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://xsw18lgarsq6" path="res://Scripts/Menu Scripts/button_panel.gd" id="1_pb2wr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ek8o1"]
-bg_color = Color(0, 0.09066666, 0.17, 1)
+bg_color = Color(0.02216669, 0, 0.19, 1)
 
 [node name="ButtonPanel" type="PanelContainer" unique_id=447574789]
 anchors_preset = -1

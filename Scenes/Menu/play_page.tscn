@@ -1,5 +1,8 @@
 [gd_scene format=3 uid="uid://b84gvw8s5pu30"]
 
+[ext_resource type="Script" uid="uid://cvhr0w2nlbpi4" path="res://Scripts/Menu Scripts/play_page.gd" id="1_uqsru"]
+[ext_resource type="PackedScene" uid="uid://c4ru1xkkalh02" path="res://Scenes/Menu/button_panel.tscn" id="2_uwnh0"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7jtkx"]
 bg_color = Color(0, 16.900549, 14.834261, 1)
 border_width_left = 3
@@ -22,6 +25,7 @@ offset_bottom = -24.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_7jtkx")
+script = ExtResource("1_uqsru")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1742454984]
 layout_mode = 2
@@ -32,3 +36,24 @@ theme_override_constants/margin_bottom = 30
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1631717707]
 layout_mode = 2
+
+[node name="ButtonOne" parent="MarginContainer/VBoxContainer" unique_id=447574789 instance=ExtResource("2_uwnh0")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ButtonTwo" parent="MarginContainer/VBoxContainer" unique_id=2099738256 instance=ExtResource("2_uwnh0")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ButtonThree" parent="MarginContainer/VBoxContainer" unique_id=486120652 instance=ExtResource("2_uwnh0")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ButtonFour" parent="MarginContainer/VBoxContainer" unique_id=1357417489 instance=ExtResource("2_uwnh0")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[connection signal="start_new_save" from="MarginContainer/VBoxContainer/ButtonOne" to="." method="_on_button_one_start_new_save"]
+[connection signal="start_new_save" from="MarginContainer/VBoxContainer/ButtonTwo" to="." method="_on_button_two_start_new_save"]
+[connection signal="start_new_save" from="MarginContainer/VBoxContainer/ButtonThree" to="." method="_on_button_three_start_new_save"]
+[connection signal="start_new_save" from="MarginContainer/VBoxContainer/ButtonFour" to="." method="_on_button_four_start_new_save"]
