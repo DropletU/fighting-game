@@ -73,7 +73,7 @@ func start_new_game(slot_name: String, diff: String):
 	SaveManager.add_data("location", "coordinates", Vector2(143, -48))
 	SaveManager.add_data("player", "max_health", 4)
 	SaveManager.add_data("player", "health", 4)
-	load_game(slot_name)
+	await load_game(slot_name)
 	SaveManager.save_to_disk(SaveManager._get_path_with_name(slot_name))
 	
 
