@@ -1,17 +1,18 @@
 [gd_scene format=3 uid="uid://c4ru1xkkalh02"]
 
-[ext_resource type="Script" uid="uid://xsw18lgarsq6" path="res://Scripts/Menu Scripts/button_panel.gd" id="1_pb2wr"]
+[ext_resource type="Script" uid="uid://bkq8s1gdu2o4a" path="res://Scripts/Menu Scripts/save_slot_button.gd" id="1_pb2wr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ek8o1"]
 bg_color = Color(0.02216669, 0, 0.19, 1)
 
-[node name="ButtonPanel" type="PanelContainer" unique_id=447574789]
+[node name="SaveSlotButton" type="PanelContainer" unique_id=156027509]
 anchors_preset = -1
 anchor_right = 0.6328125
 anchor_bottom = 0.3472222
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ek8o1")
 script = ExtResource("1_pb2wr")
+metadata/_custom_type_script = "uid://xsw18lgarsq6"
 metadata/_edit_use_anchors_ = true
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1149450384]
@@ -38,7 +39,3 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 text = "Last Location: None"
-
-[connection signal="gui_input" from="." to="." method="_on_gui_input"]
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

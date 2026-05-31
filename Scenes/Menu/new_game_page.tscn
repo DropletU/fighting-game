@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c2jjvhahorak3" path="res://Scripts/Menu Scripts/file_name_edit.gd" id="1_hosxx"]
 [ext_resource type="Script" uid="uid://ch7mh5gfqib74" path="res://Scripts/Menu Scripts/new_game_page.gd" id="1_nac5a"]
-[ext_resource type="Script" uid="uid://xsw18lgarsq6" path="res://Scripts/Menu Scripts/button_panel.gd" id="3_qbcre"]
+[ext_resource type="Script" uid="uid://xsw18lgarsq6" path="res://Scripts/Class Scripts/button_panel.gd" id="3_qbcre"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ljt81"]
 bg_color = Color(0.023529412, 0, 0.1882353, 1)
@@ -96,11 +96,12 @@ script = ExtResource("1_hosxx")
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Normal" type="PanelContainer" parent="MarginContainer/VerticalUISpacing/DifficultyVBox" unique_id=1415282184]
+[node name="Normal" type="PanelContainer" parent="MarginContainer/VerticalUISpacing/DifficultyVBox" unique_id=979638682]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_hosxx")
 script = ExtResource("3_qbcre")
+metadata/_custom_type_script = "uid://xsw18lgarsq6"
 
 [node name="StartNormal" type="Label" parent="MarginContainer/VerticalUISpacing/DifficultyVBox/Normal" unique_id=1761068220]
 layout_mode = 2
@@ -110,11 +111,12 @@ text = "Start Game"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Deathless" type="PanelContainer" parent="MarginContainer/VerticalUISpacing/DifficultyVBox" unique_id=713359913]
+[node name="Deathless" type="PanelContainer" parent="MarginContainer/VerticalUISpacing/DifficultyVBox" unique_id=1912493879]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_nac5a")
 script = ExtResource("3_qbcre")
+metadata/_custom_type_script = "uid://xsw18lgarsq6"
 
 [node name="StartDeathless" type="Label" parent="MarginContainer/VerticalUISpacing/DifficultyVBox/Deathless" unique_id=1370682135]
 layout_mode = 2
@@ -124,11 +126,12 @@ text = "Start Deathless"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Hitless" type="PanelContainer" parent="MarginContainer/VerticalUISpacing/DifficultyVBox" unique_id=605478603]
+[node name="Hitless" type="PanelContainer" parent="MarginContainer/VerticalUISpacing/DifficultyVBox" unique_id=900096756]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_qbcre")
 script = ExtResource("3_qbcre")
+metadata/_custom_type_script = "uid://xsw18lgarsq6"
 
 [node name="StartHitless" type="Label" parent="MarginContainer/VerticalUISpacing/DifficultyVBox/Hitless" unique_id=1150832402]
 layout_mode = 2
@@ -142,14 +145,5 @@ vertical_alignment = 1
 [connection signal="text_changed" from="MarginContainer/VerticalUISpacing/NameHBox/NameEdit" to="." method="_on_name_edit_text_changed"]
 [connection signal="text_changed" from="MarginContainer/VerticalUISpacing/NameHBox/NameEdit" to="MarginContainer/VerticalUISpacing/NameHBox/NameEdit" method="_on_text_changed"]
 [connection signal="button_pressed" from="MarginContainer/VerticalUISpacing/DifficultyVBox/Normal" to="." method="_on_normal_button_pressed"]
-[connection signal="gui_input" from="MarginContainer/VerticalUISpacing/DifficultyVBox/Normal" to="MarginContainer/VerticalUISpacing/DifficultyVBox/Normal" method="_on_gui_input"]
-[connection signal="mouse_entered" from="MarginContainer/VerticalUISpacing/DifficultyVBox/Normal" to="MarginContainer/VerticalUISpacing/DifficultyVBox/Normal" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="MarginContainer/VerticalUISpacing/DifficultyVBox/Normal" to="MarginContainer/VerticalUISpacing/DifficultyVBox/Normal" method="_on_mouse_exited"]
 [connection signal="button_pressed" from="MarginContainer/VerticalUISpacing/DifficultyVBox/Deathless" to="." method="_on_deathless_button_pressed"]
-[connection signal="gui_input" from="MarginContainer/VerticalUISpacing/DifficultyVBox/Deathless" to="MarginContainer/VerticalUISpacing/DifficultyVBox/Deathless" method="_on_gui_input"]
-[connection signal="mouse_entered" from="MarginContainer/VerticalUISpacing/DifficultyVBox/Deathless" to="MarginContainer/VerticalUISpacing/DifficultyVBox/Deathless" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="MarginContainer/VerticalUISpacing/DifficultyVBox/Deathless" to="MarginContainer/VerticalUISpacing/DifficultyVBox/Deathless" method="_on_mouse_exited"]
 [connection signal="button_pressed" from="MarginContainer/VerticalUISpacing/DifficultyVBox/Hitless" to="." method="_on_hitless_button_pressed"]
-[connection signal="gui_input" from="MarginContainer/VerticalUISpacing/DifficultyVBox/Hitless" to="MarginContainer/VerticalUISpacing/DifficultyVBox/Hitless" method="_on_gui_input"]
-[connection signal="mouse_entered" from="MarginContainer/VerticalUISpacing/DifficultyVBox/Hitless" to="MarginContainer/VerticalUISpacing/DifficultyVBox/Hitless" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="MarginContainer/VerticalUISpacing/DifficultyVBox/Hitless" to="MarginContainer/VerticalUISpacing/DifficultyVBox/Hitless" method="_on_mouse_exited"]
