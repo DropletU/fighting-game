@@ -106,6 +106,8 @@ signal hazard_damage_taken(last_safe_position: Vector2)
 
 func _ready() -> void:
 	add_to_group("Player")
+	if not get_tree().current_scene:
+		await get_tree().scene_changed
 	GameManager.respawn_point=global_position
 	GameManager.respawn_scene=get_tree().current_scene.scene_file_path
 	z_index=1
