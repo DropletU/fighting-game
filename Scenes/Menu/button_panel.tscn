@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://c4ru1xkkalh02"]
+
+[ext_resource type="Script" uid="uid://xsw18lgarsq6" path="res://Scripts/Menu Scripts/button_panel.gd" id="1_pb2wr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ek8o1"]
+bg_color = Color(0, 0.09066666, 0.17, 1)
+
+[node name="ButtonPanel" type="PanelContainer" unique_id=447574789]
+anchors_preset = -1
+anchor_right = 0.6328125
+anchor_bottom = 0.3472222
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ek8o1")
+script = ExtResource("1_pb2wr")
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1149450384]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="SlotName" type="Label" parent="MarginContainer" unique_id=433071855]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 40
+text = "Empty Slot"
+
+[node name="TimePlayed" type="Label" parent="MarginContainer" unique_id=288345917]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "Time Played: 0s"
+
+[node name="LastLocation" type="Label" parent="MarginContainer" unique_id=896958535]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "Last Location: None"
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
