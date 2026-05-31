@@ -1,9 +1,11 @@
 extends PanelContainer
 
 var hovering:=false
-var slot_name:=""
+var button_info:=""
+@onready var name_node = find_child("Name")
 
-signal start_new_save
+## Emits when the panel is presed while being hovered over.
+signal button_pressed(info: String)
 
 func _on_mouse_entered() -> void:
 	hovering=true
@@ -14,7 +16,4 @@ func _on_mouse_exited() -> void:
 
 func _on_gui_input(event: InputEvent) -> void:
 	if hovering and event.is_action_pressed("left_click"):
-		if slot_name!="":
-			GameManager.load_game(slot_name)
-		else:
-			start_new_save.emit()
+		button_pressed.emit(button_info)

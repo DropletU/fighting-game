@@ -1,14 +1,16 @@
 extends Control
 
+var play_page = preload("res://Scenes/Menu/play_page.tscn")
+@onready var play_instance = play_page.instantiate()
 
 func _on_play_pressed() -> void:
-	GameManager.enter_new_scene("res://Scenes/scene_one.tscn")
-	GameManager.spawn_new_player(Vector2(143, -48))
+	if not play_instance.get_parent():
+		add_child(play_instance)
+	else:
+		play_instance.queue_free()
+		play_instance = play_page.instantiate()
 	
 
 func _on_quit_pressed() -> void:
 	get_tree().quit()
 	
-
-func _on_save_one_pressed() -> void:
-	pass
