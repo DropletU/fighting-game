@@ -6,8 +6,10 @@ var player: CharacterBody2D: set = set_player, get = get_player
 var respawn_point: Vector2: set = set_respawn_point
 ## The scene that the player should respawn to if they die.
 var respawn_scene: String: set = set_respawn_scene
-## A preload of the player scene
+## A preload of the player scene.
 var player_node = preload("res://Scenes/Prefabs/Player.tscn")
+## The difficulty of the game.
+var difficulty: String
 
 ## Calls [member player].[method queue_free()]. [br]
 ## You are recommended to call [method spawn_new_player] immediately after this. [br]
