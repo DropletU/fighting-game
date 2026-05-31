@@ -67,6 +67,15 @@ func load_game(file_name: String):
 		player.health = health
 	
 
+func start_new_game(slot_name: String, diff: String):
+	await SaveManager.add_new_save(slot_name, diff)
+	SaveManager.add_data("location", "scene", "res://Scenes/scene_one.tscn")
+	SaveManager.add_data("location", "coordinates", Vector2(143, -48))
+	SaveManager.add_data("player", "max_health", 4)
+	SaveManager.add_data("player", "health", 4)
+	load_game(slot_name)
+	
+
 ## Returns [member player].
 func get_player():
 	return player
