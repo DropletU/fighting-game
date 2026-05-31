@@ -5,6 +5,48 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ljt81"]
 bg_color = Color(0.023529412, 0, 0.1882353, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hosxx"]
+bg_color = Color(0.3019608, 0.68235296, 0.54901963, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(0, 0, 0, 0.20392157)
+shadow_size = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nac5a"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0, 0, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(0.15686275, 0, 0, 0.6)
+shadow_size = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qbcre"]
+bg_color = Color(0.34117648, 0, 0.5019608, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.34117648, 0, 0.5019608, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(0.6392157, 0, 0.06666667, 0.18431373)
+shadow_size = 1
+
 [node name="NewGamePage" type="PanelContainer" unique_id=2044110398]
 anchors_preset = -1
 anchor_right = 0.6675347
@@ -25,17 +67,21 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="NameHBox" type="HBoxContainer" parent="MarginContainer" unique_id=1150841637]
+[node name="VerticalUISpacing" type="VBoxContainer" parent="MarginContainer" unique_id=722638364]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="NameHBox" type="HBoxContainer" parent="MarginContainer/VerticalUISpacing" unique_id=1150841637]
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="NameLabel" type="Label" parent="MarginContainer/NameHBox" unique_id=1734379524]
+[node name="NameLabel" type="Label" parent="MarginContainer/VerticalUISpacing/NameHBox" unique_id=1734379524]
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 text = "Name: "
 
-[node name="FileNameEdit" type="LineEdit" parent="MarginContainer/NameHBox" unique_id=918530376]
+[node name="FileNameEdit" type="LineEdit" parent="MarginContainer/VerticalUISpacing/NameHBox" unique_id=918530376]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 36
@@ -43,7 +89,47 @@ placeholder_text = "JacquelindorsolomewaviousIII"
 max_length = 32
 script = ExtResource("1_hosxx")
 
-[node name="DifficultyVBox" type="VBoxContainer" parent="MarginContainer" unique_id=1963301776]
+[node name="DifficultyVBox" type="VBoxContainer" parent="MarginContainer/VerticalUISpacing" unique_id=1963301776]
 layout_mode = 2
+size_flags_vertical = 3
 
-[connection signal="text_changed" from="MarginContainer/NameHBox/FileNameEdit" to="MarginContainer/NameHBox/FileNameEdit" method="_on_text_changed"]
+[node name="Normal" type="PanelContainer" parent="MarginContainer/VerticalUISpacing/DifficultyVBox" unique_id=1415282184]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_hosxx")
+
+[node name="StartNormal" type="Label" parent="MarginContainer/VerticalUISpacing/DifficultyVBox/Normal" unique_id=1761068220]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 40
+text = "Start Game"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Deathless" type="PanelContainer" parent="MarginContainer/VerticalUISpacing/DifficultyVBox" unique_id=713359913]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_nac5a")
+
+[node name="StartDeathless" type="Label" parent="MarginContainer/VerticalUISpacing/DifficultyVBox/Deathless" unique_id=1370682135]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 40
+text = "Start Deathless"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Hitless" type="PanelContainer" parent="MarginContainer/VerticalUISpacing/DifficultyVBox" unique_id=605478603]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_qbcre")
+
+[node name="StartHitless" type="Label" parent="MarginContainer/VerticalUISpacing/DifficultyVBox/Hitless" unique_id=1150832402]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 40
+text = "Start Hitless"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="text_changed" from="MarginContainer/VerticalUISpacing/NameHBox/FileNameEdit" to="MarginContainer/VerticalUISpacing/NameHBox/FileNameEdit" method="_on_text_changed"]
