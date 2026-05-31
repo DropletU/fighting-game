@@ -18,9 +18,7 @@ func player_died():
 
 ## Creates a new instance of the [member player] and sets the info given through
 ## [member _handle_new_player_instance_info].
-func spawn_new_player(spawn_scene:=respawn_scene, spawn_coords:=respawn_point):
-	if get_tree().current_scene.scene_file_path!=spawn_scene:
-		await enter_new_scene(spawn_scene)
+func spawn_new_player(spawn_coords:=respawn_point):
 	var instance:=player_node.instantiate()
 	_handle_new_player_instance_info(instance, spawn_coords)
 	add_child(instance)
@@ -29,6 +27,7 @@ func spawn_new_player(spawn_scene:=respawn_scene, spawn_coords:=respawn_point):
 
 func die_and_respawn():
 	player_died()
+	enter_new_scene(respawn_scene)
 	spawn_new_player()
 	
 
@@ -38,12 +37,10 @@ func die_and_respawn():
 ## [method change_scene_to_file] is finished. [br]
 ## If [member spawn_player] is [code]true[/code], it will spawn the player at the
 ## given location.
-func enter_new_scene(new_scene: String, spawn_player:=false, coords:=Vector2.ZERO):
+func enter_new_scene(new_scene: String):
 	get_tree().current_scene.queue_free()
 	get_tree().change_scene_to_file(new_scene)
 	await get_tree().scene_changed
-	if spawn_player:
-		spawn_new_player(new_scene, coords)
 	
 
 ## Sets the args for the [memebr player_instance] given one by one. [br]
@@ -51,6 +48,21 @@ func enter_new_scene(new_scene: String, spawn_player:=false, coords:=Vector2.ZER
 ## and nothing else.
 func _handle_new_player_instance_info(player_instance, spawn_location: Vector2):
 	player_instance.global_position = spawn_location
+	
+
+func load_game(file_name: String):
+	SaveManager.load_from_disk(file_name)
+	var scene = SaveManager.get_data("location", "scene")
+	var coords = SaveManager.get_data("location", "coordinates")
+	var max_health = SaveManager.get_data("player", "max_health", 4)
+	var health = SaveManager.get_data("player", "health", -1)
+	await enter_new_scene(scene)
+	spawn_new_player(coords)
+	player.max_health = max_health
+	if health<0:
+		player.health = max_health
+	else:
+		player.health = health
 	
 
 ## Returns [member player].

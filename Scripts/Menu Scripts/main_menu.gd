@@ -2,7 +2,8 @@ extends Control
 
 
 func _on_play_pressed() -> void:
-	GameManager.enter_new_scene("res://Scenes/scene_one.tscn", true, Vector2(143, -48))
+	GameManager.enter_new_scene("res://Scenes/scene_one.tscn")
+	GameManager.spawn_new_player(Vector2(143, -48))
 	
 
 func _on_quit_pressed() -> void:
