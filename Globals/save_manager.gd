@@ -23,7 +23,7 @@ func add_new_save(slot_name: String):
 	if slot_name in save_index.get_section_keys("slots"):
 		push_error("File with name "+slot_name+" already exists.")
 		return
-	if slot_name=="":
+	if not slot_name:
 		push_error("No slot name was given.")
 		return
 	if slot_name.length()>32:
