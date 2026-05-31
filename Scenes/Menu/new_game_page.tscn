@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://d2dmacgjlnv1x"]
+
+[ext_resource type="Script" uid="uid://c2jjvhahorak3" path="res://Scripts/Menu Scripts/file_name_edit.gd" id="1_hosxx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ljt81"]
+bg_color = Color(0.023529412, 0, 0.1882353, 1)
+
+[node name="NewGamePage" type="PanelContainer" unique_id=2044110398]
+anchors_preset = -1
+anchor_right = 0.6675347
+anchor_bottom = 0.94598764
+offset_left = 1.0
+offset_top = -1.0
+offset_right = 1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ljt81")
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=281897290]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="NameHBox" type="HBoxContainer" parent="MarginContainer" unique_id=1150841637]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="NameLabel" type="Label" parent="MarginContainer/NameHBox" unique_id=1734379524]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Name: "
+
+[node name="FileNameEdit" type="LineEdit" parent="MarginContainer/NameHBox" unique_id=918530376]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 36
+placeholder_text = "JacquelindorsolomewaviousIII"
+max_length = 32
+script = ExtResource("1_hosxx")
+
+[node name="DifficultyVBox" type="VBoxContainer" parent="MarginContainer" unique_id=1963301776]
+layout_mode = 2
+
+[connection signal="text_changed" from="MarginContainer/NameHBox/FileNameEdit" to="MarginContainer/NameHBox/FileNameEdit" method="_on_text_changed"]
