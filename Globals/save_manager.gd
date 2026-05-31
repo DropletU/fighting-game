@@ -95,6 +95,9 @@ func save_to_disk(save_path:="", use_last:=true):
 ## to [member current_file].
 func load_from_disk(save_name: String):
 	var path = save_index.get_value("slots", save_name)
+	if path == null:
+		push_error("Path is null.")
+		return
 	if not FileAccess.file_exists(path):
 		push_error("Cannot load file "+path+" as it does not exist.")
 		return
