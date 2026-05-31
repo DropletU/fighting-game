@@ -8,6 +8,9 @@ var current_file = ConfigFile.new()
 ## all save files.
 var save_index = ConfigFile.new()
 
+## Emits at the end of [method add_new_save].
+signal new_save_added
+
 func _ready() -> void:
 	if not FileAccess.file_exists(SAVEDATA):
 		save_index.save(SAVEDATA)
@@ -39,6 +42,8 @@ func add_new_save(slot_name: String, difficulty: String):
 	add_data("meta", "difficulty", difficulty)
 	save_index.set_value("slots", slot_name, path)
 	save_to_disk(path)
+	save_index.save(SAVEDATA)
+	new_save_added.emit()
 	
 
 ## Adds data to the save dictionary the player is currently using. [br]
