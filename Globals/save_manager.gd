@@ -19,7 +19,7 @@ func _ready() -> void:
 ## [member save_index].
 ## If a slot with the same name already exists, an error will be pushed and nothing
 ## will happen.
-func add_new_save(slot_name: String):
+func add_new_save(slot_name: String, difficulty: String):
 	if slot_name in save_index.get_section_keys("slots"):
 		push_error("File with name "+slot_name+" already exists.")
 		return
@@ -32,9 +32,10 @@ func add_new_save(slot_name: String):
 	var path = _get_path_with_name(slot_name)
 	current_file.clear()
 	add_data("meta", "name", slot_name)
-	add_data("meta", "data_added", Time.get_datetime_dict_from_system())
+	add_data("meta", "date_added", Time.get_datetime_dict_from_system())
 	add_data("meta", "last_saved", Time.get_datetime_dict_from_system())
 	add_data("meta", "completion", 0.0)
+	add_data("meta", "difficulty", difficulty)
 	save_index.set_value("slots", slot_name, path)
 	save_to_disk(path)
 	
