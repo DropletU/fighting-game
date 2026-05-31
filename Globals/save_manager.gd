@@ -6,25 +6,25 @@ const SAVEDATA:="res://Text Files/Save Files/save_data.cfg"
 var current_file = ConfigFile.new()
 ## An index config file that holds the last used save file, as well as a list of 
 ## all save files.
-var save_index = ConfigFile.new()
+var save_data = ConfigFile.new()
 
 ## Emits at the end of [method add_new_save].
 signal new_save_added
 
 func _ready() -> void:
 	if not FileAccess.file_exists(SAVEDATA):
-		save_index.save(SAVEDATA)
-	save_index.load(SAVEDATA)
+		save_data.save(SAVEDATA)
+	save_data.load(SAVEDATA)
 	
 
 ## Clears the [member current_file] and adds metadata for the new file to it.
 ## It then saves [member current_file] into the new file, and adds it to the 
-## [member save_index].
+## [member save_data].
 ## If a slot with the same name already exists, an error will be pushed and nothing
 ## will happen.
 func add_new_save(slot_name: String, difficulty: String):
-	if save_index.has_section("slots"):
-		if slot_name in save_index.get_section_keys("slots"):
+	if save_data.has_section("slots"):
+		if slot_name in save_data.get_section_keys("slots"):
 			push_error("File with name "+slot_name+" already exists.")
 			return
 	if not slot_name:
@@ -40,9 +40,9 @@ func add_new_save(slot_name: String, difficulty: String):
 	add_data("meta", "last_saved", Time.get_datetime_dict_from_system())
 	add_data("meta", "completion", 0.0)
 	add_data("meta", "difficulty", difficulty)
-	save_index.set_value("slots", slot_name, path)
+	save_data.set_value("slots", slot_name, path)
 	save_to_disk(path)
-	save_index.save(SAVEDATA)
+	save_data.save(SAVEDATA)
 	new_save_added.emit()
 	
 
@@ -81,7 +81,7 @@ func delete_data(section: String, key: String):
 func save_to_disk(save_path:="", use_last:=true):
 	if save_path=="" or not FileAccess.file_exists(save_path):
 		if use_last:
-			save_path=save_index.get_value("meta", "last_used", save_path)
+			save_path=save_data.get_value("meta", "last_used", save_path)
 		else:
 			push_error("No valid path was given and was instructed to not use the last path.")
 			return
@@ -94,7 +94,7 @@ func save_to_disk(save_path:="", use_last:=true):
 ## Note that this does not return the save file, if you wish to access it, refer
 ## to [member current_file].
 func load_from_disk(save_name: String):
-	var path = save_index.get_value("slots", save_name)
+	var path = save_data.get_value("slots", save_name)
 	if path == null:
 		push_error("Path is null.")
 		return
@@ -103,6 +103,7 @@ func load_from_disk(save_name: String):
 		return
 	current_file.load(path)
 	save_index.set_value("meta", "last_used", save_name)
+	save_data.set_value("meta", "last_used", save_name)
 	
 
 ## Clears [member current_file]. [br]

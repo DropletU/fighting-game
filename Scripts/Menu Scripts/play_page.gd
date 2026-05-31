@@ -5,9 +5,9 @@ extends PanelContainer
 var new_game_page = preload("res://Scenes/Menu/new_game_page.tscn").instantiate()
 
 func _ready() -> void:
-	if not SaveManager.save_index.has_section("slots"):
+	if not SaveManager.save_data.has_section("slots"):
 		return
-	var save_slots = SaveManager.save_index.get_section_keys("slots")
+	var save_slots = SaveManager.save_data.get_section_keys("slots")
 	var buttons = button_container.get_children()
 	for i in range(save_slots.size()):
 		buttons[i].button_info = save_slots[i]
