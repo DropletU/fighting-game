@@ -102,8 +102,8 @@ func load_from_disk(save_name: String):
 		push_error("Cannot load file "+path+" as it does not exist.")
 		return
 	current_file.load(path)
-	save_index.set_value("meta", "last_used", save_name)
 	save_data.set_value("meta", "last_used", save_name)
+	save_data.save(SAVEDATA)
 	
 
 ## Clears [member current_file]. [br]
