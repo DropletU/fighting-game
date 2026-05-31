@@ -20,9 +20,10 @@ func _ready() -> void:
 ## If a slot with the same name already exists, an error will be pushed and nothing
 ## will happen.
 func add_new_save(slot_name: String, difficulty: String):
-	if slot_name in save_index.get_section_keys("slots"):
-		push_error("File with name "+slot_name+" already exists.")
-		return
+	if save_index.has_section("slots"):
+		if slot_name in save_index.get_section_keys("slots"):
+			push_error("File with name "+slot_name+" already exists.")
+			return
 	if not slot_name:
 		push_error("No slot name was given.")
 		return
