@@ -1,7 +1,7 @@
 extends Node
 
 ## The path to the save index file.
-const SAVEINDEX:="res://Text Files/Save Files/save_index.cfg"
+const SAVEDATA:="res://Text Files/Save Files/save_data.cfg"
 ## The current config file holding all the current saves information.
 var current_file = ConfigFile.new()
 ## An index config file that holds the last used save file, as well as a list of 
@@ -9,9 +9,9 @@ var current_file = ConfigFile.new()
 var save_index = ConfigFile.new()
 
 func _ready() -> void:
-	if not FileAccess.file_exists(SAVEINDEX):
-		save_index.save(SAVEINDEX)
-	save_index.load(SAVEINDEX)
+	if not FileAccess.file_exists(SAVEDATA):
+		save_index.save(SAVEDATA)
+	save_index.load(SAVEDATA)
 	
 
 ## Clears the [member current_file] and adds metadata for the new file to it.
