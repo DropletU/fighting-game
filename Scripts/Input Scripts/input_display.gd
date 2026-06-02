@@ -10,12 +10,6 @@ extends Control
 @onready var four = $Four
 @onready var magic = $RightShift
 
-func _ready() -> void:
-	$ColorRect.size=self.size
-	
-
-
-
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("up"):
