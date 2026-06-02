@@ -23,7 +23,7 @@ func player_died():
 func spawn_new_player(spawn_coords:=respawn_point):
 	var instance:=player_node.instantiate()
 	_handle_new_player_instance_info(instance, spawn_coords)
-	add_child(instance)
+	get_tree().root.add_child(instance)
 	player = instance
 	
 
