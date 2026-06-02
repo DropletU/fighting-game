@@ -7,7 +7,7 @@ func _on_continue_pressed() -> void:
 
 
 func _on_options_pressed() -> void:
-	pass # Replace with function body.
+	pass # TODO: Add/remove options menu as a child here. Use the same method used in the main menu for this.
 
 
 func _on_quit_pressed() -> void:

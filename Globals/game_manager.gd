@@ -125,6 +125,7 @@ func set_respawn_scene(scene_path: String):
 	respawn_scene=scene_path
 	
 
+## Pauses/unpauses the game if [member pause_allowed] is true.
 func toggle_pause():
 	if not pause_allowed:
 		return
