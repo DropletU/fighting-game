@@ -40,6 +40,13 @@ func set_health(value: int):
 		health=value
 	
 
+## Adds the [Enemy2D] to the [code]"Enemy"[/code] and [code]"Damageable[/code] groups. [br]
+## You are recommended to call [code]super[/code].[method _ready] if you wish to override this function.
+func _ready() -> void:
+	self.add_to_group("Enemy")
+	self.add_to_group("Damageable")
+	
+
 ## Handles the state machine. You are recommended to call [code]super[/code].[method _physics_process] at the start if you plan on overriding this function.
 ## WARNING: Does not call [method move_and_slide].
 func _physics_process(delta: float) -> void:
