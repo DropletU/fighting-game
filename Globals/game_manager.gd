@@ -24,8 +24,7 @@ func _ready() -> void:
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
-		if pause_allowed:
-			toggle_pause()
+		toggle_pause()
 	
 
 ## Calls [member player].[method queue_free()]. [br]
@@ -127,6 +126,8 @@ func set_respawn_scene(scene_path: String):
 	
 
 func toggle_pause():
+	if not pause_allowed:
+		return
 	if get_tree().paused==false:
 		get_tree().paused=true
 		player.add_child(game_pause_menu_instance)
