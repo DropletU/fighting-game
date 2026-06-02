@@ -1,5 +1,12 @@
 extends Node
 
+# Game State
+var pause_allowed:=false
+var game_pause_menu_preload = preload("res://Scenes/Menu/game_menu.tscn")
+var game_pause_menu_instance
+
+# Player
+
 ## Refers directly to the current player
 var player: CharacterBody2D: set = set_player, get = get_player 
 ## The coordinates that the player should respawn to if they die.
@@ -10,6 +17,16 @@ var respawn_scene: String: set = set_respawn_scene
 var player_node = preload("res://Scenes/Prefabs/Player.tscn")
 ## The difficulty of the game.
 var difficulty: String
+
+func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event.is_action_pressed("pause"):
+		if pause_allowed:
+			toggle_pause()
+	
 
 ## Calls [member player].[method queue_free()]. [br]
 ## You are recommended to call [method spawn_new_player] immediately after this. [br]
@@ -22,6 +39,7 @@ func player_died():
 ## [member _handle_new_player_instance_info].
 func spawn_new_player(spawn_coords:=respawn_point):
 	var instance:=player_node.instantiate()
+	game_pause_menu_instance = game_pause_menu_preload.instantiate()
 	_handle_new_player_instance_info(instance, spawn_coords)
 	get_tree().root.add_child(instance)
 	player = instance
@@ -48,8 +66,9 @@ func enter_new_scene(new_scene: String):
 ## Sets the args for the [memebr player_instance] given one by one. [br]
 ## WARNING: This currently only sets the new instance's [member global_position]
 ## and nothing else.
-func _handle_new_player_instance_info(player_instance, spawn_location: Vector2):
+func _handle_new_player_instance_info(player_instance: Node, spawn_location: Vector2):
 	player_instance.global_position = spawn_location
+	player_instance.process_mode = Node.PROCESS_MODE_PAUSABLE
 	
 
 func load_game(file_name: String):
@@ -77,6 +96,13 @@ func start_new_game(slot_name: String, diff: String):
 	SaveManager.save_to_disk(SaveManager._get_path_with_name(slot_name))
 	
 
+func quit_to_main_menu():
+	get_tree().paused=false
+	await get_tree().process_frame
+	player.queue_free()
+	await enter_new_scene("res://Scenes/Menu/main_menu.tscn")
+	
+
 ## Returns [member player].
 func get_player():
 	return player
@@ -87,6 +113,9 @@ func get_player():
 func set_player(new_player: CharacterBody2D):
 	if new_player.is_in_group("Player"):
 		player = new_player
+		pause_allowed=true
+	else:
+		pause_allowed=false
 	
 
 func set_respawn_point(point: Vector2):
@@ -95,4 +124,13 @@ func set_respawn_point(point: Vector2):
 
 func set_respawn_scene(scene_path: String):
 	respawn_scene=scene_path
+	
+
+func toggle_pause():
+	if get_tree().paused==false:
+		get_tree().paused=true
+		player.add_child(game_pause_menu_instance)
+	elif get_tree().paused==true:
+		player.remove_child(game_pause_menu_instance)
+		get_tree().paused=false
 	

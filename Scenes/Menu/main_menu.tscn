@@ -16,6 +16,7 @@ corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 
 [node name="Main Menu" type="Control" unique_id=963491053]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
