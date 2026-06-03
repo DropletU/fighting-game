@@ -69,9 +69,7 @@ func get_move_name(sequence: Array, stance:="", rshift_required:=false):
 	for move: String in moves:
 		if not move.begins_with(stance):
 			continue
-		if sequence[0]==moves[move][0]:
-			return move
-		elif sequence[0]+"(R)"==moves[move][0] and not rshift_required:
+		if sequences_match(sequence, moves[move], false, rshift_required):
 			return move
 	return ""
 	
