@@ -75,6 +75,8 @@ func exit_exploding_stance():
 func exploding_explode_one(_r_count:=0):
 	if animation_player.current_animation:
 		return
+	var direction: = get_direction()
+	attack_area.rotation=direction.angle()
 	player.play_animation("ExplodeAttack")
 	await animation_player.animation_finished
 	exit_exploding_stance()
@@ -83,6 +85,16 @@ func exploding_explode_one(_r_count:=0):
 
 # Utility Functions
 
+## Returns a normalized direction of where the player is facing.
+func get_direction() -> Vector2:
+	var direction = Vector2(Input.get_axis("left", "right"), Input.get_axis("up", "down")).normalized()
+	if direction == Vector2.ZERO:
+		if player.facing=="right":
+			direction=Vector2(1, 0)
+		elif player.facing=="left":
+			direction=Vector2(-1, 0)
+	return direction
+	
 
 ## Checks if the [member animation_player] is playing or not, and calls await
 ## [member animation_player].[member animation_finished]. Afterwards, it returns.
