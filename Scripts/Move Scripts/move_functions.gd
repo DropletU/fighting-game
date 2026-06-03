@@ -77,6 +77,7 @@ func exploding_explode_one(_r_count:=0):
 		return
 	var direction: = get_direction()
 	attack_area.rotation=direction.angle()
+	attack_area.set_stats(30, 1.0, direction)
 	player.play_animation("ExplodeAttack")
 	await animation_player.animation_finished
 	exit_exploding_stance()

@@ -25,6 +25,15 @@ class_name AttackArea2D
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 
+## Sets the stats of the current attack using the given stats. [br]
+## Note that [member kbd] should be [method normalized] here.
+func set_stats(dmg:=10, hsf:=0.1, kbd:=Vector2(1, 0), kbs:=500):
+	damage=dmg
+	hitstun_f=hsf
+	knockback_dir=kbd
+	knockback_str=kbs
+	
+
 ## Activates [member monitoring].
 func activate():
 	monitoring=true
