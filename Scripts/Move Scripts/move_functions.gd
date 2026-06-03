@@ -10,6 +10,8 @@ extends Node
 ## WARNING: Be sure to use this with caution, or you may end up with visual bugs
 ## after certain moves.
 @onready var spritesheet: Sprite2D = $"../../Resizer/Spritesheet"
+## The [AttackArea2D] being used for all attacks
+@onready var attack_area: AttackArea2D = $"../../AttackArea2D"
 
 # Dash
 
@@ -48,6 +50,34 @@ func end_counter_stance(_r_count:=0):
 	await animation_player.animation_finished
 	player.change_stance("standing")
 	player.play_animation("Idle")
+	
+
+# Exploding Stance / Attack
+
+func standing_explode_stance_one(_r_count:=1):
+	player.play_animation("ExplodingStance")
+	await await_animation()
+	player.change_stance("exploding")
+	call_function_after_delay("exit_exploding_stance", 1.0, "stance", "exploding")
+	
+
+func exit_exploding_stance():
+	if animation_player.current_animation:
+		return
+	if player.stance=="standing":
+		return
+	player.play_animation("ExplodingStance", true)
+	await animation_player.animation_finished
+	player.change_stance("standing")
+	player.play_animation("Idle")
+	
+
+func exploding_explode_one(_r_count:=0):
+	if animation_player.current_animation:
+		return
+	player.play_animation("ExplodeAttack")
+	await animation_player.animation_finished
+	exit_exploding_stance()
 	
 
 
