@@ -55,7 +55,7 @@ func find_callable_stance(sequence: Array, stance:="standing"):
 	for stance_move: String in stances:
 		if not stance_move.begins_with(stance):
 			continue
-		if sequence_matches(sequence, stances[stance_move], true):
+		if sequences_match(sequence, stances[stance_move], true):
 			var slash_index:=stance_move.find("/")
 			return stance_move.substr(slash_index+1)
 	return ""
@@ -65,7 +65,7 @@ func find_callable_stance(sequence: Array, stance:="standing"):
 ## matches. [br]
 ## If no move is found, it will return [code]""[/code]. [br]
 ## WARNING: There can be two identical moves in different stances.
-func get_move(sequence: Array, stance:="", rshift_required:=false):
+func get_move_name(sequence: Array, stance:="", rshift_required:=false):
 	for move: String in moves:
 		if not move.begins_with(stance):
 			continue
@@ -83,7 +83,7 @@ func get_stance(sequence: Array, fully_matches:=false, rshift_required:=false):
 	for stance_name in stances:
 		if sequence.size()!=stances[stance_name].size():
 			continue
-		if sequence_matches(sequence, stances[stance_name], fully_matches, rshift_required):
+		if sequences_match(sequence, stances[stance_name], fully_matches, rshift_required):
 			return stance_name
 	
 
@@ -96,7 +96,7 @@ func get_stance(sequence: Array, fully_matches:=false, rshift_required:=false):
 ## match the [code]"(R)"[/code] inputs as well. [br]
 ## If [member fully_matches] is true, then [member test_sequence].[method size] must 
 ## be equal to [member match_sequence].[method size].
-func sequence_matches(test_sequence: Array, match_sequence: Array, fully_matches:=false, rshift_required:=false):
+func sequences_match(test_sequence: Array, match_sequence: Array, fully_matches:=false, rshift_required:=false):
 	if fully_matches:
 		if test_sequence.size()!=match_sequence.size():
 			return false
@@ -120,7 +120,7 @@ func matches_any_stance(test_sequence: Array, fully_matches:=true):
 	for i in stance_moves.size():
 		var sequence: Array = move_list.get_value(stance_moves[i], "sequence")
 		var rshift_required: bool = move_list.get_value(stance_moves[i], "required", false)
-		if sequence_matches(test_sequence, sequence, fully_matches, rshift_required):
+		if sequences_match(test_sequence, sequence, fully_matches, rshift_required):
 			return true
 	return false
 	
@@ -136,7 +136,7 @@ func matches_any_sequence(test_sequence: Array, current_stance: String, fully_ma
 	for i in possible_moves.size():
 		var sequence: Array = move_list.get_value(possible_moves[i], "sequence")
 		var rshift_required: bool = move_list.get_value(possible_moves[i], "required", false)
-		if sequence_matches(test_sequence, sequence, fully_matches, rshift_required):
+		if sequences_match(test_sequence, sequence, fully_matches, rshift_required):
 			return true
 	return false
 	

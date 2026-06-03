@@ -62,7 +62,7 @@ func _on_sequence_builder_stance_matched(sequence: Array, stance: String = "stan
 	
 
 func _on_sequence_builder_valid_action(sequence: Array, stance: String) -> void:
-	var move_name = MoveUtils.get_move(sequence, stance, false)
+	var move_name = MoveUtils.get_move_name(sequence, stance, false)
 	var move_callable = MoveUtils.find_callable_action(move_name, sequence)
 	var total_right_shifts = MoveUtils.find_total_rshifts(sequence)
 	var keep_executing_false = MoveUtils.get_keep_executing_false(move_name)
