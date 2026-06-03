@@ -96,3 +96,23 @@ func change_stance_after_delay(stance: String, time_sec: float):
 	await get_tree().create_timer(time_sec).timeout
 	player.change_stance(stance)
 	
+
+## Calls the given [member method] after [member time_sec] seconds pass. [br]
+## Note that the method you're trying to call must be in the same script as
+## this method, otherwise it will crash the game with an error. [br] [br]
+## [b]You can check for any variable in any node using the three parameters below. [/b] [br]
+## For [member variable], you should set the value to a string that perfectly
+## matches the name of the variable you are trying to check. [br] [br]
+## For [member check], this is automatically set to [code]true[/code], but should
+## be changed if [member variable] shouldn't be checked with a boolean. [br] [br]
+## For [member node], this is automatically set to [member player], but can be changed
+## into any node in the scene tree, as long as you can find it. 
+func call_function_after_delay(method: String, time_sec: float, 
+variable:="", check = true, node: Node = player):
+	await get_tree().create_timer(time_sec).timeout
+	if variable:
+		if node.get(variable)==check:
+			call(method)
+	else:
+		call(method)
+	
