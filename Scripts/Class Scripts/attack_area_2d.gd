@@ -1,6 +1,6 @@
 extends Area2D
 
-## This class activates/deactviates it's [member monitoring] state and detects whether if a body in the [member target] group entered it and damages it.
+## This class activates/deactviates it's [member monitoring] state and detects if a body in the [member target] group entered it and damages it.
 class_name AttackArea2D
 
 ## The [CollisionShape2D] that the [AttackArea2D] needs to detect if a body entered or not.
@@ -50,4 +50,13 @@ func _on_body_entered(body: Node2D):
 	if body.is_in_group(target):
 		var knockback: Vector2 = knockback_dir*knockback_str
 		body.take_damage(damage, knockback, hitstun_f)
+	
+
+## Sets the hitboxes [member size], [member position] and [member rotation] to the given parameters.
+func set_hitbox(size: Vector2, pos: Vector2, rot:=0.0):
+	if not hitbox:
+		return
+	hitbox.size=size
+	hitbox.position=pos
+	hitbox.rotation=rot
 	
