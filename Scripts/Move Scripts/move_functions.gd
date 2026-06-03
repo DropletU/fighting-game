@@ -25,7 +25,7 @@ func dash_stance(_r_count: int):
 func counter_stance(_r_count: int):
 	player.change_stance("counter")
 	player.play_animation("SwordStance", false, true)
-	await animation_player.animation_finished
+	await await_animation()
 	monitor_counter_stance_exit()
 	
 
@@ -47,7 +47,7 @@ func monitor_counter_stance_exit():
 func end_counter_stance(_r_count:=0):
 	var backwards:=true
 	player.play_animation("SwordStance", backwards, false)
-	await animation_player.animation_finished
+	await await_animation()
 	player.change_stance("standing")
 	player.play_animation("Idle")
 	
@@ -82,6 +82,15 @@ func exploding_explode_one(_r_count:=0):
 
 
 # Utility Functions
+
+
+## Checks if the [member animation_player] is playing or not, and calls await
+## [member animation_player].[member animation_finished]. Afterwards, it returns.
+func await_animation() -> void:
+	if animation_player.is_animation_active():
+		await animation_player.animation_finished
+	return
+	
 
 func change_stance_after_delay(stance: String, time_sec: float):
 	await get_tree().create_timer(time_sec).timeout
